@@ -1,1 +1,6 @@
-PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"
+PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}/{}/{}/{}/{}_{}"
+PROCESSED = "processed"
+RAW = "raw"
+RECO = "reco"
+SINO = "sino"
+RAW_BIN = "rawBin{}"

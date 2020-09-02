@@ -19,7 +19,9 @@ class DatasetBuilder(ABC):
                TYPE: "base"}
     
     def args(self, args):
-        return self.owner(args.owner).owner_group(args.ownergroup).contact_email(args.contactemail)
+        return self.owner_group(args.ownergroup).\
+            access_groups(args.accessgroups).\
+            contact_email(args.contactemail)
 
     def access_groups(self, access_groups):
         self.dataset[ACCESS_GROUPS] = access_groups
