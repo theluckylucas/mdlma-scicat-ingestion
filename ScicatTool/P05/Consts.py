@@ -1,0 +1,1 @@
+PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"
