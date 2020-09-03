@@ -9,4 +9,5 @@ class ScicatIngestDatasetParser(argparse.ArgumentParser):
         self.add_argument("ownergroup", type=str, help=PROPERTIES[OWNER_GROUP])
         self.add_argument("contactemail", type=str, help=PROPERTIES[CONTACT_EMAIL])
         self.add_argument("-p", "--publish", action='store_true', help=PROPERTIES[IS_PUBLISHED])
-        self.add_argument("-g", "--accessgroups", type=str, nargs='+', default=["public"], help=PROPERTIES[ACCESS_GROUPS])
+        self.add_argument("-a", "--accessgroups", type=str, nargs='+', default=["public"], help=PROPERTIES[ACCESS_GROUPS])
+        self.add_argument("-s", "--simulation", action='store_true', help="Only simulates ingestion, but does NOT(!) actually call API.")

@@ -30,14 +30,9 @@ def get_url(token, entity, uid=None, member=None, func=None):
     return URL_PATTERN.format(SERVER_PROTOCOL, SERVER_URL, SERVER_API_VERSION, entity, uid, member, func, token)
 
 
-def dataset_ingest(token, data_dict):
+def dataset_ingest(token, data_dict, simulate=False):
     url = get_url(token, "Datasets")
     pprint(data_dict)
-    resp = requests.post(url, headers=HEADERS, data=json.dumps(data_dict))
-    print("DATASET INGEST:", resp)
-    
-
-def dataset_update(token, dataset_id, data_dict):
-    url = get_url(token, "Datasets", uid=dataset_id)
-    resp = requests.patch(url, headers=HEADERS, data=json.dumps(data_dict))
-    print("DATASET UPDATE:", resp)
+    if not simulate:
+        resp = requests.post(url, headers=HEADERS, data=json.dumps(data_dict))
+        print("DATASET INGEST:", resp)

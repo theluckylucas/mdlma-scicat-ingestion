@@ -1,15 +1,42 @@
 import getpass
-from os import stat, listdir
+import platform
+from os import stat, listdir, path, scandir
 from pwd import getpwuid
+from datetime import datetime
 
 
-def current_username():
+def get_username():
     return getpass.getuser()
 
 
-def file_ownername(filename):
+def get_ownername(filename):
     return getpwuid(stat(filename).st_uid).pw_name
 
 
-def first_file(directory):
-    return listdir(directory)[0]
+def path_exists(directory):
+    return path.exists(directory)
+
+
+def list_files(directory, exts=[]):
+    files = []
+    for f in listdir(directory):
+        if path.splitext(f)[1] in exts:
+            files += [f]
+    return files
+
+
+def list_dirs(directory):
+    return [f.name for f in scandir(directory) if f.is_dir()]
+
+
+def get_creation_date(filename):
+    if platform.system() == 'Windows':
+        return path.getctime(filename)
+    else:
+        file_stat = stat(filename)
+        try:
+            return file_stat.st_birthtime
+        except AttributeError:
+            # We're probably on Linux. No easy way to get creation dates here,
+            # so we'll settle for when its content was last modified.
+            return str(datetime.fromtimestamp(file_stat.st_mtime))

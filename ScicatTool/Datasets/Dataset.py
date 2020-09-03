@@ -15,8 +15,10 @@ class DatasetBuilder(ABC):
         def __str__(self):
             return self.MESSAGE.format(', '.join(self.args))
     
-    dataset = {PID: str(int(time.time() * 10000000)),
-               TYPE: "base"}
+    def __init__(self):
+        super().__init__()
+        self.dataset = {PID: str(int(time.time() * 10000000)),
+                        TYPE: "base"}
     
     def args(self, args):
         return self.owner_group(args.ownergroup).\
@@ -137,26 +139,26 @@ class DatasetBuilder(ABC):
 class DerivedDatasetBuilder(DatasetBuilder):
     def __init__(self):
         super().__init__()
-        super().dataset[TYPE] = "derived"
+        self.dataset[TYPE] = "derived"
         
     def investigator(self, investigator : str):
-        super().dataset[INVESTIGATOR] = investigator
+        self.dataset[INVESTIGATOR] = investigator
         return self
     
     def input_datasets(self, input_datasets):
-        super().dataset[INPUT_DATASETS] = input_datasets
+        self.dataset[INPUT_DATASETS] = input_datasets
         return self
     
     def used_software(self, used_software):
-        super().dataset[USED_SOFTWARE] = used_software
+        self.dataset[USED_SOFTWARE] = used_software
         return self
     
     def job_parameters(self, job_parameters):
-        super().dataset[JOB_PARAMETERS] = job_parameters
+        self.dataset[JOB_PARAMETERS] = job_parameters
         return self
     
     def job_log_data(self, job_log_data):
-        super().dataset[JOB_LOG_DATA] = job_log_data
+        self.dataset[JOB_LOG_DATA] = job_log_data
         return self
     
     def _invalid(self):
@@ -166,22 +168,22 @@ class DerivedDatasetBuilder(DatasetBuilder):
 class RawDatasetBuilder(DatasetBuilder):
     def __init__(self):
         super().__init__()
-        super().dataset[TYPE] = "raw"
+        self.dataset[TYPE] = "raw"
         
     def principal_investigator(self, principal_investigator : str):
-        super().dataset[PRINCIPAL_INVESTIGATOR] = principal_investigator
+        self.dataset[PRINCIPAL_INVESTIGATOR] = principal_investigator
         return self
     
     def creation_location(self, creation_location : str):
-        super().dataset[CREATION_LOCATION] = creation_location
+        self.dataset[CREATION_LOCATION] = creation_location
         return self
     
     def end_time(self, end_time : str):
-        super().dataset[END_TIME] = end_time
+        self.dataset[END_TIME] = end_time
         return self
     
     def data_format(self, data_format):
-        super().dataset[DATA_FORMAT] = data_format
+        self.dataset[DATA_FORMAT] = data_format
         return self
     
     def _invalid(self):
