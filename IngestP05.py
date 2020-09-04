@@ -1,3 +1,9 @@
+"""
+This is the main file to call for adding P05 experiments.
+Run python IngestP05.py -h for details about how to call.
+"""
+
+
 from ScicatTool.P05.Ingestion import ingest_experiment
 from ScicatTool.Utils.ArgumentsP05 import P05ExperimentParser
 import datetime
