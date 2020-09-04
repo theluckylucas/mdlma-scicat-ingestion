@@ -110,9 +110,9 @@ def ingest_experiment(args):
                             resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
                             if resp.status_code != 200:
                                 failed[dataset_dict[SOURCE_FOLDER]] = resp.text
-        
-    print('-!- FAILURES -!-')
-    for key, value in failed.items():
-        print(key)
-        print(value)
+    if failed:    
+        print('-!- FAILURES -!-')
+        for key, value in failed.items():
+            print(key)
+            print(value)
     
