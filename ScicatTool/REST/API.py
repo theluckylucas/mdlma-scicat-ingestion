@@ -33,8 +33,24 @@ def get_url(token, entity, uid=None, member=None, func=None):
 def dataset_ingest(token, data_dict, simulate=False):
     url = get_url(token, "Datasets")
     data = json.dumps(data_dict)
-    pprint(data_dict)
+    pprint(data)
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
-        print("DATASET INGEST:", resp)
-        print(resp.content)
+        print("DATASET JSON INGEST:", resp)
+    return resp
+
+
+def dataset_delete(token, dataset_pid, dataset_name, simulate=False):
+    url = get_url(token, "Datasets", uid=dataset_pid)
+    print(dataset_name)
+    if not simulate:
+        resp = requests.delete(url, headers=HEADERS)
+        print("DELETE", dataset_pid, "(PID):", resp)
+    return resp
+
+
+def get_datasets(token):
+    url = get_url(token, "Datasets")
+    resp = requests.get(url, headers=HEADERS)
+    print("GET DATASETS:", resp)
+    return json.loads(resp.text)

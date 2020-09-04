@@ -1,0 +1,1 @@
+PID_PREFIX = "MDLMA-/"  # Scicat dataset prefix

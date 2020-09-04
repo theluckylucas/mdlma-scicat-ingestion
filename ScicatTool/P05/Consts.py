@@ -1,6 +1,4 @@
-PID_PREFIX = "MDLMA-/"
-
-LOCATION = "DESY/PETRA3/P05"
+LOCATION = "DESY/PETRA3/P05"  # Default location added to any P05 raw dataset
 
 PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"
 
@@ -16,3 +14,5 @@ PHASE_MAP = "phase_map"
 POSTPROCESSING = [FLAT_CORRECTED, RECO, SINO, RECO_PHASE, SINO_PHASE, PHASE_MAP]
 
 RAW_BIN = "rawBin"
+
+KEYWORDS = ["synchrotron", "beamline"]  # Default keywords always added to any P05 dataset

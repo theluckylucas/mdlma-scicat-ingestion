@@ -1,4 +1,5 @@
-from ..Datasets.Keys import PID
+from ..Datasets.Keys import PID, SOURCE_FOLDER
+from ..Datasets.Consts import PID_PREFIX
 from ..Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
 from ..Filesystem.Information import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date
 from ..REST import API
@@ -49,7 +50,7 @@ def create_derived(args, dataset, directory, postprocessing, input_datasets):
             if files_in_folder:
                 creation_time = get_creation_date("{}/{}".format(source_folder, files_in_folder[0]))
             else:
-                creation_time = ""
+                creation_time = "NO FILES CREATED"
 
             dsb = P05ProcessedDatasetBuilder().\
                 args(args).\
@@ -75,6 +76,8 @@ def ingest_experiment(args):
     experiment_directory = PATH_GPFS_P05.format(args.year, args.experiment)
     raw_directory = "{}/{}".format(experiment_directory, RAW)
 
+    failed = {}
+
     for dataset in list_dirs(raw_directory):
 
         # Get scan parameters from log file
@@ -92,7 +95,9 @@ def ingest_experiment(args):
 
                 # Add raw dataset
                 dataset_dict = create_raw(args, dataset, dataset_raw_directory, creation_time, scientific_metadata)
-                API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+                resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+                if resp.status_code != 200:
+                    failed[dataset_dict[SOURCE_FOLDER]] = resp.text
 
                 input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
 
@@ -102,5 +107,12 @@ def ingest_experiment(args):
                     if path_exists(dataset_processed_directory):
                         dataset_dicts = create_derived(args, dataset, dataset_processed_directory, postprocessing, input_datasets)
                         for dataset_dict in dataset_dicts:  # rawBins ...
-                            API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+                            resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+                            if resp.status_code != 200:
+                                failed[dataset_dict[SOURCE_FOLDER]] = resp.text
+        
+    print('-!- FAILURES -!-')
+    for key, value in failed.items():
+        print(key)
+        print(value)
     
