@@ -1,3 +1,5 @@
+PID_PREFIX = "MDLMA-/"
+
 LOCATION = "DESY/PETRA3/P05"
 
 PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"

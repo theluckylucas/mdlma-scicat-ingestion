@@ -3,11 +3,12 @@ START_IGNORE = "****"
 START_SECTION = "*** "
 SEC_NAME_END = " *"
 SCAN = "Start Scan"
-FOV = "Field of info"
+CAM = "camera info"
 APP = "apperture info"
 SECTIONS = {SCAN: '=',
-            FOV: ':',
+            CAM: ':',
             APP: '='}
+SECTIONS_KEYS = [key.lower() for key in SECTIONS.keys()]
 
 
 def trim_line(line):
@@ -20,13 +21,14 @@ def get_section_name(line):
     return line[start:end]
 
 
-def parse_section(log_dict, lines):
-    section_name = get_section_name(lines[0])
-    for i in range(1, len(lines)):
-        if section_name in SECTIONS:
-            key, value = trim_line(lines[i]).split(SECTIONS[section_name])
-            key_dict = "{}: {}".format(section_name, key)
-            log_dict[key_dict] = value
+def parse_section(log_dict, section_name, lines):
+    if section_name.lower() in SECTIONS_KEYS:
+        for line in lines:
+            trimed = trim_line(line)
+            splits = trimed.split(SECTIONS[section_name])
+            if len(splits) == 2:
+                key = "{} {}".format(section_name, splits[0])
+                log_dict[key] = splits[1]
     return log_dict
 
 
@@ -36,19 +38,20 @@ def logfile_to_dict(filename):
         lines = f.readlines()
         sec_begin = 0
         sec_end = 0
-        sec_process = False
+        sec_start = False
         for i, line in enumerate(lines):
-            if line.startswith(START_IGNORE, 0, len(START_IGNORE)):
+            if line.startswith(START_IGNORE, 0, len(START_IGNORE)) and\
+               lines[i+1].lower().startswith(SCAN.lower(), 0, len(SCAN)) and\
+               not sec_start:
+                section_name = SCAN
+                sec_begin = i + 2
+                sec_start = True
                 continue
             elif line.startswith(START_SECTION, 0, len(START_SECTION)):
-                if sec_process:
-                    sec_end = i
-                    log_dict = parse_section(log_dict, lines[sec_begin:sec_end])
-                    sec_process = False
-                else:
-                    sec_begin = i
-                    sec_process = True
-                    continue
-        if sec_process:
-            log_dict = parse_section(log_dict, lines[sec_begin:i])
+                sec_end = i
+                sec_dict = parse_section(log_dict, section_name, lines[sec_begin:sec_end])
+                log_dict = {**log_dict, **sec_dict}
+                section_name = get_section_name(line)
+                sec_begin = i + 1
+        log_dict = parse_section(log_dict, section_name, lines[sec_begin:i])  # last section not yet finished
     return log_dict

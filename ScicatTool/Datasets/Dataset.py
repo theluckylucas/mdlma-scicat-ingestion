@@ -153,14 +153,6 @@ class DerivedDatasetBuilder(DatasetBuilder):
         self.dataset[USED_SOFTWARE] = used_software
         return self
     
-    def job_parameters(self, job_parameters):
-        self.dataset[JOB_PARAMETERS] = job_parameters
-        return self
-    
-    def job_log_data(self, job_log_data):
-        self.dataset[JOB_LOG_DATA] = job_log_data
-        return self
-    
     def _invalid(self):
         return super()._invalid(PROPERTIES, REQUIRED_PROPERTIES_DATASET_BASE + REQUIRED_PROPERTIES_DATASET_DERIVED)
     

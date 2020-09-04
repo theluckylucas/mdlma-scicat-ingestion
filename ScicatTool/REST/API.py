@@ -32,7 +32,9 @@ def get_url(token, entity, uid=None, member=None, func=None):
 
 def dataset_ingest(token, data_dict, simulate=False):
     url = get_url(token, "Datasets")
+    data = json.dumps(data_dict)
     pprint(data_dict)
     if not simulate:
-        resp = requests.post(url, headers=HEADERS, data=json.dumps(data_dict))
+        resp = requests.post(url, headers=HEADERS, data=data)
         print("DATASET INGEST:", resp)
+        print(resp.content)
