@@ -1,6 +1,6 @@
 import getpass
 import platform
-from os import stat, listdir, path, scandir
+from os import stat, listdir, path, scandir, walk
 from pwd import getpwuid
 from datetime import datetime
 
@@ -15,6 +15,14 @@ def get_ownername(filename):
 
 def path_exists(directory):
     return path.exists(directory)
+
+
+def file_size(directory, filename_relative):
+    return path.getsize(path.join(directory, filename_relative))
+
+
+def folder_total_size(directory):
+    return sum(file_size(dirpath,filename) for dirpath, dirnames, filenames in walk(directory) for filename in filenames)
 
 
 def list_files(directory, exts=[]):

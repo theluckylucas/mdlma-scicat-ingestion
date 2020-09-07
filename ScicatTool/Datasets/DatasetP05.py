@@ -1,13 +1,13 @@
 from .Dataset import DerivedDatasetBuilder, RawDatasetBuilder
-from .Keys import KEYWORDS as KEYWORDS_KEY
+from .APIKeys import KEYWORDS as KEYWORDS_API
 from ..P05.Consts import KEYWORDS as KEYWORDS_P05
 
 
 def add_default_keywords(dataset_dict):
-    if KEYWORDS_KEY in dataset_dict.keys():
-        dataset_dict[KEYWORDS_KEY] += KEYWORDS_P05
+    if KEYWORDS_API in dataset_dict.keys():
+        dataset_dict[KEYWORDS_API] += KEYWORDS_P05
     else:
-        dataset_dict[KEYWORDS_KEY] = KEYWORDS_P05
+        dataset_dict[KEYWORDS_API] = KEYWORDS_P05
     return dataset_dict
 
 

@@ -12,7 +12,7 @@ SECTIONS_KEYS = [key.lower() for key in SECTIONS.keys()]
 
 
 def trim_line(line):
-    return line.replace("\t", "").replace(" ", "")
+    return line.replace("\t", "").replace("\n", "").replace("\r", "")
 
 
 def get_section_name(line):
@@ -24,11 +24,15 @@ def get_section_name(line):
 def parse_section(log_dict, section_name, lines):
     if section_name.lower() in SECTIONS_KEYS:
         for line in lines:
-            trimed = trim_line(line)
-            splits = trimed.split(SECTIONS[section_name])
+            trimed = trim_line(line)  # remove non-readable characters
+            splits = trimed.split(SECTIONS[section_name])  # split into key and value
             if len(splits) == 2:
+                splits = [s.strip() for s in splits]  # remove surrounding whitespaces
                 key = "{} {}".format(section_name, splits[0])
-                log_dict[key] = splits[1]
+                if splits[1].isnumeric():
+                    log_dict[key] = float(splits[1])
+                else:
+                    log_dict[key] = splits[1]
     return log_dict
 
 

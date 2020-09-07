@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 import time
 
-from .Keys import *
+from .APIKeys import *
+from .Consts import PID_FACTOR, TYPE_BASE, TYPE_DERIVED, TYPE_RAW
 
 
 class DatasetBuilder(ABC):
@@ -17,15 +18,15 @@ class DatasetBuilder(ABC):
     
     def __init__(self):
         super().__init__()
-        self.dataset = {PID: str(int(time.time() * 10000000)),
-                        TYPE: "base"}
+        self.dataset = {PID: "D{:09.0f}".format(time.time() * PID_FACTOR),
+                        TYPE: TYPE_BASE}
     
     def args(self, args):
         return self.owner_group(args.ownergroup).\
             access_groups(args.accessgroups).\
             contact_email(args.contactemail)
 
-    def access_groups(self, access_groups):
+    def access_groups(self, access_groups : list):
         self.dataset[ACCESS_GROUPS] = access_groups
         return self
     
@@ -39,6 +40,10 @@ class DatasetBuilder(ABC):
     
     def owner_email(self, email : str):
         self.dataset[OWNER_EMAIL] = email
+        return self
+
+    def proposal_id(self, proposal_id : str):
+        self.dataset['proposal_id'] = proposal_id
         return self
     
     def contact_email(self, contact_email : str):
@@ -139,7 +144,7 @@ class DatasetBuilder(ABC):
 class DerivedDatasetBuilder(DatasetBuilder):
     def __init__(self):
         super().__init__()
-        self.dataset[TYPE] = "derived"
+        self.dataset[TYPE] = TYPE_DERIVED
         
     def investigator(self, investigator : str):
         self.dataset[INVESTIGATOR] = investigator
@@ -160,7 +165,7 @@ class DerivedDatasetBuilder(DatasetBuilder):
 class RawDatasetBuilder(DatasetBuilder):
     def __init__(self):
         super().__init__()
-        self.dataset[TYPE] = "raw"
+        self.dataset[TYPE] = TYPE_RAW
         
     def principal_investigator(self, principal_investigator : str):
         self.dataset[PRINCIPAL_INVESTIGATOR] = principal_investigator

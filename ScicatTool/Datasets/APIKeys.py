@@ -1,6 +1,8 @@
+from ..REST.CommonKeys import *
+
+
 PID = "pid"
 OWNER = "owner"
-OWNER_GROUP = "ownerGroup"
 OWNER_EMAIL = "ownerEmail"
 CONTACT_EMAIL = "contactEmail"
 SOURCE_FOLDER = "sourceFolder"
@@ -19,7 +21,6 @@ CLASSIFICATION = "classification"
 LICENSE = "license"
 VERSION = "version"
 IS_PUBLISHED = "isPublished"
-ACCESS_GROUPS = "accessGroups"
 CREATED_BY = "createdBy"
 UPDATED_BY = "updatedBy"
 CREATED_AT = "createdAt"
@@ -38,6 +39,7 @@ CREATION_LOCATION = "creationLocation"
 END_TIME = "endTime"
 DATA_FORMAT = "dataFormat"
 
+PROPOSAL_ID = "proposal_id"
 
 PROPERTIES = {
     PID: "Persistent Identifier for datasets derived from UUIDv4 and prepended automatically by site specific PID prefix like 20.500.12345/",
@@ -60,13 +62,13 @@ PROPERTIES = {
     LICENSE: "Name of license under which data can be used",
     VERSION: "Version of API used in creation of dataset",
     IS_PUBLISHED: "Flag is true when data are made publically available",
-    OWNER_GROUP: "Defines the group which owns the data, and therefore has unrestricted access to this data. Usually a pgroup like p12151",
-    ACCESS_GROUPS: "Optional additional groups which have read access to the data. Users which are member in one of the groups listed here are allowed to access this data. The special group ‘public’ makes data available to all users",
     CREATED_BY: "Functional or user account name who created this instance",
     UPDATED_BY: "Functional or user account name who last updated this instance",
     CREATED_AT: "string($date-time)",
     UPDATED_AT: "string($date-time)",
     TECHNIQUES: "Technique type stores the metadata information for a technique",
+    OWNER_GROUP: COMMON_PROPERTIES[OWNER_GROUP],
+    ACCESS_GROUPS: COMMON_PROPERTIES[ACCESS_GROUPS],
     
     INVESTIGATOR: "Email of person pursuing the data analysis",
     INPUT_DATASETS: "Array of input dataset identifiers used in producing the derived dataset. Ideally these are the global identifier to existing datasets inside this or federated data catalogs",
@@ -79,6 +81,8 @@ PROPERTIES = {
     CREATION_LOCATION: "Unique location identifier where data was taken, usually in the form /Site-name/facility-name/instrumentOrBeamline-name",
     END_TIME: "string($date-time) Time of end of data taking for this dataset, format according to chapter 5.6 internet date/time format in RFC 3339. Local times without timezone/offset info are automatically transformed to UTC using the timezone of the API server",
     DATA_FORMAT: "Defines format of subsequent scientific meta data, e.g Nexus Version x.y",
+
+    PROPOSAL_ID: "Proposal ID"
 }
 
 

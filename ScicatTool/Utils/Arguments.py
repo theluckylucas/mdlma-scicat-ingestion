@@ -1,5 +1,5 @@
 import argparse
-from ..Datasets.Keys import *
+from ..Datasets.APIKeys import *
 
 
 class ScicatParser(argparse.ArgumentParser):

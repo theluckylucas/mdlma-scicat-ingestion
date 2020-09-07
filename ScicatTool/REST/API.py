@@ -12,13 +12,17 @@ HEADERS = {
     'Content-Type': 'application/json',
     'Accept':       'application/json'
 }
+PROPOSALS = "Proposals"
+DATASETS = "Datasets"
+ORIGDATABLOCKS = "OrigDatablocks"
+DATA_MODELS = [PROPOSALS, DATASETS, ORIGDATABLOCKS]
 
 
-def get_url(token, entity, uid=None, member=None, func=None):
-    if uid is None:
-        uid = ""
+def get_url(token, entity, model_id=None, member=None, func=None):
+    if model_id is None:
+        model_id = ""
     else:
-        uid = '/' + uid.replace('/','%2F')
+        model_id = '/' + model_id.replace('/','%2F')
     if member is None:
         member = ""
     else:
@@ -27,26 +31,51 @@ def get_url(token, entity, uid=None, member=None, func=None):
         func = ""
     else:
         func = '/' + func.replace('/','%2F')
-    return URL_PATTERN.format(SERVER_PROTOCOL, SERVER_URL, SERVER_API_VERSION, entity, uid, member, func, token)
+    return URL_PATTERN.format(SERVER_PROTOCOL, SERVER_URL, SERVER_API_VERSION, entity, model_id, member, func, token)
 
 
-def dataset_ingest(token, data_dict, simulate=False):
-    url = get_url(token, "Datasets")
+def ingest(token, data_model, data_dict, simulate):
+    assert data_model in DATA_MODELS
+    url = get_url(token, data_model)
     data = json.dumps(data_dict)
     pprint(data)
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
-        print("DATASET JSON INGEST:", resp)
-    return resp
+        print(data_model.upper(), "JSON INGEST:", resp)
+        return resp
+    return requests.Response()
+
+
+def proposal_ingest(token, data_dict, simulate=False):
+    return ingest(token, PROPOSALS, data_dict, simulate)
+
+
+def dataset_ingest(token, data_dict, simulate=False):
+    return ingest(token, DATASETS, data_dict, simulate)
+
+
+def origdatablock_ingest(token, data_dict, simulate=False):
+    return ingest(token, ORIGDATABLOCKS, data_dict, simulate)
+
+
+def delete(token, data_model, model_id, simulate):
+    assert data_model in DATA_MODELS
+    url = get_url(token, data_model, model_id=model_id)
+    if not simulate:
+        resp = requests.delete(url, headers=HEADERS)
+        print("DELETE", model_id, "(PID):", resp)
+        return resp
+    return requests.Response()
 
 
 def dataset_delete(token, dataset_pid, dataset_name, simulate=False):
-    url = get_url(token, "Datasets", uid=dataset_pid)
     print(dataset_name)
-    if not simulate:
-        resp = requests.delete(url, headers=HEADERS)
-        print("DELETE", dataset_pid, "(PID):", resp)
-    return resp
+    return delete(token, DATASETS, dataset_pid, simulate)
+
+
+def proposal_delete(token, proposal_id, simulate=False):
+    print(proposal_id)
+    return delete(token, PROPOSALS, proposal_id, simulate)
 
 
 def get_datasets(token):

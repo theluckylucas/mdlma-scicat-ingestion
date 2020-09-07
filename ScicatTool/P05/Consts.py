@@ -1,6 +1,9 @@
 LOCATION = "DESY/PETRA3/P05"  # Default location added to any P05 raw dataset
+P05_PREFIX = "P05"
 
 PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"
+JSON_META_EXP = "beamtime-metadata-{}.json"
+LOG_SUFFIX = "scan.log"
 
 PROCESSED = "processed"
 RAW = "raw"
