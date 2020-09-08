@@ -1,13 +1,15 @@
-from ..Proposals.Proposal import ProposalBuilder
-from ..Proposals.JSONKeys import *
-from ..Proposals.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API
-from ..Datablocks.Datablock import OrigDatablockBuilder
-from ..Datasets.APIKeys import PID, SOURCE_FOLDER, SIZE
-from ..Datasets.Consts import PID_PREFIX
-from ..Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
-from ..Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size
-from ..Filesystem.ImInfo import get_tif_info_dict
-from ..REST import API
+from ...Proposals.Proposal import ProposalBuilder
+from ...Proposals.JSONKeys import *
+from ...Proposals.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API
+from ...Datablocks.Datablock import OrigDatablockBuilder
+from ...Datasets.APIKeys import PID, SOURCE_FOLDER, SIZE, ATTACHMENT_CAPTION
+from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
+from ...Datasets.Consts import PID_PREFIX
+from ...Datasets.Dataset import AttachmentBuilder
+from ...Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
+from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size
+from ...Filesystem.ImInfo import get_tif_info_dict, get_uri_from_tif
+from ...REST import API
 from .Consts import *
 from .ScanLog import logfile_to_dict
 
@@ -110,6 +112,45 @@ def create_origdatablock(args, filename_list, dataset_dict):
     return dbb.build()
 
 
+def create_attachments(args, filename_list, dataset_dict, proposalId):
+    result = []
+    sorted_filename_list = sorted(filename_list)
+    len_list = len(filename_list)
+    step = len_list//N_ATTACHMENTS
+    if step > 0 and len_list > 0:
+        for i in range(0, len_list, step):
+            full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
+            ab = AttachmentBuilder().\
+                args(args).\
+                thumbnail(get_uri_from_tif(full_path)).\
+                caption(sorted_filename_list[i]).\
+                proposal_id(proposalId)
+            result += [ab.build()]
+    return result
+
+
+def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed):
+    scicat_token = args.token
+
+    # Add raw dataset
+    resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+    if resp.status_code != 200:
+        failed[dataset_dict[SOURCE_FOLDER]] = resp.text
+    
+    # Add raw dataset files
+    resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation)
+    if resp.status_code != 200:
+        failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
+
+    # Add attachments
+    for attachment_dict in attachment_dicts:
+        resp = API.dataset_attach(scicat_token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation)
+        if resp.status_code != 200:
+            failed[attachment_dict[ATTACHMENT_CAPTION] + "-Attachment"] = resp.text
+
+    return failed
+
+
 def ingest_experiment(args):
     failed = {}
 
@@ -126,13 +167,9 @@ def ingest_experiment(args):
             failed[proposal_dict[PROPOSAL_ID_API]] = resp.text
 
     raw_directory = "{}/{}".format(experiment_directory, RAW)
-
     for dataset in list_dirs(raw_directory):
-
         # Include experiment metadata, and get scan parameters from log file
-        scientific_metadata = {
-            TITLE: proposal_dict[TITLE],
-        }
+        # basic_metadata = {'experiment': args.experiment}
 
         dataset_raw_directory = "{}/{}".format(raw_directory, dataset)
         log_filenames = list_files(dataset_raw_directory, '.log')
@@ -141,40 +178,26 @@ def ingest_experiment(args):
             if log_filename.endswith(LOG_SUFFIX):
                 path_log_filename = "{}/{}".format(dataset_raw_directory, log_filename)
                 scientific_metadata = logfile_to_dict(path_log_filename)
-                scientific_metadata['experiment'] = args.experiment
                 creation_time = get_creation_date(path_log_filename)
 
                 # Add raw dataset
                 dataset_dict, filename_list = create_raw(args, dataset, dataset_raw_directory, creation_time, scientific_metadata, proposal_dict)
-                resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
-                if resp.status_code != 200:
-                    failed[dataset_dict[SOURCE_FOLDER]] = resp.text
-                
-                # Add raw dataset files
                 datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
-                resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation)
-                if resp.status_code != 200:
-                    failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
+                attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
+                failed = api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed)
 
                 input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
 
-                # Add processed datasets
+                # Add derived/processed datasets
                 for postprocessing in POSTPROCESSING:  # reco, sino, flat_corrected, phased ...
                     dataset_processed_directory = "{}/{}/{}/{}".format(experiment_directory, PROCESSED, dataset, postprocessing)
                     if path_exists(dataset_processed_directory):
                         derived_datasets = create_derived(args, dataset, dataset_processed_directory, postprocessing, input_datasets)
                         for dataset_dict, filename_list in derived_datasets:
-
-                            # Add derived dataset
-                            resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
-                            if resp.status_code != 200:
-                                failed[dataset_dict[SOURCE_FOLDER]] = resp.text
-
-                            # Add derived datasets' files
                             datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
-                            resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation)
-                            if resp.status_code != 200:
-                                failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
+                            attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
+                            failed = api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed)
+
 
     if failed:    
         print('---!--- API FAILURES ---!---')

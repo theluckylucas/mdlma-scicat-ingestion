@@ -1,6 +1,6 @@
-from ..REST import API
-from ..Datasets.APIKeys import SOURCE_FOLDER, PID, DATASET_NAME, PROPOSAL_ID
-from ..P05.Consts import PATH_GPFS_P05
+from ...REST import API
+from ...Datasets.APIKeys import SOURCE_FOLDER, PID, DATASET_NAME, PROPOSAL_ID
+from .Consts import PATH_GPFS_P05
 from pprint import pprint
 
 

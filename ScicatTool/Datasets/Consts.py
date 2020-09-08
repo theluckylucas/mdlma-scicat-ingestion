@@ -1,4 +1,4 @@
-PID_PREFIX = "/"  #"MDLMA-/"  # Scicat dataset prefix
+PID_PREFIX = "/"  # Scicat dataset prefix
 PID_FACTOR = 10000000
 
 TYPE_RAW = "raw"

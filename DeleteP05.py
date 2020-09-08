@@ -4,7 +4,7 @@ Run python DeleteP05.py -h for details about how to call.
 """
 
 
-from ScicatTool.P05.Deletion import delete_experiment
+from ScicatTool.Sites.P05.Deletion import delete_experiment
 from ScicatTool.Utils.ArgumentsP05 import P05ExperimentDeletionParser
 import datetime
 

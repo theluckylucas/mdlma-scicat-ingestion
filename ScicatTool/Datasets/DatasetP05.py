@@ -1,6 +1,6 @@
 from .Dataset import DerivedDatasetBuilder, RawDatasetBuilder
 from .APIKeys import KEYWORDS as KEYWORDS_API
-from ..P05.Consts import KEYWORDS as KEYWORDS_P05
+from ..Sites.P05.Consts import KEYWORDS as KEYWORDS_P05
 
 
 def add_default_keywords(dataset_dict):

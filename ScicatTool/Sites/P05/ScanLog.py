@@ -1,4 +1,3 @@
-
 START_IGNORE = "****"
 START_SECTION = "*** "
 SEC_NAME_END = " *"
@@ -21,6 +20,20 @@ def get_section_name(line):
     return line[start:end]
 
 
+def str2number(string):
+    try:
+        result = int(string)
+    except:
+        try:
+            result = float(string)
+        except:
+            try:
+                result = complex(string)
+            except:
+                result = string
+    return result
+
+
 def parse_section(log_dict, section_name, lines):
     if section_name.lower() in SECTIONS_KEYS:
         for line in lines:
@@ -29,10 +42,7 @@ def parse_section(log_dict, section_name, lines):
             if len(splits) == 2:
                 splits = [s.strip() for s in splits]  # remove surrounding whitespaces
                 key = "{} {}".format(section_name, splits[0])
-                if splits[1].isnumeric():
-                    log_dict[key] = float(splits[1])
-                else:
-                    log_dict[key] = splits[1]
+                log_dict[key] = str2number(splits[1])
     return log_dict
 
 

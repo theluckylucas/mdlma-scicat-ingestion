@@ -14,6 +14,7 @@ HEADERS = {
 }
 PROPOSALS = "Proposals"
 DATASETS = "Datasets"
+ATTACHMENTS = "Attachments"
 ORIGDATABLOCKS = "OrigDatablocks"
 DATA_MODELS = [PROPOSALS, DATASETS, ORIGDATABLOCKS]
 
@@ -56,6 +57,16 @@ def dataset_ingest(token, data_dict, simulate=False):
 
 def origdatablock_ingest(token, data_dict, simulate=False):
     return ingest(token, ORIGDATABLOCKS, data_dict, simulate)
+
+
+def dataset_attach(token, data_dict, model_id, simulate=False):
+    url = get_url(token, DATASETS, model_id=model_id, member=ATTACHMENTS)
+    data = json.dumps(data_dict)
+    if not simulate:
+        resp = requests.post(url, headers=HEADERS, data=data)
+        print("DATASET JSON ATTACH:", resp)
+        return resp
+    return requests.Response()
 
 
 def delete(token, data_model, model_id, simulate):

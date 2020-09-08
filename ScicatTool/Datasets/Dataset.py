@@ -2,7 +2,77 @@ from abc import ABC, abstractmethod
 import time
 
 from .APIKeys import *
-from .Consts import PID_FACTOR, TYPE_BASE, TYPE_DERIVED, TYPE_RAW
+from .Consts import *
+
+
+class AttachmentBuilder():
+    class ValidationError(Exception):
+        MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
+                  "Please check scicatproject.github.io/api-documentation/ for valid keys."
+        
+        def __init__(self, args):
+            self.args = args
+            
+        def __str__(self):
+            return self.MESSAGE.format(', '.join(self.args))
+    
+    def __init__(self):
+        super().__init__()
+        self.attachment = {}
+    
+    def args(self, args):
+        return self.owner_group(args.ownergroup).\
+            access_groups(args.accessgroups)
+
+    def access_groups(self, access_groups : list):
+        self.attachment[ACCESS_GROUPS] = access_groups
+        return self
+
+    def owner_group(self, owner_group : str):
+        self.attachment[OWNER_GROUP] = owner_group
+        return self
+
+    def caption(self, caption : str):
+        self.attachment[ATTACHMENT_CAPTION] = caption
+        return self
+
+    def thumbnail(self, thumb : str):
+        self.attachment[ATTACHMENT_THUMBNAIL] = thumb
+        return self
+
+    def dataset_id(self, dataset_dict : dict):
+        dataset_id = PID_PREFIX + dataset_dict[PID]
+        if dataset_dict[TYPE] == TYPE_DERIVED:
+            self.attachment[ATTACHMENT_DERIVED_DATASET_ID] = dataset_id
+        elif dataset_dict[TYPE] == TYPE_RAW:
+            self.attachment[ATTACHMENT_RAW_DATASET_ID] = dataset_id
+        self.attachment[ATTACHMENT_DATASET_ID] = dataset_id
+        return self
+
+    def proposal_id(self, proposal_id : str):
+        self.attachment[ATTACHMENT_PROPOSAL_ID] = proposal_id
+        return self
+
+    def _invalid(self):
+        invalids=set()
+        
+        # Illegal keys
+        for key in self.attachment.keys():
+            if key not in PROPERTIES_ATTACHMENT:
+                invalids.add(key)
+        
+        # Required keys
+        for key in REQUIRED_PROPERTIES_ATTACHMENT:
+            if key not in self.attachment.keys():
+                invalids.add(key)
+        
+        return invalids
+            
+    def build(self):
+        invalids = self._invalid()
+        if invalids:
+            raise self.ValidationError(invalids)
+        return self.attachment
 
 
 class DatasetBuilder(ABC):
@@ -43,7 +113,7 @@ class DatasetBuilder(ABC):
         return self
 
     def proposal_id(self, proposal_id : str):
-        self.dataset['proposal_id'] = proposal_id
+        self.dataset[PROPOSAL_ID] = proposal_id
         return self
     
     def contact_email(self, contact_email : str):

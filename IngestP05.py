@@ -4,7 +4,7 @@ Run python IngestP05.py -h for details about how to call.
 """
 
 
-from ScicatTool.P05.Ingestion import ingest_experiment
+from ScicatTool.Sites.P05.Ingestion import ingest_experiment
 from ScicatTool.Utils.ArgumentsP05 import P05ExperimentIngestionParser
 import datetime
 
