@@ -3,20 +3,7 @@ import requests
 import json
 import time
 
-
-URL_PATTERN = "{}://{}/api/v{}/{}{}{}{}?access_token={}"
-SERVER_PROTOCOL = "http"
-SERVER_URL = "scicat-mdlma.desy.de"
-SERVER_API_VERSION = 3
-HEADERS = {
-    'Content-Type': 'application/json',
-    'Accept':       'application/json'
-}
-PROPOSALS = "Proposals"
-DATASETS = "Datasets"
-ATTACHMENTS = "Attachments"
-ORIGDATABLOCKS = "OrigDatablocks"
-DATA_MODELS = [PROPOSALS, DATASETS, ORIGDATABLOCKS]
+from .Consts import *
 
 
 def get_url(token, entity, model_id=None, member=None, func=None):
@@ -35,11 +22,13 @@ def get_url(token, entity, model_id=None, member=None, func=None):
     return URL_PATTERN.format(SERVER_PROTOCOL, SERVER_URL, SERVER_API_VERSION, entity, model_id, member, func, token)
 
 
-def ingest(token, data_model, data_dict, simulate):
+def ingest(token, data_model, data_dict, simulate, verbose):
     assert data_model in DATA_MODELS
     url = get_url(token, data_model)
     data = json.dumps(data_dict)
-    pprint(data)
+    if verbose:
+        print(url)
+        pprint(data)
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
         print(data_model.upper(), "JSON INGEST:", resp)
@@ -47,31 +36,38 @@ def ingest(token, data_model, data_dict, simulate):
     return requests.Response()
 
 
-def proposal_ingest(token, data_dict, simulate=False):
-    return ingest(token, PROPOSALS, data_dict, simulate)
+def proposal_ingest(token, data_dict, simulate=False, verbose=False):
+    return ingest(token, PROPOSALS, data_dict, simulate, verbose)
 
 
-def dataset_ingest(token, data_dict, simulate=False):
-    return ingest(token, DATASETS, data_dict, simulate)
+def dataset_ingest(token, data_dict, simulate=False, verbose=False):
+    return ingest(token, DATASETS, data_dict, simulate, verbose)
 
 
-def origdatablock_ingest(token, data_dict, simulate=False):
-    return ingest(token, ORIGDATABLOCKS, data_dict, simulate)
+def origdatablock_ingest(token, data_dict, simulate=False, verbose=False):
+    if verbose == 1:
+        return ingest(token, ORIGDATABLOCKS, data_dict, simulate, False)
+    return ingest(token, ORIGDATABLOCKS, data_dict, simulate, verbose)
 
 
-def dataset_attach(token, data_dict, model_id, simulate=False):
+def dataset_attach(token, data_dict, model_id, simulate=False, verbose=False):
     url = get_url(token, DATASETS, model_id=model_id, member=ATTACHMENTS)
     data = json.dumps(data_dict)
+    if verbose > 1:
+        print(url)
+        pprint(data)
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
-        print("DATASET JSON ATTACH:", resp)
+        print(DATASETS, "JSON ATTACH:", resp)
         return resp
     return requests.Response()
 
 
-def delete(token, data_model, model_id, simulate):
+def delete(token, data_model, model_id, simulate, verbose):
     assert data_model in DATA_MODELS
     url = get_url(token, data_model, model_id=model_id)
+    if verbose:
+        print(url)
     if not simulate:
         resp = requests.delete(url, headers=HEADERS)
         print("DELETE", model_id, "(PID):", resp)
@@ -79,18 +75,23 @@ def delete(token, data_model, model_id, simulate):
     return requests.Response()
 
 
-def dataset_delete(token, dataset_pid, dataset_name, simulate=False):
+def dataset_delete(token, dataset_pid, dataset_name, simulate=False, verbose=False):
     print(dataset_name)
-    return delete(token, DATASETS, dataset_pid, simulate)
+    return delete(token, DATASETS, dataset_pid, simulate, verbose)
 
 
-def proposal_delete(token, proposal_id, simulate=False):
+def proposal_delete(token, proposal_id, simulate=False, verbose=False):
     print(proposal_id)
-    return delete(token, PROPOSALS, proposal_id, simulate)
+    return delete(token, PROPOSALS, proposal_id, simulate, verbose)
 
 
-def get_datasets(token):
+def get_datasets(token, simulate=False, verbose=False):
     url = get_url(token, "Datasets")
-    resp = requests.get(url, headers=HEADERS)
-    print("GET DATASETS:", resp)
-    return json.loads(resp.text)
+    if verbose:
+        print(url)
+    if not simulate:
+        resp = requests.get(url, headers=HEADERS)
+        print("GET DATASETS:", resp)
+        if resp.status_code != 200:
+            return json.loads(resp.text)
+    return []

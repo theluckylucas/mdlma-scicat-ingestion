@@ -16,6 +16,7 @@ from .ScanLog import logfile_to_dict
 from pprint import pprint
 import datetime
 import json
+import math
 
 
 def create_raw(args, dataset, directory, creation_time, scientific_metadata, proposal_dict):
@@ -30,7 +31,7 @@ def create_raw(args, dataset, directory, creation_time, scientific_metadata, pro
     dsb = P05RawDatasetBuilder().\
         args(args).\
         proposal_id(proposal_dict[PROPOSAL_ID_API]).\
-        owner(get_username()).\
+        owner(get_ownername(directory)).\
         source_folder(directory).\
         is_published(args.publish).\
         size(total_size).\
@@ -72,7 +73,7 @@ def create_derived(args, dataset, directory, postprocessing, input_datasets):
             dsb = P05ProcessedDatasetBuilder().\
                 args(args).\
                 size(total_size).\
-                owner(get_username()).\
+                owner(get_ownername(source_folder)).\
                 source_folder(source_folder).\
                 input_datasets(input_datasets).\
                 is_published(args.publish).\
@@ -116,8 +117,8 @@ def create_attachments(args, filename_list, dataset_dict, proposalId):
     result = []
     sorted_filename_list = sorted(filename_list)
     len_list = len(filename_list)
-    step = len_list//N_ATTACHMENTS
-    if step > 0 and len_list > 0:
+    if args.nattach > 0 and len_list > 0:
+        step = math.ceil(len_list/args.nattach)
         for i in range(0, len_list, step):
             full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
             ab = AttachmentBuilder().\
@@ -133,18 +134,18 @@ def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, fai
     scicat_token = args.token
 
     # Add raw dataset
-    resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation)
+    resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation, args.verbose)
     if resp.status_code != 200:
         failed[dataset_dict[SOURCE_FOLDER]] = resp.text
     
     # Add raw dataset files
-    resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation)
+    resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation, args.verbose)
     if resp.status_code != 200:
         failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
 
     # Add attachments
     for attachment_dict in attachment_dicts:
-        resp = API.dataset_attach(scicat_token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation)
+        resp = API.dataset_attach(scicat_token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation, args.verbose)
         if resp.status_code != 200:
             failed[attachment_dict[ATTACHMENT_CAPTION] + "-Attachment"] = resp.text
 
@@ -162,7 +163,7 @@ def ingest_experiment(args):
 
         # First, add proposal to be referred afterwards
         proposal_dict = create_proposal(args, proposal_metadata)
-        resp = API.proposal_ingest(scicat_token, proposal_dict, args.simulation)
+        resp = API.proposal_ingest(scicat_token, proposal_dict, args.simulation, args.verbose)
         if resp.status_code != 200:
             failed[proposal_dict[PROPOSAL_ID_API]] = resp.text
 
@@ -179,6 +180,8 @@ def ingest_experiment(args):
                 path_log_filename = "{}/{}".format(dataset_raw_directory, log_filename)
                 scientific_metadata = logfile_to_dict(path_log_filename)
                 creation_time = get_creation_date(path_log_filename)
+
+                print("---*---", dataset, "---*---")
 
                 # Add raw dataset
                 dataset_dict, filename_list = create_raw(args, dataset, dataset_raw_directory, creation_time, scientific_metadata, proposal_dict)
@@ -201,7 +204,7 @@ def ingest_experiment(args):
 
     if failed:    
         print('---!--- API FAILURES ---!---')
-        for key, value in failed.items():
+        for key in sorted(failed.keys()):
             print(key)
-            print(value)
+            print(failed[key])
     
