@@ -17,5 +17,6 @@ PHASE_MAP = "phase_map"
 POSTPROCESSING = [FLAT_CORRECTED, RECO, SINO, RECO_PHASE, SINO_PHASE, PHASE_MAP]
 
 RAW_BIN = "rawBin"
+BINNING = "binning"
 
 KEYWORDS = ["synchrotron", "beamline"]  # Default keywords always added to any P05 dataset

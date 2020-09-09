@@ -26,14 +26,18 @@ def folder_total_size(directory):
 
 
 def list_files(directory, exts=[]):
+    """
     files = []
     for f in listdir(directory):
         if path.splitext(f)[1] in exts:
             files += [f]
     return files
+    """
+    return [f.name for f in scandir(directory) if f.is_file() and path.splitext(f.name)[1] in exts]
 
 
 def list_dirs(directory):
+    print(directory)
     return [f.name for f in scandir(directory) if f.is_dir()]
 
 

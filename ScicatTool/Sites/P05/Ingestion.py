@@ -16,15 +16,12 @@ from .ScanLog import logfile_to_dict
 from pprint import pprint
 import datetime
 import json
-import math
 
 
 def create_raw(args, dataset, directory, creation_time, scientific_metadata, proposal_dict):
-    files_in_folder = list_files(directory, args.extensions)
-
     dataset_name = "{}/{}/{}-raw".format(P05_PREFIX, args.experiment, dataset)
 
-    tiff_in_folder = list_files(directory, args.extensions)
+    tiff_in_folder = sorted(list_files(directory, args.extensions))
 
     total_size = folder_total_size(directory)
 
@@ -40,54 +37,41 @@ def create_raw(args, dataset, directory, creation_time, scientific_metadata, pro
         creation_location(LOCATION).\
         creation_time(creation_time).\
         scientific_metadata(scientific_metadata).\
-        number_of_files(len(files_in_folder))
+        number_of_files(len(tiff_in_folder))
 
     return dsb.build(), tiff_in_folder
 
 
-def create_derived(args, dataset, directory, postprocessing, input_datasets):
-    result = []
+def create_derived(args, dataset, directory, subdir, postprocessing, input_datasets, binning):
+    source_folder = "{}/{}".format(directory, subdir)
+    tiff_in_folder = list_files(source_folder, args.extensions)
+    total_size = folder_total_size(source_folder)
+    investigator = get_ownername(source_folder)
+    dataset_name = "{}/{}/{}-{}-{}".format(P05_PREFIX, args.experiment, dataset, postprocessing, subdir)
+    creation_time = "unknown"
+    scientific_metadata = {BINNING: binning}
 
-    for d in list_dirs(directory):
-        if RAW_BIN in d:
-            pos = d.find(RAW_BIN) + len(RAW_BIN)
-            binning = int(d[pos:pos+1])
+    if tiff_in_folder:
+        first_tiff_in_folder = "{}/{}".format(source_folder, tiff_in_folder[0])
+        creation_time = get_creation_date(source_folder)
+        scientific_metadata.update(get_tif_info_dict(first_tiff_in_folder))
 
-            source_folder = "{}/{}".format(directory, d)
-            tiff_in_folder = list_files(source_folder, args.extensions)
+    dsb = P05ProcessedDatasetBuilder().\
+        args(args).\
+        size(total_size).\
+        owner(get_ownername(source_folder)).\
+        source_folder(source_folder).\
+        input_datasets(input_datasets).\
+        is_published(args.publish).\
+        creation_time(creation_time).\
+        used_software("n/a").\
+        keywords([postprocessing.lower()]).\
+        investigator(investigator).\
+        dataset_name(dataset_name).\
+        number_of_files(len(tiff_in_folder)).\
+        scientific_metadata(scientific_metadata)
 
-            total_size = folder_total_size(source_folder)
-
-            investigator = get_ownername(source_folder)
-
-            dataset_name = "{}/{}/{}-{}-{}".format(P05_PREFIX, args.experiment, dataset, postprocessing, d)
-
-            if tiff_in_folder:
-                first_tiff_in_folder = "{}/{}".format(source_folder, tiff_in_folder[0])
-                creation_time = get_creation_date(first_tiff_in_folder)
-                scientific_metadata = get_tif_info_dict(first_tiff_in_folder)
-            else:
-                creation_time = "NO FILES CREATED"
-                scientific_metadata = {}
-
-            dsb = P05ProcessedDatasetBuilder().\
-                args(args).\
-                size(total_size).\
-                owner(get_ownername(source_folder)).\
-                source_folder(source_folder).\
-                input_datasets(input_datasets).\
-                is_published(args.publish).\
-                creation_time(creation_time).\
-                used_software("n/a").\
-                keywords([postprocessing.lower()]).\
-                investigator(investigator).\
-                dataset_name(dataset_name).\
-                number_of_files(len(tiff_in_folder)).\
-                scientific_metadata(scientific_metadata)
-
-            result += [(dsb.build(), tiff_in_folder)]
-
-    return result
+    return (dsb.build(), tiff_in_folder)
 
 
 def create_proposal(args, proposal_metadata):
@@ -118,7 +102,9 @@ def create_attachments(args, filename_list, dataset_dict, proposalId):
     sorted_filename_list = sorted(filename_list)
     len_list = len(filename_list)
     if args.nattach > 0 and len_list > 0:
-        step = math.ceil(len_list/args.nattach)
+        step = len_list//args.nattach
+        if step == 0:
+            step = 1
         for i in range(0, len_list, step):
             full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
             ab = AttachmentBuilder().\
@@ -130,26 +116,40 @@ def create_attachments(args, filename_list, dataset_dict, proposalId):
     return result
 
 
-def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed):
-    scicat_token = args.token
+def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts):
+    failed = {}
 
     # Add raw dataset
-    resp = API.dataset_ingest(scicat_token, dataset_dict, args.simulation, args.verbose)
+    resp = API.dataset_ingest(args.token, dataset_dict, args.simulation, args.verbose)
     if resp.status_code != 200:
         failed[dataset_dict[SOURCE_FOLDER]] = resp.text
     
     # Add raw dataset files
-    resp = API.origdatablock_ingest(scicat_token, datablock_dict, args.simulation, args.verbose)
+    resp = API.origdatablock_ingest(args.token, datablock_dict, args.simulation, args.verbose)
     if resp.status_code != 200:
         failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
 
     # Add attachments
     for attachment_dict in attachment_dicts:
-        resp = API.dataset_attach(scicat_token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation, args.verbose)
+        resp = API.dataset_attach(args.token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation, args.verbose)
         if resp.status_code != 200:
             failed[attachment_dict[ATTACHMENT_CAPTION] + "-Attachment"] = resp.text
 
     return failed
+
+
+def ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict):
+    pos = subdir.rfind(RAW_BIN) + len(RAW_BIN)
+    if pos == -1:
+        pos = dataset_processed_directory.rfind(RAW_BIN) + len(RAW_BIN)
+        binning = int(dataset_processed_directory[pos:pos+1])
+    else:
+        print(subdir)
+        binning = int(subdir[pos:pos+1])
+    dataset_dict, filename_list = create_derived(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning)
+    datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
+    attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
+    return api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts)
 
 
 def ingest_experiment(args):
@@ -168,7 +168,7 @@ def ingest_experiment(args):
             failed[proposal_dict[PROPOSAL_ID_API]] = resp.text
 
     raw_directory = "{}/{}".format(experiment_directory, RAW)
-    for dataset in list_dirs(raw_directory):
+    for dataset in sorted(list_dirs(raw_directory)):
         # Include experiment metadata, and get scan parameters from log file
         # basic_metadata = {'experiment': args.experiment}
 
@@ -187,19 +187,26 @@ def ingest_experiment(args):
                 dataset_dict, filename_list = create_raw(args, dataset, dataset_raw_directory, creation_time, scientific_metadata, proposal_dict)
                 datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
                 attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
-                failed = api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed)
+                failed.update(api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts))
 
                 input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
 
                 # Add derived/processed datasets
-                for postprocessing in POSTPROCESSING:  # reco, sino, flat_corrected, phased ...
+                for postprocessing in POSTPROCESSING:  # reco, sino, flat_corrected, phase_map, ...
                     dataset_processed_directory = "{}/{}/{}/{}".format(experiment_directory, PROCESSED, dataset, postprocessing)
-                    if path_exists(dataset_processed_directory):
-                        derived_datasets = create_derived(args, dataset, dataset_processed_directory, postprocessing, input_datasets)
-                        for dataset_dict, filename_list in derived_datasets:
-                            datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
-                            attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
-                            failed = api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts, failed)
+                    if path_exists(dataset_processed_directory):                        # 12345678/processed/01_dataset/reco/
+                        for subdir in list_dirs(dataset_processed_directory):
+                            if postprocessing == RECO_PHASE:                            # 12345678/processed/01_dataset/reco/tie...
+                                dataset_tie_directory = "{}/{}".format(dataset_processed_directory, subdir)
+                                for bindir in list_dirs(dataset_tie_directory):         # 12345678/processed/01_dataset/reco/tie.../rawBin...
+                                    failed.update(ingest_derived_dataset(args, dataset, dataset_tie_directory, bindir, postprocessing, input_datasets, proposal_dict))
+                            elif RAW_BIN in subdir:                                     # 12345678/processed/01_dataset/reco/rawBin...
+                                if postprocessing == PHASE_MAP:
+                                    dataset_rawbin_directory = "{}/{}".format(dataset_processed_directory, subdir)
+                                    for tiedir in list_dirs(dataset_rawbin_directory):  # 12345678/processed/01_dataset/reco/rawBin.../tie...
+                                        failed.update(ingest_derived_dataset(args, dataset, dataset_rawbin_directory, tiedir, postprocessing, input_datasets, proposal_dict))
+                                else:
+                                    failed.update(ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict))
 
 
     if failed:    
