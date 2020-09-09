@@ -2,6 +2,7 @@ from ...Proposals.Proposal import ProposalBuilder
 from ...Proposals.JSONKeys import *
 from ...Proposals.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API
 from ...Datablocks.Datablock import OrigDatablockBuilder
+from ...Datablocks.APIKeys import DATA_FILE_LIST
 from ...Datasets.APIKeys import PID, SOURCE_FOLDER, SIZE, ATTACHMENT_CAPTION
 from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
 from ...Datasets.Consts import PID_PREFIX
@@ -9,6 +10,7 @@ from ...Datasets.Dataset import AttachmentBuilder
 from ...Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
 from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size
 from ...Filesystem.ImInfo import get_tif_info_dict, get_uri_from_tif
+from ...REST.Consts import NA
 from ...REST import API
 from .Consts import *
 from .ScanLog import logfile_to_dict
@@ -48,7 +50,7 @@ def create_derived(args, dataset, directory, subdir, postprocessing, input_datas
     total_size = folder_total_size(source_folder)
     investigator = get_ownername(source_folder)
     dataset_name = "{}/{}/{}-{}-{}".format(P05_PREFIX, args.experiment, dataset, postprocessing, subdir)
-    creation_time = "unknown"
+    creation_time = NA
     scientific_metadata = {BINNING: binning}
 
     if tiff_in_folder:
@@ -64,7 +66,7 @@ def create_derived(args, dataset, directory, subdir, postprocessing, input_datas
         input_datasets(input_datasets).\
         is_published(args.publish).\
         creation_time(creation_time).\
-        used_software("n/a").\
+        used_software(NA).\
         keywords([postprocessing.lower()]).\
         investigator(investigator).\
         dataset_name(dataset_name).\
@@ -101,15 +103,15 @@ def create_attachments(args, filename_list, dataset_dict, proposalId):
     result = []
     sorted_filename_list = sorted(filename_list)
     len_list = len(filename_list)
-    if args.nattach > 0 and len_list > 0:
-        step = len_list//args.nattach
+    if args.nattachments > 0 and len_list > 0:
+        step = len_list//args.nattachments
         if step == 0:
             step = 1
         for i in range(0, len_list, step):
             full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
             ab = AttachmentBuilder().\
                 args(args).\
-                thumbnail(get_uri_from_tif(full_path)).\
+                thumbnail(get_uri_from_tif(full_path, target_size=(args.thumbnailsize, args.thumbnailsize))).\
                 caption(sorted_filename_list[i]).\
                 proposal_id(proposalId)
             result += [ab.build()]
@@ -119,32 +121,37 @@ def create_attachments(args, filename_list, dataset_dict, proposalId):
 def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts):
     failed = {}
 
-    # Add raw dataset
-    resp = API.dataset_ingest(args.token, dataset_dict, args.simulation, args.verbose)
-    if resp.status_code != 200:
-        failed[dataset_dict[SOURCE_FOLDER]] = resp.text
-    
-    # Add raw dataset files
-    resp = API.origdatablock_ingest(args.token, datablock_dict, args.simulation, args.verbose)
-    if resp.status_code != 200:
-        failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
-
-    # Add attachments
-    for attachment_dict in attachment_dicts:
-        resp = API.dataset_attach(args.token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation, args.verbose)
+    if not datablock_dict[DATA_FILE_LIST] and not args.emptyadd:
+        failed[dataset_dict[SOURCE_FOLDER]] = "No files found, thus dataset not added to Scicat!"
+    else:
+        # Add raw dataset
+        resp = API.dataset_ingest(args.token, dataset_dict, args.simulation, args.verbose)
         if resp.status_code != 200:
-            failed[attachment_dict[ATTACHMENT_CAPTION] + "-Attachment"] = resp.text
+            failed[dataset_dict[SOURCE_FOLDER]] = resp.text
+        
+        # Add raw dataset files
+        resp = API.origdatablock_ingest(args.token, datablock_dict, args.simulation, args.verbose)
+        if resp.status_code != 200:
+            failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
+
+        # Add attachments
+        for attachment_dict in attachment_dicts:
+            resp = API.dataset_attach(args.token, attachment_dict, PID_PREFIX + dataset_dict[PID], args.simulation, args.verbose)
+            if resp.status_code != 200:
+                failed[attachment_dict[ATTACHMENT_CAPTION] + "-Attachment"] = resp.text
 
     return failed
 
 
 def ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict):
     pos = subdir.rfind(RAW_BIN) + len(RAW_BIN)
-    if pos == -1:
+    if pos == len(RAW_BIN)-1:
         pos = dataset_processed_directory.rfind(RAW_BIN) + len(RAW_BIN)
-        binning = int(dataset_processed_directory[pos:pos+1])
+        if pos != len(RAW_BIN)-1:
+            binning = int(dataset_processed_directory[pos:pos+1])
+        else:
+            binning = NA
     else:
-        print(subdir)
         binning = int(subdir[pos:pos+1])
     dataset_dict, filename_list = create_derived(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning)
     datablock_dict = create_origdatablock(args, filename_list, dataset_dict)

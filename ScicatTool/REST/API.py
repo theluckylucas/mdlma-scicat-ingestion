@@ -92,6 +92,5 @@ def get_datasets(token, simulate=False, verbose=False):
     if not simulate:
         resp = requests.get(url, headers=HEADERS)
         print("GET DATASETS:", resp)
-        if resp.status_code != 200:
-            return json.loads(resp.text)
+        return json.loads(resp.text)
     return []
