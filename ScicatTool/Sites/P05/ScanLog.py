@@ -8,6 +8,11 @@ SECTIONS = {SCAN: '=',
             CAM: ':',
             APP: '='}
 SECTIONS_KEYS = [key.lower() for key in SECTIONS.keys()]
+SCIENTIFIC_METADATA_KEY_FORMAT = "{} {}"
+IMG_XMIN = "img_xmin"
+IMG_XMAX = "img_xmax"
+IMG_YMIN = "img_ymin"
+IMG_YMAX = "img_ymax"
 
 
 def trim_line(line):
@@ -41,7 +46,7 @@ def parse_section(log_dict, section_name, lines):
             splits = trimed.split(SECTIONS[section_name])  # split into key and value
             if len(splits) == 2:
                 splits = [s.strip() for s in splits]  # remove surrounding whitespaces
-                key = "{} {}".format(section_name, splits[0])
+                key = SCIENTIFIC_METADATA_KEY_FORMAT.format(section_name, splits[0])
                 log_dict[key] = str2number(splits[1])
     return log_dict
 
@@ -53,19 +58,19 @@ def logfile_to_dict(filename):
         sec_begin = 0
         sec_end = 0
         sec_start = False
-        for i, line in enumerate(lines):
-            if line.startswith(START_IGNORE, 0, len(START_IGNORE)) and\
+        for i in range(len(lines)-1):
+            if lines[i].startswith(START_IGNORE, 0, len(START_IGNORE)) and\
                lines[i+1].lower().startswith(SCAN.lower(), 0, len(SCAN)) and\
                not sec_start:
                 section_name = SCAN
                 sec_begin = i + 2
                 sec_start = True
                 continue
-            elif line.startswith(START_SECTION, 0, len(START_SECTION)):
+            elif lines[i].startswith(START_SECTION, 0, len(START_SECTION)):
                 sec_end = i
                 sec_dict = parse_section(log_dict, section_name, lines[sec_begin:sec_end])
                 log_dict = {**log_dict, **sec_dict}
-                section_name = get_section_name(line)
+                section_name = get_section_name(lines[i])
                 sec_begin = i + 1
         log_dict = parse_section(log_dict, section_name, lines[sec_begin:i])  # last section not yet finished
     return log_dict

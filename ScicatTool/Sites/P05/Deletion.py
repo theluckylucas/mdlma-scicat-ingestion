@@ -13,7 +13,7 @@ def delete_experiment(args):
             resp = API.dataset_delete(args.token, dataset[PID], dataset[DATASET_NAME], args.simulation, args.verbose)
             if resp.status_code != 200:
                 failed[dataset[SOURCE_FOLDER]] = resp.text
-            elif args.delprops:
+            elif args.deleteproposals and PROPOSAL_ID in dataset.keys():
                 resp = API.proposal_delete(args.token, dataset[PROPOSAL_ID], args.simulation, args.verbose)
                 if resp.status_code != 200:
                     failed[dataset[PROPOSAL_ID]] = resp.text

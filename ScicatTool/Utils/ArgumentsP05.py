@@ -2,7 +2,7 @@ from .Arguments import ScicatIngestDatasetParser, ScicatParser
 from ..Datasets.APIKeys import *
 
 
-FILE_EXTS = [".tif", ".tiff"]
+FILE_EXTS = [".tif", ".tiff", ".img"]
 
 
 class P05ExperimentIngestionParser(ScicatIngestDatasetParser):
@@ -18,4 +18,4 @@ class P05ExperimentDeletionParser(ScicatParser):
         super().__init__()
         self.add_argument("experiment", type=int, help="an integer for the P05 experiment ID")
         self.add_argument("year", type=int, help="an integer for the year when the experiment was conducted")
-        self.add_argument("-d", "--delpro", action="store_true", help="Also delete referred proposal")
+        self.add_argument("-d", "--deleteproposals", action="store_true", help="Also delete referred proposal")

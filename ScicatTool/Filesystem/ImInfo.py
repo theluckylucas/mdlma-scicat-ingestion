@@ -1,26 +1,39 @@
+from .FSInfo import get_ext
+
 from skimage import io
 import base64
 import numpy
 import cv2
 
 
-TIFF = "tiff"
+TYPE_TIFF = "tiff"
+TYPE_IMG = "img"
+TYPES = {
+    "tif": TYPE_TIFF,
+    "tiff": TYPE_TIFF,
+    "img": TYPE_IMG
+}
 URI_PNG_PREFIX = "data:image/png;base64,"
 TMP_PATH = "/tmp/mdlmaattachuri.png"
 
  
-def get_tif_info_dict(filename):
-    img = io.imread(filename)
-    result = {
-        "{} datatype".format(TIFF): img.dtype.name,
-    }
-    for dim, ext in enumerate(img.shape):
-        result["{} shape[{}]".format(TIFF, dim)] = ext
+def load_numpy_from_image(filename):
+    img_array = None
+    img_format = TYPES[get_ext(filename)]
+    if img_format == TYPE_TIFF:
+        img_array = io.imread(filename)
+    return img_array, img_format
+
+
+def get_dict_from_numpy(img_array, img_format):
+    result = { "{} datatype".format(img_format): img_array.dtype.name }
+    for dim, ext in enumerate(img_array.shape):
+        result["{} shape[{}]".format(img_format, dim)] = ext
     return result
 
 
-def get_uri_from_tif(filename, target_size=(150, 150)):
-    img = io.imread(filename).astype(numpy.float32)
+def get_uri_from_numpy(img_array, target_size=(150, 150)):
+    img = img_array.astype(numpy.float32)
     img = cv2.resize(img, target_size, cv2.INTER_LINEAR)
     max_val = numpy.max(img)
     min_val = numpy.min(img)

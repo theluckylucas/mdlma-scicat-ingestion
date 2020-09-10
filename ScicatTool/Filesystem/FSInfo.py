@@ -5,6 +5,12 @@ from pwd import getpwuid
 from datetime import datetime
 
 
+def get_ext(filename):
+    pos = filename.rfind('.')
+    ext = filename[pos+1:]
+    return ext
+
+
 def get_username():
     return getpass.getuser()
 

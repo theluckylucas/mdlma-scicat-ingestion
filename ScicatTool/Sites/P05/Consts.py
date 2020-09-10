@@ -3,6 +3,7 @@ P05_PREFIX = "P05"
 
 PATH_GPFS_P05 = "/asap3/petra3/gpfs/p05/{}/data/{}"
 JSON_META_EXP = "beamtime-metadata-{}.json"
+TEXT_META_EXP = "beamtime-metadata-{}.txt"
 LOG_SUFFIX = "scan.log"
 
 PROCESSED = "processed"
