@@ -13,6 +13,7 @@ TYPES = {
     "tiff": TYPE_TIFF,
     "img": TYPE_IMG
 }
+SUPPORTED_IMAGE_TYPES = [TYPE_TIFF]
 URI_PNG_PREFIX = "data:image/png;base64,"
 TMP_PATH = "/tmp/mdlmaattachuri.png"
 
@@ -21,7 +22,9 @@ def load_numpy_from_image(filename):
     img_array = None
     img_format = TYPES[get_ext(filename)]
     if img_format == TYPE_TIFF:
-        img_array = io.imread(filename)
+        img = io.imread(filename)
+        if len(img.shape) == 2:  # only work with 2D image slices
+            img_array = img
     return img_array, img_format
 
 

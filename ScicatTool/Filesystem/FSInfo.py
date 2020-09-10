@@ -16,7 +16,11 @@ def get_username():
 
 
 def get_ownername(filename):
-    return getpwuid(stat(filename).st_uid).pw_name
+    uid = stat(filename).st_uid
+    try:
+        return getpwuid(uid).pw_name
+    except:
+        return str(uid)
 
 
 def path_exists(directory):

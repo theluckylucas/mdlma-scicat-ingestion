@@ -8,8 +8,8 @@ from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
 from ...Datasets.Consts import PID_PREFIX
 from ...Datasets.Dataset import AttachmentBuilder
 from ...Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
-from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size
-from ...Filesystem.ImInfo import get_dict_from_numpy, get_uri_from_numpy, load_numpy_from_image
+from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size, get_ext
+from ...Filesystem.ImInfo import get_dict_from_numpy, get_uri_from_numpy, load_numpy_from_image, TYPES, SUPPORTED_IMAGE_TYPES
 from ...REST.Consts import NA
 from ...REST import API
 from .Consts import *
@@ -44,7 +44,7 @@ def create_raw(args, dataset, directory, creation_time, scientific_metadata, pro
     return dsb.build(), images_in_folder
 
 
-def create_derived(args, dataset, directory, subdir, postprocessing, input_datasets, binning, scan_meta_data):
+def create_derived(args, dataset, directory, subdir, postprocessing, input_datasets, binning):
     source_folder = "{}/{}".format(directory, subdir)
     images_in_folder = list_files(source_folder, args.extensions)
     total_size = folder_total_size(source_folder)
@@ -101,10 +101,11 @@ def create_origdatablock(args, filename_list, dataset_dict):
     return dbb.build()
 
 
-def create_attachments(args, filename_list, dataset_dict, proposalId, scan_meta_data):
+def create_attachments(args, filename_list, dataset_dict, proposalId):
     result = []
-    sorted_filename_list = sorted(filename_list)
-    len_list = len(filename_list)
+    failed = {}
+    sorted_filename_list = sorted([fn for fn in filename_list if TYPES[get_ext(fn)] in SUPPORTED_IMAGE_TYPES])
+    len_list = len(sorted_filename_list)
     if args.nattachments > 0 and len_list > 0:
         step = len_list//args.nattachments
         if step == 0:
@@ -112,7 +113,9 @@ def create_attachments(args, filename_list, dataset_dict, proposalId, scan_meta_
         for i in range(0, len_list, step):
             full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
             img_array, _ = load_numpy_from_image(full_path)
-            if img_array is not None:
+            if img_array is None:
+                failed[full_path] = "Failed to add attachment due to file format, or shape, or ..."
+            else:
                 image_uri = get_uri_from_numpy(img_array, target_size=(args.thumbnailsize, args.thumbnailsize))
                 ab = AttachmentBuilder().\
                     args(args).\
@@ -120,7 +123,7 @@ def create_attachments(args, filename_list, dataset_dict, proposalId, scan_meta_
                     caption(sorted_filename_list[i]).\
                     proposal_id(proposalId)
                 result += [ab.build()]
-    return result
+    return result, failed
 
 
 def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts):
@@ -148,7 +151,7 @@ def api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts):
     return failed
 
 
-def ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict, scan_meta_data):
+def ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict):
     pos = subdir.rfind(RAW_BIN) + len(RAW_BIN)
     if pos == len(RAW_BIN)-1:
         pos = dataset_processed_directory.rfind(RAW_BIN) + len(RAW_BIN)
@@ -158,18 +161,19 @@ def ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, p
             binning = NA
     else:
         binning = int(subdir[pos:pos+1])
-    dataset_dict, filename_list = create_derived(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning, scan_meta_data)
+    dataset_dict, filename_list = create_derived(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning)
     datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
-    attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API], scan_meta_data)
-    return api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts)
+    attachment_dicts, failed_attachments = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
+    failed = api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts)
+    failed.update(failed_attachments)
+    return failed
 
 
 def get_meta_dict(experiment_directory, experiment):
     meta_path = "{}/{}".format(experiment_directory, JSON_META_EXP.format(experiment))
     if not path_exists(meta_path):
         meta_path = "{}/{}".format(experiment_directory, TEXT_META_EXP.format(experiment))
-        if not path_exists(meta_path):
-            return {}
+        assert path_exists(meta_path), "Could not find proposal file in path {}".format(experiment_directory)            
     with open(meta_path) as json_file:
         meta_text = json_file.read()
     pos_start = meta_text.find('{')
@@ -208,7 +212,8 @@ def ingest_experiment(args):
                 # Add raw dataset
                 dataset_dict, filename_list = create_raw(args, dataset, dataset_raw_directory, creation_time, raw_scientific_metadata, proposal_dict)
                 datablock_dict = create_origdatablock(args, filename_list, dataset_dict)
-                attachment_dicts = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API], raw_scientific_metadata)
+                attachment_dicts, failed_attachments = create_attachments(args, filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
+                failed.update(failed_attachments)
                 failed.update(api_dataset_ingest(args, dataset_dict, datablock_dict, attachment_dicts))
 
                 input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
@@ -221,14 +226,14 @@ def ingest_experiment(args):
                             if postprocessing == RECO_PHASE:                            # 12345678/processed/01_dataset/reco/tie...
                                 dataset_tie_directory = "{}/{}".format(dataset_processed_directory, subdir)
                                 for bindir in list_dirs(dataset_tie_directory):         # 12345678/processed/01_dataset/reco/tie.../rawBin...
-                                    failed.update(ingest_derived_dataset(args, dataset, dataset_tie_directory, bindir, postprocessing, input_datasets, proposal_dict, raw_scientific_metadata))
+                                    failed.update(ingest_derived_dataset(args, dataset, dataset_tie_directory, bindir, postprocessing, input_datasets, proposal_dict))
                             elif RAW_BIN in subdir:                                     # 12345678/processed/01_dataset/reco/rawBin...
                                 if postprocessing == PHASE_MAP:
                                     dataset_rawbin_directory = "{}/{}".format(dataset_processed_directory, subdir)
                                     for tiedir in list_dirs(dataset_rawbin_directory):  # 12345678/processed/01_dataset/reco/rawBin.../tie...
-                                        failed.update(ingest_derived_dataset(args, dataset, dataset_rawbin_directory, tiedir, postprocessing, input_datasets, proposal_dict, raw_scientific_metadata))
+                                        failed.update(ingest_derived_dataset(args, dataset, dataset_rawbin_directory, tiedir, postprocessing, input_datasets, proposal_dict))
                                 else:
-                                    failed.update(ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict, raw_scientific_metadata))
+                                    failed.update(ingest_derived_dataset(args, dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict))
 
 
     if failed:    

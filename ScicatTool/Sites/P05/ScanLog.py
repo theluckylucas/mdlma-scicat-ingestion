@@ -39,7 +39,8 @@ def str2number(string):
     return result
 
 
-def parse_section(log_dict, section_name, lines):
+def parse_section(section_name, lines):
+    result = {}
     if section_name.lower() in SECTIONS_KEYS:
         for line in lines:
             trimed = trim_line(line)  # remove non-readable characters
@@ -47,8 +48,8 @@ def parse_section(log_dict, section_name, lines):
             if len(splits) == 2:
                 splits = [s.strip() for s in splits]  # remove surrounding whitespaces
                 key = SCIENTIFIC_METADATA_KEY_FORMAT.format(section_name, splits[0])
-                log_dict[key] = str2number(splits[1])
-    return log_dict
+                result[key] = str2number(splits[1])
+    return result
 
 
 def logfile_to_dict(filename):
@@ -68,9 +69,16 @@ def logfile_to_dict(filename):
                 continue
             elif lines[i].startswith(START_SECTION, 0, len(START_SECTION)):
                 sec_end = i
-                sec_dict = parse_section(log_dict, section_name, lines[sec_begin:sec_end])
-                log_dict = {**log_dict, **sec_dict}
+                sec_dict = parse_section(section_name, lines[sec_begin:sec_end])
+                log_dict.update(sec_dict)
                 section_name = get_section_name(lines[i])
                 sec_begin = i + 1
-        log_dict = parse_section(log_dict, section_name, lines[sec_begin:i])  # last section not yet finished
+        if sec_start:   # last section not yet finished
+            sec_dict = parse_section(section_name, lines[sec_begin:i])
+            log_dict.update(sec_dict)
+        else:
+            # no proper sections detected, try to add key value pairs
+            for section_name in SECTIONS.keys():
+                sec_dict = parse_section(section_name, lines)
+                log_dict.update(sec_dict)
     return log_dict
