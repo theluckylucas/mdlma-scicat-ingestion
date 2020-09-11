@@ -75,7 +75,7 @@ class AttachmentBuilder():
         return self.attachment
 
 
-class DatasetBuilder(ABC):
+class AbstractDatasetBuilder(ABC):
     class ValidationError(Exception):
         MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
                   "Please check scicatproject.github.io/api-documentation/ for valid keys."
@@ -211,7 +211,7 @@ class DatasetBuilder(ABC):
         return self.dataset
     
     
-class DerivedDatasetBuilder(DatasetBuilder):
+class DerivedDatasetBuilder(AbstractDatasetBuilder):
     def __init__(self):
         super().__init__()
         self.dataset[TYPE] = TYPE_DERIVED
@@ -232,7 +232,7 @@ class DerivedDatasetBuilder(DatasetBuilder):
         return super()._invalid(PROPERTIES, REQUIRED_PROPERTIES_DATASET_BASE + REQUIRED_PROPERTIES_DATASET_DERIVED)
     
     
-class RawDatasetBuilder(DatasetBuilder):
+class RawDatasetBuilder(AbstractDatasetBuilder):
     def __init__(self):
         super().__init__()
         self.dataset[TYPE] = TYPE_RAW
