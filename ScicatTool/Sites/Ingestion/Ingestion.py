@@ -30,7 +30,7 @@ class AbstractIngestor(ABC):
         self.config = config
 
     def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict):
-        dataset_name = "{}/{}/{}-raw".format(self.config[CONFIG_PREFIX], self.args.experiment, dataset)
+        dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, RAW)
 
         images_in_folder = sorted(list_files(directory, self.args.extensions))
 
@@ -58,7 +58,7 @@ class AbstractIngestor(ABC):
         images_in_folder = list_files(source_folder, self.args.extensions)
         total_size = folder_total_size(source_folder)
         investigator = get_ownername(source_folder)
-        dataset_name = "{}/{}/{}-{}-{}".format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, postprocessing, subdir)
+        dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, postprocessing + '-' + subdir)
         creation_time = NA
         scientific_metadata = {BINNING: binning}
 
@@ -113,7 +113,9 @@ class AbstractIngestor(ABC):
     def _create_attachments(self, filename_list, dataset_dict, proposalId):
         result = []
         failed = {}
-        sorted_filename_list = sorted([fn for fn in filename_list if TYPES[get_ext(fn)] in SUPPORTED_IMAGE_TYPES])
+        images_filename_list = [fn for fn in filename_list if TYPES[get_ext(fn)] in SUPPORTED_IMAGE_TYPES]
+        select_filename_list = [fn for fn in images_filename_list if not any([pattern in fn for pattern in self.config[CONFIG_FILENAME_IGNORE]])]
+        sorted_filename_list = sorted(select_filename_list)
         len_list = len(sorted_filename_list)
         if self.args.nattachments > 0 and len_list > 0:
             step = len_list//self.args.nattachments
@@ -200,7 +202,7 @@ class AbstractIngestor(ABC):
         # First, add proposal to be referred afterwards by the raw datasets
         proposal_metadata = self._get_meta_dict(experiment_directory, self.args.experiment)
         proposal_dict = self._create_proposal(proposal_metadata)
-        resp = API.proposal_ingest(proposal_dict, self.args.simulation, self.args.verbose)
+        resp = API.proposal_ingest(self.args.token, proposal_dict, self.args.simulation, self.args.verbose)
         if resp.status_code != 200:
             failed[proposal_dict[PROPOSAL_ID_API]] = resp.text
 
@@ -248,7 +250,7 @@ class AbstractIngestor(ABC):
 
 
         if failed:    
-            print('---!--- API FAILURES ---!---')
+            print("\n---!--- FAILURES ---!---")
             for key in sorted(failed.keys()):
                 print(key)
                 print(failed[key])

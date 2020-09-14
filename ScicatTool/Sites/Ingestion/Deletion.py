@@ -18,7 +18,7 @@ def delete_experiment(args):
                 if resp.status_code != 200:
                     failed[dataset[PROPOSAL_ID]] = resp.text
     if failed:
-        print('---!--- API FAILURES ---!---')
+        print("\n---!--- FAILURES ---!---")
         for key, value in failed.items():
             print(key)
             print(value)

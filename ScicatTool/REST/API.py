@@ -26,7 +26,7 @@ def ingest(token, data_model, data_dict, simulate, verbose):
     assert data_model in DATA_MODELS
     url = get_url(token, data_model)
     data = json.dumps(data_dict)
-    if verbose:
+    if verbose > 0:
         print(url)
         pprint(data)
     if not simulate:

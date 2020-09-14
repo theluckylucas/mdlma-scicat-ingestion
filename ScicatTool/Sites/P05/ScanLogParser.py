@@ -1,4 +1,4 @@
-from ..Ingestion.LogParser import LogParser
+from ..Ingestion.ScanLogParser import LogParser
 
 
 class P05LogParser(LogParser):

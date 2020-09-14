@@ -5,7 +5,7 @@ Run python IngestP05.py -h for details about how to call.
 
 
 from ScicatTool.Sites.P05.Ingestion import P05Ingestor
-from ScicatTool.Utils.ArgumentsP05 import P05ExperimentIngestionParser
+from ScicatTool.Utils.ArgumentsBeamline import P05ExperimentIngestionParser
 import datetime
 
 
