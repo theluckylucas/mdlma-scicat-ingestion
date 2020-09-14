@@ -1,4 +1,4 @@
-from ..Ingestion.ScanLogParser import LogParser
+from ..Beamline.ScanLogParser import LogParser
 
 
 class P05LogParser(LogParser):

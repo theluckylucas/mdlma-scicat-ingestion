@@ -4,8 +4,8 @@ Run python DeleteP05.py -h for details about how to call.
 """
 
 
-from ScicatTool.Sites.P05.Deletion import delete_experiment
-from ScicatTool.Utils.ArgumentsP05 import P05ExperimentDeletionParser
+from ScicatTool.Sites.P05.Deletion import P05Deleter
+from ScicatTool.Utils.ArgumentsBeamline import P05ExperimentDeletionParser
 import datetime
 
 
@@ -13,5 +13,5 @@ if __name__ == '__main__':
     print('START', datetime.datetime.now())
     parser = P05ExperimentDeletionParser()
     args = parser.parse_args()
-    delete_experiment(args)
+    P05Deleter(args).delete_experiment()
     print('END', datetime.datetime.now())
