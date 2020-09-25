@@ -6,7 +6,7 @@ from ...Datablocks.APIKeys import DATA_FILE_LIST
 from ...Datasets.APIKeys import PID, SOURCE_FOLDER, SIZE, ATTACHMENT_CAPTION
 from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
 from ...Datasets.Consts import PID_PREFIX
-from ...Datasets.Dataset import AttachmentBuilder
+from ...Datasets.Dataset import AttachmentBuilder, ScientificMetadataBuilder
 from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size, get_ext
 from ...Filesystem.ImInfo import get_dict_from_numpy, get_uri_from_numpy, load_numpy_from_image, TYPES, SUPPORTED_IMAGE_TYPES
 from ...REST.Consts import NA
@@ -60,14 +60,16 @@ class AbstractIngestor(ABC):
         investigator = get_ownername(source_folder)
         dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, postprocessing + '-' + subdir)
         creation_time = NA
-        scientific_metadata = {BINNING: binning}
+        smb = ScientificMetadataBuilder().add(BINNING, binning)
 
         if images_in_folder:
             first_image_in_folder = "{}/{}".format(source_folder, images_in_folder[0])
             creation_time = get_creation_date(source_folder)
             img_array, img_format = load_numpy_from_image(first_image_in_folder)
             if img_array is not None:
-                scientific_metadata.update(get_dict_from_numpy(img_array, img_format))
+                img_metadata = get_dict_from_numpy(img_array, img_format)
+                for key, value in img_metadata.items():
+                    smb.add(key, value)
 
         dsb = self.derived_dataset_builder().\
             args(self.args).\
@@ -82,7 +84,7 @@ class AbstractIngestor(ABC):
             investigator(investigator).\
             dataset_name(dataset_name).\
             number_of_files(len(images_in_folder)).\
-            scientific_metadata(scientific_metadata)
+            scientific_metadata(smb.build())
 
         return (dsb.build(), images_in_folder)
 
@@ -217,13 +219,16 @@ class AbstractIngestor(ABC):
             for log_filename in log_filenames:
                 if log_filename.endswith(self.config[CONFIG_LOG_SUFFIX]):
                     path_log_filename = "{}/{}".format(dataset_raw_directory, log_filename)
-                    raw_scientific_metadata = self.log_parser(path_log_filename).get_dict()
+                    log_metadata = self.log_parser(path_log_filename).get_dict()
+                    smb = ScientificMetadataBuilder()
+                    for key, value in log_metadata.items():
+                        smb.add(key, value)
                     creation_time = get_creation_date(path_log_filename)
 
                     print("---*---", dataset, "---*---")
 
                     # Add raw dataset
-                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, raw_scientific_metadata, proposal_dict)
+                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict)
                     datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                     attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
                     failed.update(failed_attachments)

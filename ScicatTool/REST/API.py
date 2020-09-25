@@ -58,7 +58,7 @@ def dataset_attach(token, data_dict, model_id, simulate=False, verbose=False):
         pprint(data)
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
-        print(DATASETS, "JSON ATTACH:", resp)
+        print(DATASETS.upper(), "JSON ATTACH:", resp)
         return resp
     return requests.Response()
 

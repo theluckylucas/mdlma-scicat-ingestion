@@ -5,6 +5,37 @@ from .APIKeys import *
 from .Consts import *
 
 
+
+class ScientificMetadataBuilder():    
+    def __init__(self):
+        super().__init__()
+        self.metadata = {}
+
+    def add(self, key : str, value):
+        value_type = "number"
+        try:
+            int(value)
+        except:
+            try:
+                float(string)
+            except:
+                try:
+                    complex(string)
+                except:
+                    value_type = "string"
+                    value = str(value)
+        add_dict = {
+            "value": value,
+            "type": value_type,
+            "unit": ""
+        }
+        self.metadata[key] = add_dict
+        return self
+
+    def build(self):
+        return self.metadata
+
+
 class AttachmentBuilder():
     class ValidationError(Exception):
         MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
