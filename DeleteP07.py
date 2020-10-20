@@ -1,5 +1,5 @@
 """
-This is the main file to call for deletion of P05 experiments.
+This is the main file to call for deletion of P07 experiments.
 Run python DeleteP07.py -h for details about how to call.
 """
 

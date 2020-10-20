@@ -1,5 +1,5 @@
 """
-This is a script for deleting all attachments
+This is a script for deleting all instances of a model
 """
 
 import requests
