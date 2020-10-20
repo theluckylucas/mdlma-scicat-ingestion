@@ -32,7 +32,10 @@ class AbstractIngestor(ABC):
     def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict):
         dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, RAW)
 
-        images_in_folder = sorted(list_files(directory, self.args.extensions))
+        images_in_folder = list_files(directory, self.args.extensions)
+        for subdir in list_dirs(directory):
+            images_in_folder += ["{}/{}".format(subdir, f) for f in list_files("{}/{}".format(directory, subdir), self.args.extensions)]
+        images_in_folder = sorted(images_in_folder)
 
         total_size = folder_total_size(directory)
 

@@ -120,12 +120,14 @@ class AbstractDatasetBuilder(ABC):
     def __init__(self):
         super().__init__()
         self.dataset = {PID: "D{:09.0f}".format(time.time() * PID_FACTOR),
-                        TYPE: TYPE_BASE}
+                        TYPE: TYPE_BASE,
+                        KEYWORDS: []}
     
     def args(self, args):
         return self.owner_group(args.ownergroup).\
             access_groups(args.accessgroups).\
-            contact_email(args.contactemail)
+            contact_email(args.contactemail).\
+            keywords(args.keywords)
 
     def access_groups(self, access_groups : list):
         self.dataset[ACCESS_GROUPS] = access_groups
@@ -184,7 +186,7 @@ class AbstractDatasetBuilder(ABC):
         return self
 
     def keywords(self, keywords):
-        self.dataset[KEYWORDS] = keywords
+        self.dataset[KEYWORDS] += keywords
         return self
 
     def description(self, description : str):

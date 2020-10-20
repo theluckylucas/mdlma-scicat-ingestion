@@ -8,10 +8,14 @@ import cv2
 
 TYPE_TIFF = "tiff"
 TYPE_IMG = "img"
+TYPE_HDF = "hdf"
 TYPES = {
     "tif": TYPE_TIFF,
     "tiff": TYPE_TIFF,
-    "img": TYPE_IMG
+    "img": TYPE_IMG,
+    "h5": TYPE_HDF,
+    "h4": TYPE_HDF,
+    "hdf": TYPE_HDF,
 }
 SUPPORTED_IMAGE_TYPES = [TYPE_TIFF]
 URI_PNG_PREFIX = "data:image/png;base64,"

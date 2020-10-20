@@ -19,3 +19,4 @@ class ScicatIngestDatasetParser(ScicatParser):
         self.add_argument("-n", "--nattachments", type=int, default=1, help="Number of image attachments to a dataset (default: 1)")
         self.add_argument("-t", "--thumbnailsize", type=int, default=150, help="Thumbnail size (default: 150px)")
         self.add_argument("-b", "--blankdatablock", action='store_true', help="Also adds datasets without datafiles")
+        self.add_argument("-k", "--keywords", type=str, nargs='+', default=[], help="Additional keywords to be added for this experiments")
