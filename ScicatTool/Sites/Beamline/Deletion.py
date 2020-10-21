@@ -2,7 +2,7 @@ from abc import ABC
 
 from ...REST import API
 from .Keys import *
-from ...Datasets.APIKeys import SOURCE_FOLDER, DATASET_NAME, PID, PROPOSAL_ID
+from ...Datasets.APIKeys import SOURCE_FOLDER, DATASET_NAME, PID, PROPOSAL_ID, ATTACHMENT_ID
 from ...Datablocks.APIKeys import ID as ODB_ID
 
 
@@ -21,17 +21,17 @@ class AbstractDeleter(ABC):
 
                 if self.args.datablocks:
                     datablocks = API.get_dataset_origdatablocks(self.args.token, dataset[PID], self.args.simulation, self.args.verbose)
-                    for db in datablocks:
-                        resp = API.origdatablock_delete(self.args.token, db[ODB_ID], self.args.simulation, self.args.verbose)
+                    for datablock in datablocks:
+                        resp = API.origdatablock_delete(self.args.token, datablock[ODB_ID], self.args.simulation, self.args.verbose)
                         if resp.status_code != 200:
-                            failed[db[ODB_ID]] = resp.text
+                            failed[datablock[ODB_ID]] = resp.text
 
                 if self.args.attachments:
                     attachments = API.get_dataset_attachments(self.args.token, dataset[PID], self.args.simulation, self.args.verbose)
-                    for db in attachments:
-                        resp = API.attachment_delete(self.args.token, db[ODB_ID], self.args.simulation, self.args.verbose)
+                    for attachment in attachments:
+                        resp = API.attachment_delete(self.args.token, attachment[ATTACHMENT_ID], self.args.simulation, self.args.verbose)
                         if resp.status_code != 200:
-                            failed[db[ODB_ID]] = resp.text
+                            failed[attachment[ATTACHMENT_ID]] = resp.text
 
                 resp = API.dataset_delete(self.args.token, dataset[PID], dataset[DATASET_NAME], self.args.simulation, self.args.verbose)
 
