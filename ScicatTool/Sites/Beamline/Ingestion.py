@@ -228,7 +228,7 @@ class AbstractIngestor(ABC):
                         smb.add(key, value)
                     creation_time = get_creation_date(path_log_filename)
 
-                    print("---*---", dataset, "---*---")
+                    print("=>", dataset)
 
                     # Add raw dataset
                     dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict)
@@ -238,28 +238,27 @@ class AbstractIngestor(ABC):
                     failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
 
                     input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
-
+                    
                     # Add derived/processed datasets
                     for postprocessing in POSTPROCESSING:  # reco, sino, flat_corrected, phase_map, ...
                         dataset_processed_directory = "{}/{}/{}/{}".format(experiment_directory, PROCESSED, dataset, postprocessing)
                         if path_exists(dataset_processed_directory):                        # 12345678/processed/01_dataset/reco/
                             for subdir in list_dirs(dataset_processed_directory):
-                                if postprocessing == RECO_PHASE:                            # 12345678/processed/01_dataset/reco/tie...
+                                if postprocessing == RECO_PHASE:                            # 12345678/processed/01_dataset/reco_phase/tie...
                                     dataset_tie_directory = "{}/{}".format(dataset_processed_directory, subdir)
-                                    for bindir in list_dirs(dataset_tie_directory):         # 12345678/processed/01_dataset/reco/tie.../rawBin...
+                                    for bindir in list_dirs(dataset_tie_directory):         # 12345678/processed/01_dataset/reco_phase/tie.../rawBin...
                                         failed.update(self._ingest_derived_dataset(dataset, dataset_tie_directory, bindir, postprocessing, input_datasets, proposal_dict))
                                 elif RAW_BIN in subdir:                                     # 12345678/processed/01_dataset/reco/rawBin...
                                     if postprocessing == PHASE_MAP:
                                         dataset_rawbin_directory = "{}/{}".format(dataset_processed_directory, subdir)
-                                        for tiedir in list_dirs(dataset_rawbin_directory):  # 12345678/processed/01_dataset/reco/rawBin.../tie...
+                                        for tiedir in list_dirs(dataset_rawbin_directory):  # 12345678/processed/01_dataset/phase_map/rawBin.../tie...
                                             failed.update(self._ingest_derived_dataset(dataset, dataset_rawbin_directory, tiedir, postprocessing, input_datasets, proposal_dict))
-                                    else:
+                                    else:                                                   # 12345678/processed/01_dataset/reco/rawBin...
                                         failed.update(self._ingest_derived_dataset(dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, proposal_dict))
 
 
         if failed:    
             print("\n---!--- FAILURES ---!---")
             for key in sorted(failed.keys()):
-                print(key)
-                print(failed[key])
+                print("\n=>", key, "\n", failed[key], "\n")
         

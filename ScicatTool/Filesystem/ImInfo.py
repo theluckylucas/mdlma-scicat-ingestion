@@ -45,7 +45,9 @@ def get_uri_from_numpy(img_array, target_size=(150, 150)):
     max_val = numpy.max(img)
     min_val = numpy.min(img)
     img -= min_val
-    img /= max_val - min_val
+    diff = max_val - min_val
+    if diff != 0:
+        img /= diff
     io.imsave(TMP_PATH, img)
     b64 = base64.b64encode(open(TMP_PATH, "rb").read())
     return URI_PNG_PREFIX + str(b64)[2:-1]

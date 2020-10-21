@@ -18,7 +18,9 @@ class BeamlineExperimentDeletionParser(ScicatParser):
         super().__init__()
         self.add_argument("experiment", type=int, help="an integer for the beamline experiment ID")
         self.add_argument("year", type=int, help="an integer for the year when the experiment was conducted")
-        self.add_argument("-d", "--deleteproposals", action="store_true", help="Also delete referred proposal")
+        self.add_argument("-p", "--proposals", action="store_true", help="Also delete referred proposal")
+        self.add_argument("-a", "--attachments", action="store_true", help="Also delete referred attachments")
+        self.add_argument("-d", "--datablocks", action="store_true", help="Also delete referred datablocks")
 
 
 class P05ExperimentIngestionParser(BeamlineExperimentIngestionParser):

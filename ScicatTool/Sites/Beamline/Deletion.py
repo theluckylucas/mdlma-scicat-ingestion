@@ -3,6 +3,7 @@ from abc import ABC
 from ...REST import API
 from .Keys import *
 from ...Datasets.APIKeys import SOURCE_FOLDER, DATASET_NAME, PID, PROPOSAL_ID
+from ...Datablocks.APIKeys import ID as ODB_ID
 
 
 class AbstractDeleter(ABC):
@@ -17,10 +18,26 @@ class AbstractDeleter(ABC):
         for dataset in datasets:
             if self.config[CONFIG_SOURCE_PATH].format(self.args.year, self.args.experiment) + '/' in dataset[SOURCE_FOLDER]:
                 print("---*---", dataset[DATASET_NAME], "---*---")
+
+                if self.args.datablocks:
+                    datablocks = API.get_dataset_origdatablocks(self.args.token, dataset[PID], self.args.simulation, self.args.verbose)
+                    for db in datablocks:
+                        resp = API.origdatablock_delete(self.args.token, db[ODB_ID], self.args.simulation, self.args.verbose)
+                        if resp.status_code != 200:
+                            failed[db[ODB_ID]] = resp.text
+
+                if self.args.attachments:
+                    attachments = API.get_dataset_attachments(self.args.token, dataset[PID], self.args.simulation, self.args.verbose)
+                    for db in attachments:
+                        resp = API.attachment_delete(self.args.token, db[ODB_ID], self.args.simulation, self.args.verbose)
+                        if resp.status_code != 200:
+                            failed[db[ODB_ID]] = resp.text
+
                 resp = API.dataset_delete(self.args.token, dataset[PID], dataset[DATASET_NAME], self.args.simulation, self.args.verbose)
+
                 if resp.status_code != 200:
                     failed[dataset[SOURCE_FOLDER]] = resp.text
-                elif self.args.deleteproposals and PROPOSAL_ID in dataset.keys():
+                elif self.args.proposals and PROPOSAL_ID in dataset.keys():
                     resp = API.proposal_delete(self.args.token, dataset[PROPOSAL_ID], self.args.simulation, self.args.verbose)
                     if resp.status_code != 200:
                         failed[dataset[PROPOSAL_ID]] = resp.text
