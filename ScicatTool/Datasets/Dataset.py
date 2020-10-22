@@ -5,7 +5,6 @@ from .APIKeys import *
 from .Consts import *
 
 
-
 class ScientificMetadataBuilder():    
     def __init__(self):
         super().__init__()
@@ -213,11 +212,11 @@ class AbstractDatasetBuilder(ABC):
         self.dataset[IS_PUBLISHED] = is_published
         return self
 
-    def techniques(self, techniques):
+    def techniques(self, techniques : list):
         self.dataset[TECHNIQUES] = techniques
         return self
     
-    def scientific_metadata(self, scientific_metadata):
+    def scientific_metadata(self, scientific_metadata : dict):
         self.dataset[SCIENTIFIC_METADATA] = scientific_metadata
         return self
 
@@ -284,6 +283,10 @@ class RawDatasetBuilder(AbstractDatasetBuilder):
     
     def data_format(self, data_format):
         self.dataset[DATA_FORMAT] = data_format
+        return self
+
+    def sample_id(self, sample_id : str):
+        self.dataset[SAMPLE_ID] = sample_id
         return self
     
     def _invalid(self):

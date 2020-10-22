@@ -6,8 +6,8 @@ import requests
 import json
 
 
-model = "attachments"
-token = "dStUEq2Or7SQ1YXbPaEut2O4JTujroSxs1bYid7N5rOvWsL3nD55hbcfESCHN8Fh"
+model = "samples"
+token = "Qu2X3G0FkUGB5mAg1KEGbqtgR7xueZKGjEuFdcsOkULRaGXsuXWVBtUQYzwYBLR3"
 
 
 HEADERS = {
@@ -15,7 +15,7 @@ HEADERS = {
     'Accept':       'application/json'
 }
 URL = "https://scicat-mdlma.desy.de/api/v3/{}/{}?access_token={}"
-ID = "id"
+ID = "sampleId"
 
 
 if __name__ == '__main__':

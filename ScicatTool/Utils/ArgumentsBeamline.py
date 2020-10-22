@@ -11,6 +11,7 @@ class BeamlineExperimentIngestionParser(ScicatIngestDatasetParser):
         self.add_argument("experiment", type=int, help="an integer for the beamline experiment ID")
         self.add_argument("year", type=int, help="an integer for the year when the experiment was conducted")
         self.add_argument("-e", "--extensions", type=str, nargs="+", default=FILE_EXTS, help="Accepted file extensions of data files (default: {})".format(FILE_EXTS))
+        self.add_argument("-r", "--rawonly", action="store_true", help="Add only raw datasets")
 
 
 class BeamlineExperimentDeletionParser(ScicatParser):

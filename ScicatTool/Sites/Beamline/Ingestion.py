@@ -18,6 +18,7 @@ from pprint import pprint
 from abc import ABC
 import datetime
 import json
+import re
 
 
 class AbstractIngestor(ABC):
@@ -52,6 +53,12 @@ class AbstractIngestor(ABC):
             creation_time(creation_time).\
             scientific_metadata(scientific_metadata).\
             number_of_files(len(images_in_folder))
+
+        sample_id_pattern_match = re.findall("_\d+[a-zA-Z]+_", dataset)
+        if len(sample_id_pattern_match) == 1:
+            sample_id = sample_id_pattern_match[0][1:-1]
+            if len(sample_id) < 6:
+                dsb.sample_id(sample_id)
 
         return dsb.build(), images_in_folder
 
@@ -148,12 +155,12 @@ class AbstractIngestor(ABC):
         if not datablock_dict[DATA_FILE_LIST] and not self.args.blankdatablock:
             failed[dataset_dict[SOURCE_FOLDER]] = "No files found, thus dataset not added to Scicat!"
         else:
-            # Add raw dataset
+            # Add dataset
             resp = API.dataset_ingest(self.args.token, dataset_dict, self.args.simulation, self.args.verbose)
             if resp.status_code != 200:
                 failed[dataset_dict[SOURCE_FOLDER]] = resp.text
             
-            # Add raw dataset files
+            # Add dataset files in a OrigDatablock
             resp = API.origdatablock_ingest(self.args.token, datablock_dict, self.args.simulation, self.args.verbose)
             if resp.status_code != 200:
                 failed[dataset_dict[SOURCE_FOLDER] + "-OrigDataBlock"] = resp.text
@@ -213,9 +220,7 @@ class AbstractIngestor(ABC):
 
         raw_directory = "{}/{}".format(experiment_directory, RAW)
         for dataset in sorted(list_dirs(raw_directory)):
-            # Include experiment metadata, and get scan parameters from log file
-            # basic_metadata = {'experiment': self.args.experiment}
-
+            
             dataset_raw_directory = "{}/{}".format(raw_directory, dataset)
             log_filenames = list_files(dataset_raw_directory, '.log')
             
@@ -239,6 +244,9 @@ class AbstractIngestor(ABC):
 
                     input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]  # raw dataset as input for derived datasets
                     
+                    if self.args.rawonly:
+                        continue
+
                     # Add derived/processed datasets
                     for postprocessing in POSTPROCESSING:  # reco, sino, flat_corrected, phase_map, ...
                         dataset_processed_directory = "{}/{}/{}/{}".format(experiment_directory, PROCESSED, dataset, postprocessing)

@@ -25,6 +25,7 @@ CREATED_BY = "createdBy"
 UPDATED_BY = "updatedBy"
 CREATED_AT = "createdAt"
 UPDATED_AT = "updatedAt"
+SAMPLE_ID = "sampleId"
 TECHNIQUES = "techniques"
 
 INVESTIGATOR = "investigator"
@@ -62,6 +63,7 @@ PROPERTIES = {
     LICENSE: "Name of license under which data can be used",
     VERSION: "Version of API used in creation of dataset",
     IS_PUBLISHED: "Flag is true when data are made publically available",
+    SAMPLE_ID: "string",
     CREATED_BY: "Functional or user account name who created this instance",
     UPDATED_BY: "Functional or user account name who last updated this instance",
     CREATED_AT: "string($date-time)",
@@ -113,3 +115,7 @@ PROPERTIES_ATTACHMENT = {
 }
 
 REQUIRED_PROPERTIES_ATTACHMENT = [ATTACHMENT_THUMBNAIL, OWNER_GROUP]
+
+
+TECHNIQUES_PID = "pid"
+TECHNIQUES_NAME = "name"

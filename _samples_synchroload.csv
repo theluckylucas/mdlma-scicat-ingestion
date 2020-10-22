@@ -1,0 +1,116 @@
+SAMPLE ID;Location as of 20190705;Original ID at surgery;Date of operation;Date of Sacrifice;Weeks of healing;Healing time;Implant Material;Implant ID ;Notes on implantation;Explant evalutation;Cut ;Sample preservation;Tomo Dataset;Histo ID;SAMPE ID number
+39L;histo section in Malmö;19;20.10.2016;10.01.2017;12;12w;Peek;-;;sx, maybe monocortical or lateral engagement;cylindrical 5 mm;CPD;syn16;17001;39
+80R;histo section in Malmö;20;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 255;;dx, bicortical;cylindrical 5 mm;CPD;syn33;17002;80
+89L;histo section in Malmö;29;21.02.2017;21.03.2017;4;4w;Mg-5Gd ;Mg-5Gd 238 ;;sx, bicortical, lower cortical damaged;cylindrical 5 mm;CPD;syn48;17003;89
+101L;histo section in Malmö;41;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 240;the vet forgot to tag the ear so the 2 rats in the same cage were mixed - check the screw, if it looks Mg-5Gd 237 or Mg-5Gd 240;sx, bicortical;cylindrical 5 mm;CPD;syn45;17004;101
+74R;histo section in Malmö;14;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 261;;dx, bicortical, lower cortical damaged;cylindrical 5 mm;CPD;syn19;17005;74
+78L;histo section in Malmö;18;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 306;;sx, bicortical;cylindrical 5 mm;CPD;syn29;17006;78
+69R;histo section in Malmö;9;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 279;;dx, bicortical;;CPD;syn26;17007;69
+62R;histo section in Malmö;2;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 265;;dx, bicortical;;CPD;syn20;17008;62
+66L;histo section in Malmö;6;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 270;;sx, bicortical;;CPD;syn44;17009;66
+21R;histo section in Malmö;1;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, bicortical and very small piece from sacrifice;cylindrical 5 mm;CPD;syn17;17010;21
+52L;histo section in Malmö;12;03.11.2016;23.01.2017;12;12w;Peek;-;;sx, bicortical;cylindrical 5 mm;CPD;syn02;17011;52
+75L;histo section in Malmö;15;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 269;;sx, bicortical, lower cortical damaged;cylindrical 5 mm;ethanol 100%;syn39;17012;75
+63L;histo section in Malmö;3;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd ?;forgot to note the screw number;sx, bicortical;;;syn41;17013;63
+38L;histo section in Malmö;18;20.10.2016;12.12.2016;8;8w;Peek;-;;sx, maybe monocortical and damaged at the time of sacrifice;cylindrical 5 mm;CPD;syn42;17014;38
+88L;histo section in Malmö;28;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 249;;sx, bicortical;cylindrical 5 mm;CPD;syn18;17015;88
+87L;histo section in Malmö;27;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 286;;sx, bicortical;cylindrical 5 mm;CPD;syn30;17016;87
+53L;histo section in Malmö;13;03.11.2016;23.01.2017;12;12w;Mg-10Gd;Mg-10Gd 87;;sx, probably bicortical, screw head cover by bone;cylindrical 5 mm;CPD;syn101;17017;53
+10R;histo section in Malmö;10;20.09.2016;17.10.2016;4;4w;PEEK;;Peek with no stability;no, semi-bicortical/// upper cortical broken;cylindrical 5 mm;CPD;mah_37, mah_38;17018;10
+66R;histo section in Malmö;6;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 271;;dx, bicortical;;CPD;syn107;17019;66
+1R;histo section in Malmö;1;20.09.2016;17.10.2016;4;4w;Ti;;;screw almost in the knee;cylindrical 5 mm;CPD;mah_35, mah_36;17020;1
+4R;histo section in Malmö;4;20.09.2016;17.10.2016;4;4w;Ti;;;dx, semi-bicortical;cylindrical 5 mm;CPD;syn122;17021;4
+7L;histo section in Malmö;7;20.09.2016;17.10.2016;4;4w;Ti;;;dx monocortical;;CPD;syn121;17022;7
+69L;histo section in Malmö;9;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 259;;sx, bicortical;;CPD;syn40;17023;69
+22L;histo section in Malmö;2;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, probably bicortical;cylindrical 5 mm;CPD;syn111;17024;22
+28R;histo section in Malmö;8;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, probably bicortical;cylindrical 5 mm;CPD;syn23, syn134;17025;28
+34R;histo section in Malmö;14;20.10.2016;13.12.2016;8;8w;Ti;;;dx, laterally engage the cortical and wrong explantation - distal bone damage;cylindrical 5 mm;CPD;syn115;17026;34
+39R;histo section in Malmö;19;20.10.2016;10.01.2017;12;12w;Ti;;;dx, maybe monocortical or lateral engagement;cylindrical 5 mm;CPD;syn116;17027;39
+42L;histo section in Malmö;2;03.11.2016;23.01.2017;12;12w;Ti;-;;sx, laterally engage cortical;cylindrical 5 mm;CPD;syn113;17028;42
+48L;histo section in Malmö;8;03.11.2016;23.01.2017;12;12w;Peek;-;;sx, monocortical;cylindrical 5 mm;CPD;syn01;17029;48
+80L;histo section in Malmö;20;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 303;;sx, bicortical;cylindrical 5 mm;CPD;syn49;17030;80
+82R;histo section in Malmö;22;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 285;;dx, bicortical;cylindrical 5 mm;CPD;syn21;17031;82
+99R;histo section in Malmö;39;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 303;;dx, probably bicortical but not bad;cylindrical 5 mm;CPD;syn32;17032;99
+100L;histo section in Malmö;40;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 237;the vet forgot to tag the ear so the 2 rats in the same cage were mixed  - check the screw, if it looks Mg-5Gd 237 or Mg-5Gd 240;sx, probably bicortical, but not bad;cylindrical 5 mm;CPD;syn47;17033;100
+1L;half Malmö - half GTB;1;20.09.2016;17.10.2016;4;4w;PEEK;-;;screw in the knee;cylindrical 5 mm;CPD;syn120;;1
+3L;resin block in Malmö;3;20.09.2016;17.10.2016;4;4w;PEEK;-;Peek with no stability;maybe monocortical;;CPD;mah_39, mah_40;;3
+4L;resin block in Malmö;4;20.09.2016;17.10.2016;4;4w;PEEK;-;;sx, bicortical;cylindrical 5 mm;CPD;mah_20, mah_19 - 2 height steps;;4
+8L;resin block in Malmö;8;20.09.2016;17.10.2016;4;4w;PEEK;-;;sx, maybe monocortical;cylindrical 5 mm;CPD;mah_26, top and bottom, mah_21, mah_13, mah_14;;8
+9L;half Malmö - half GTB;9;20.09.2016;17.10.2016;4;4w;Ti;-;;sx bicortical;;CPD;syn119;;9
+9R;resin block in Malmö;9;20.09.2016;17.10.2016;4;4w;PEEK;;;no, semi-bicortical, very distal;cylindrical 5 mm;CPD;mah_41, mah_42;;9
+10L;half Malmö - half GTB;10;20.09.2016;17.10.2016;4;4w;Ti;-;;no, semi-bicortical/// upper cortical broken;;CPD;syn123;;10
+11L;resin block in Malmö;11;20.09.2016;17.10.2016;4;4w;Ti;-;;maybe, semi-bicortical;;CPD;;;11
+12R;resin block in Malmö;12;20.09.2016;12.12.2016;12;12w;PEEK;;;dx, bicortical;cylindrical 5 mm;CPD;syn03;;12
+12L;resin block in Malmö;12;20.09.2016;12.12.2016;12;12w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;12
+13R;resin block in Malmö;13;20.09.2016;17.10.2016;4;4w;PEEK;;;dx, bicortical, but totally out placed;cylindrical 5 mm;CPD;mah_10 x2, mah_09 syn023;;13
+14L;resin block in Malmö;14;20.09.2016;17.10.2016;4;4w;Ti;-;;sx, bicortical, very distal;;CPD;;;14
+15R;resin block in Malmö;15;20.09.2016;17.10.2016;4;4w;PEEK;;;dx, semi bicortical;cylindrical 5 mm;CPD;mah_28, mah_29, mah_30, mah_31 NO RECOS, mah_32 BAD;;15
+15L;resin block in Malmö;15;20.09.2016;17.10.2016;4;4w;Ti;-;;sx semi-bicortical;;CPD;;;15
+16L;resin block in Malmö;16;20.09.2016;17.10.2016;4;4w;Ti;-;;sx, bicortical;;CPD;;;16
+16R;resin block in Malmö;16;20.09.2016;17.10.2016;4;4w;PEEK;;;dx, maybe monocortical;cylindrical 5 mm;CPD;mah_27, top and bottom ADD TO THE FOLDERS LIST;;16
+19L;resin block in Malmö;19;20.09.2016;17.10.2016;4;4w;Ti;-;;sx, maybe monocortical;cylindrical 5 mm;CPD;;;19
+20R;resin block in Malmö;20;20.09.2016;17.10.2016;4;4w;PEEK;;;dx bicortical;cylindrical 5 mm;CPD;mah_11, top and bottom, syn027;;20
+25R;half Malmö - half GTB;5;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, bicortical, but totally out placed;cylindrical 5 mm;CPD;syn17, syn108;;25
+25L;resin block in Malmö;5;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;25
+26R;resin block in Malmö;6;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, probably engaged in the latera cortical ;cubic, around 5 mm;CPD;syn016;;26
+26L;resin block in Malmö;6;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, probably engaged in the lateral cortical;cubic, around 5 mm;CPD;;;26
+27R;half Malmö - half GTB;7;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, monocortical, but distally damaged during explantation;cylindrical 5 mm;CPD;syn135;;27
+27L;resin block in Malmö;7;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;27
+28L;resin block in Malmö;8;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, probably bicortical;cylindrical 5 mm;CPD;;;28
+29L;resin block in Malmö;9;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, maybe monocortical and small piece from sacrifice;cylindrical 5 mm;CPD;;;29
+29R;half Malmö - half GTB;9;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, totally bicortical, bad placement;cylindrical 5 mm;CPD;syn15;;29
+30R;resin block in Malmö;10;20.10.2016;12.12.2016;8;8w;PEEK;;;dx, bicortical;cylindrical 5 mm;CPD;syn04a,b;;30
+30L;resin block in Malmö;10;20.10.2016;12.12.2016;8;8w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;30
+31R;half Malmö - half GTB;11;20.10.2016;12.12.2016;8;8w;Ti;;;dx, maybe monocortical;cylindrical 5 mm;CPD;syn117;;31
+35L;resin block in Malmö;15;20.10.2016;14.12.2016;8;8w;Peek;-;;sx, probably bicortical;cylindrical 5 mm;CPD;syn018;;35
+37L;half Malmö - half GTB;17;20.10.2016;12.12.2016;8;8w;Peek;-;;sx, bicortical;cylindrical 5 mm;CPD;syn102;;37
+38R;resin block in Malmö;18;20.10.2016;12.12.2016;8;8w;Ti;;;dx, probably bicortical;cylindrical 5 mm;CPD;;;38
+41R;resin block in Malmö;1;03.11.2016;23.01.2017;12;12w;PEEK;;;dx, probably bicortical;cylindrical 5 mm;CPD;syn017;;41
+41L;resin block in Malmö;1;03.11.2016;23.01.2017;12;12w;Ti;-;;sx, probably bicortical;cylindrical 5 mm;CPD;;;41
+43R;resin block in Malmö;3;03.11.2016;23.01.2017;12;12w;PEEK;;;dx, probably bicortical;cylindrical 5 mm;CPD;syn16a and b, syn99;;43
+43L;resin block in Malmö;3;03.11.2016;23.01.2017;12;12w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;43
+45L;resin block in Malmö;5;03.11.2016;23.01.2017;12;12w;Ti;-;;sx, maybe monocortical;cylindrical 5 mm;CPD;syn118;;45
+45R;resin block in Malmö;5;03.11.2016;23.01.2017;12;12w;PEEK;;;dx, probably bicortical;;CPD;syn013;;45
+46R;resin block in Malmö;6;03.11.2016;23.01.2017;12;12w;PEEK;;;dx, bicortical;cylindrical 5 mm;CPD;syn02;;46
+46L;resin block in Malmö;6;03.11.2016;23.01.2017;12;12w;Ti;-;;sx, bicortical;cylindrical 5 mm;CPD;;;46
+48R;resin block in Malmö;8;03.11.2016;23.01.2017;12;12w;Ti;;;dx, bicortical;cylindrical 5 mm;CPD;;;48
+51R;resin block in Malmö;11;03.11.2016;23.01.2017;12;12w;Ti;;;dx, maybe monocortical;;CPD;;;51
+52R;resin block in Malmö;12;03.11.2016;23.01.2017;12;12w;Ti;;;dx, maybe monocortical;;CPD;;;52
+61L;resin block in Malmö;1;07.02.2017;04.05.2017;12;12w;Peek;;;sx, laterally engage cortical;;CPD;syn020;;61
+64R;resin block in Malmö;4;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 275;;dx, probably bicortical;;CPD;syn002, syn003;;64
+70R;missing;10;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 262;;dx, bicortical;;CPD;syn106 syn021;;70
+56L;resin block in Malmö;16;03.11.2016;23.01.2017;12;12w;Mg-10Gd;Mg-10Gd 88;;sx, bicortical, screw head cover by bone;cylindrical 5 mm;CPD;;;56
+60L;resin block in Malmö;20;03.11.2016;23.01.2017;12;12w;Mg-10Gd;Mg-10Gd 90;;sx, bicortical, lateral engaged cortical;cylindrical 5 mm;CPD;;;60
+68R;resin block in Malmö;8;07.02.2017;04.05.2017;12;12w;Mg-10Gd;Mg-10Gd 270;;dx, bicortical;;CPD;syn109;;68
+59R;resin block in Malmö;19;03.11.2016;23.01.2017;12;12w;Mg-5Gd;Mg-5Gd 108;;dx, probably bicortical, screw head cover by bone;cylindrical 5 mm;CPD;;;59
+62L;missing;2;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 223;;sx, bicortical;;CPD;syn22;;62
+64L;resin block in Malmö;4;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 315;;sx, probably bicortical;;CPD;syn009;;64
+70L;resin block in Malmö;10;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 333;;sx, bicortical;;CPD;syn033;;70
+72L;resin block in Malmö;12;07.02.2017;04.05.2017;12;12w;Mg-5Gd;Mg-5Gd 222;;sx, totally displaced, bicortical;;CPD;syn023;;72
+90L;half Malmö - half GTB;30;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 287 ;label was mixed with 76L during CPD - there is a chance the 2 samples are swopped -  check if it looks Mg-10Gd or Mg-5Gd;sx, bicortical;cylindrical 5 mm;CPD;syn005;;90
+100R;half Malmö - half GTB;40;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 244 ;the vet forgot to tag the ear so the 2 rats in the same cage were mixed  - check the screw, if it looks Mg-10Gd 305 or Mg-10Gd 244;dx, probably bicortical but not bad;cylindrical 5 mm;CPD;syn105;;100
+97R;half Malmö - half GTB;37;21.02.2017;21.03.2017;4;4w;Mg-10Gd;Mg-10Gd 297;;dx, bicortical;cylindrical 5 mm;CPD;syn31;;97
+91L;resin block in Malmö;31;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 235;;sx, bicortical and not axial;cylindrical 5 mm;CPD;syn104;;91
+101R;resin block in Malmö;41;13.02.2017;16.03.2017;4;4w;Mg-10Gd;Mg-10Gd 305;the vet forgot to tag the ear so the 2 rats in the same cage were mixed  - check the screw, if it looks Mg-10Gd 305 or Mg-10Gd 244;dx, bicortical;cylindrical 5 mm;CPD;syn006;;101
+85R;resin block in Malmö;25;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 260;;dx, probably bicortical but not bad;;CPD;syn014;;85
+87R;half Malmö - half GTB;27;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 218;;dx, bicortical;cylindrical 5 mm;CPD;syn51;;87
+88R;half Malmö - half GTB;28;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 249;;dx, bicortical;cylindrical 5 mm;CPD;syn46;;88
+90R;half Malmö - half GTB;30;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 216;;dx, maybe monocortical;;CPD;syn011;;90
+91R;resin block in Malmö;31;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 304;;dx, laterally engaged cortical;cylindrical 5 mm;CPD;syn022;;91
+99L;resin block in Malmö;39;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 245;;sx, probably bicortical, but not bad;cylindrical 5 mm;CPD;syn22, syn50, syn001-syn004;;99
+97L;resin block in Malmö;37;21.02.2017;21.03.2017;#BEZUG!;4w;Mg-5Gd;Mg-5Gd 236;;sx, probably monocortical;;CPD;syn015;;
+73R;resin block in Malmö;13;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 258;;dx, bicortical;cylindrical 5 mm;CPD;syn38;;73
+77R;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 259;;dx, bicortical;cylindrical 5 mm;CPD;"syn35 syn019";;77
+78R;resin block in Malmö;18;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 252;;dx, monocortical;;CPD;syn010;;78
+79R;resin block in Malmö;19;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 280;;dx, bicortical;cylindrical 5 mm;CPD;syn34;;79
+93L;resin block in Malmö;33;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 242;;sx, monocortical but tilted;;CPD;syn012;;93
+95L;resin block in Malmö;35;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 245;;sx, bicortical;cylindrical 5 mm;CPD;syn136;;95
+96L;resin block in Malmö;36;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 296;;sx, bicortical;cylindrical 5 mm;CPD;syn137;;96
+74L;resin block in Malmö;14;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 258;;sx, bicortical;cylindrical 5 mm;CPD;"syn97 syn034";;74
+76L;resin block in Malmö;16;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 224 ;label was mixed with 90L during CPD - there is a chance the 2 samples are swopped - check if it looks Mg-10Gd or Mg-5Gd;sx, bicortical;cylindrical 5 mm;CPD;syn007;;76
+77L;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 316;;sx, bicortical;cylindrical 5 mm;CPD;"syn22 syn98 syn035";;77
+82L;resin block in Malmö;22;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 305;;sx, laterally engage cortical, lower cortical damaged?;cylindrical 5 mm;CPD;syn96;;82
+93R;resin block in Malmö;33;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 263;;dx, bicortical;cylindrical 5 mm;CPD;syn008 /syn 92;;93
+94R;resin block in Malmö;34;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 213;;dx, bicortical;cylindrical 5 mm;CPD;"syn65 syn005";;94
+95R;resin block in Malmö;35;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 262;;dx, bicortical, lower cortical damaged;cylindrical 5 mm;CPD;syn52;;95
+96R;resin block in Malmö;36;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 246;;dx, bicortical and covered head;cylindrical 5 mm;CPD;syn004;;96
