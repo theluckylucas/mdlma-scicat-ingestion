@@ -1,0 +1,148 @@
+SAMPLE ID;Run #;Rat ID;Name;Material;Material#;Implantation OP;Explantation OP;Duration [dayD];Duration [week];Duration [month];Location;Explant preparation;SRµCT;Healing time;Notes;Status;Location;Half left after laser cut;Allocation
+1TL;1;1;TD_MgBone_Run01_Rat_01;Mg-10Gd;Mg10Gd-471;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+1TR;1;1;TD_MgBone_Run01_Rat_01;PEEK;PEEK-07;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+2TL;1;2;TD_MgBone_Run01_Rat_02;Mg-5Gd;Mg5Gd-425;43059;43186;127;18w;4,23;Mau;done;;127d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+2TR;1;2;TD_MgBone_Run01_Rat_02;Ti;Ti-05;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+3TL;1;3;TD_MgBone_Run01_Rat_03;PEEK;PEEK-09;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;SAXS Kamila / Berit
+3TR;1;3;TD_MgBone_Run01_Rat_03;Mg-10Gd;Mg10Gd-478;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+4TL;1;4;TD_MgBone_Run01_Rat_04;Mg-10Gd;Mg10Gd-404;43059;43186;127;18w;4,23;Mau;done;MgSafe;;;;;;
+4TR;1;4;TD_MgBone_Run01_Rat_04;Ti;Ti-07;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+5TL;1;5;TD_MgBone_Run01_Rat_05;PEEK;PEEK-03;43059;43186;127;18w;4,23;Mau;done;;;;;;;
+5TR;1;5;TD_MgBone_Run01_Rat_05;Mg-5Gd;Mg5Gd-487;43059;43186;127;18w;4,23;Mau;done;;;;;;;
+6TL;1;6;TD_MgBone_Run01_Rat_06;PEEK;PEEK-04;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+6TR;1;6;TD_MgBone_Run01_Rat_06;Mg-5Gd;Mg5Gd-408;43059;43186;127;18w;4,23;Mau;done;;127d;cortical broken;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+7TL;1;7;TD_MgBone_Run01_Rat_07;Mg-5Gd;Mg5Gd-448;43059;43186;127;18w;4,23;Mau;done;;;;;;;
+7TR;1;7;TD_MgBone_Run01_Rat_07;Ti;Ti-03;43059;43186;127;18w;4,23;Mau;done;;;;;;;
+8TL;1;8;TD_MgBone_Run01_Rat_08;Ti;Ti-09;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+8TR;1;8;TD_MgBone_Run01_Rat_08;Mg-10Gd;Mg10Gd-464;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+9TL;1;9;TD_MgBone_Run01_Rat_09;PEEK;PEEK-06;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+9TR;1;9;TD_MgBone_Run01_Rat_09;Mg-5Gd;Mg5Gd-418;43059;43186;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+10TL;1;10;TD_MgBone_Run01_Rat_10;Mg-5Gd;Mg5Gd-407;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;2 MAU;implant partially detached;SAXS Kamila / Berit
+10TR;1;10;TD_MgBone_Run01_Rat_10;Ti;Ti-02;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+11TL;1;11;TD_MgBone_Run01_Rat_11;Ti;Ti-06;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+11TR;1;11;TD_MgBone_Run01_Rat_11;Mg-5Gd;Mg5Gd-405;43060;43187;127;18w;4,23;Mau;done;MgSafe;;;;;;
+12TL;1;12;TD_MgBone_Run01_Rat_12;Mg-5Gd;Mg5Gd-419;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+12TR;1;12;TD_MgBone_Run01_Rat_12;PEEK;PEEK-05;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+13TL;1;13;TD_MgBone_Run01_Rat_13;Mg-10Gd;Mg10Gd-476;43060;43187;127;18w;4,23;Mau;done;;;;;;;
+13TR;1;13;TD_MgBone_Run01_Rat_13;Ti;Ti-01;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+14TL;1;14;TD_MgBone_Run01_Rat_14;Ti;Ti-04;43060;43060;;;;MOIN CC;premature death;;;;;;;
+14TR;1;14;TD_MgBone_Run01_Rat_14;Mg-10Gd;Mg10Gd-492;43060;43060;;;;Moin CC;premature death;;;;;;;
+15TL;1;15;TD_MgBone_Run01_Rat_15;Mg-10Gd;Mg10Gd-496;43060;43060;;;;MOIN CC;premature death;;;;;;;
+15TR;1;15;TD_MgBone_Run01_Rat_15;PEEK;PEEK-02;43060;43060;;;;Moin CC;premature death;;;;;;;
+16TL;1;16;TD_MgBone_Run01_Rat_16;Mg-10Gd;Mg10Gd-463;43060;43187;127;18w;4,23;Mau;done;;127d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+16TR;1;16;TD_MgBone_Run01_Rat_16;Ti;Ti-08;43060;43187;127;18w;4,23;DESY;done;;127d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+17TL;1;17;TD_MgBone_Run01_Rat_17;PEEK;PEEK-01;43060;43187;127;18w;4,23;DESY;done;;127d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+17TR;1;17;TD_MgBone_Run01_Rat_17;Mg-10Gd;Mg10Gd-480;43060;43187;127;18w;4,23;DESY;done;;127d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+18TL;1;18;TD_MgBone_Run01_Rat_18;Mg-10Gd;Mg10Gd-411;43060;43187;127;18w;4,23;DESY;done;;127d;3 pieces: 1 almost nothing, 1 slice for Berit, 1 for histo;cut in half ;3 MAU;;1 histo/1Berit/1 extra
+18TR;1;18;TD_MgBone_Run01_Rat_18;PEEK;PEEK-08;43060;43187;127;18w;4,23;DESY;done;;127d;cortical broken;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+21TL;2;21;TD_MgBone_Run02_Rat_21;Mg-10Gd;Mg10Gd-473;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+21TR;2;21;TD_MgBone_Run02_Rat_21;Ti;Ti-33;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+22TL;2;22;TD_MgBone_Run02_Rat_22;PEEK;PEEK-38;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;2 MAU;ok;SAXS Kamila / Berit
+22TR;2;22;TD_MgBone_Run02_Rat_22;Mg-5Gd;Mg5Gd-415;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+23TL;2;23;TD_MgBone_Run02_Rat_23;PEEK;PEEK-31;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+23TR;2;23;TD_MgBone_Run02_Rat_23;Mg-10Gd;Mg10Gd-461;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+24TL;2;24;TD_MgBone_Run02_Rat_24;Mg-10Gd;Mg10Gd-493;43175;43236;61;9w;2,03;Mau;done;;61d;3 pieces: 1 almost nothing, 1 slice for Berit, 1 for histo;cut in half ;3 MAU;;1 histo/1Berit/1 extra
+24TR;2;24;TD_MgBone_Run02_Rat_24;PEEK;PEEK-33;43175;43236;61;9w;2,03;;;;;;;;;
+25TL;2;25;TD_MgBone_Run02_Rat_25;Ti;Ti-31;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+25TR;2;25;TD_MgBone_Run02_Rat_25;Mg-5Gd;Mg5Gd-441;43175;43236;61;9w;2,03;Mau;done;;61d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+26TL;2;26;TD_MgBone_Run02_Rat_26;Mg-5Gd;Mg5Gd-490;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+26TR;2;26;TD_MgBone_Run02_Rat_26;PEEK;PEEK-32;43175;43236;61;9w;2,03;Mau;done;;61d;one part very thin at the center, one ok half, one half with only bone;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+27TL;2;27;TD_MgBone_Run02_Rat_27;Ti;Ti-35;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+27TR;2;27;TD_MgBone_Run02_Rat_27;Mg-5Gd;Mg5Gd-483;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+28TL;2;28;TD_MgBone_Run02_Rat_28;Mg-5Gd;Mg5Gd-412;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+28TR;2;28;TD_MgBone_Run02_Rat_28;Ti;Ti-32;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+29TL;2;29;TD_MgBone_Run02_Rat_29;Mg-10Gd;Mg10Gd-414;43175;43236;61;9w;2,03;Mau;done;;61d;1 half histo/1 half almost nothing;cut in half ;3 MAU;;1 histo/1Berit
+29TR;2;29;TD_MgBone_Run02_Rat_29;PEEK;PEEK-37;43175;43236;61;9w;2,03;Mau;done;;61d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+30TL;2;30;TD_MgBone_Run02_Rat_30;Ti;Ti-38;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+30TR;2;30;TD_MgBone_Run02_Rat_30;Mg-10Gd;Mg10Gd-490;43293;43360;67;10w;2,23;Mau;done;;67d;1 half histo/1 half almost nothing;cut in half ;3 MAU;;1 histo/1Berit
+31TL;2;31;TD_MgBone_Run02_Rat_31;PEEK;PEEK-39;43293;43360;67;10w;2,23;Mau;done;;67d;lower cortical broken ;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+31TR;2;31;TD_MgBone_Run02_Rat_31;Mg-10Gd;Mg10Gd-466;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+32TL;2;32;TD_MgBone_Run02_Rat_32;Mg-5Gd;Mg5Gd-406;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+32TR;2;32;TD_MgBone_Run02_Rat_32;PEEK;PEEK-34;43293;43360;67;10w;2,23;Mau;done;;67d;one half with only a small trace of PEEK;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+33TL;2;33;TD_MgBone_Run02_Rat_33;Ti;Ti-37;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+33TR;2;33;TD_MgBone_Run02_Rat_33;Mg-5Gd;Mg5Gd-409;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+34TL;2;34;TD_MgBone_Run02_Rat_34;Ti;Ti-36;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+34TR;2;34;TD_MgBone_Run02_Rat_34;Mg-10Gd;Mg10Gd-498;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+35TL;2;35;TD_MgBone_Run02_Rat_35;Mg-5Gd;Mg5Gd-444;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+35TR;2;35;TD_MgBone_Run02_Rat_35;Ti;Ti-39;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+36TL;2;36;TD_MgBone_Run02_Rat_36;Mg-5Gd;Mg5Gd-446;43293;43360;67;10w;2,23;MOIN CC;not cut, still with muscles;;;;;;;
+36TR;2;36;TD_MgBone_Run02_Rat_36;PEEK;PEEK-35;43293;43360;67;10w;2,23;MOIN CC;not cut, still with muscles;;;;;;;
+37TL;2;37;TD_MgBone_Run02_Rat_37;PEEK;PEEK-36;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+37TR;2;37;TD_MgBone_Run02_Rat_37;Mg-10Gd;Mg10Gd-494;43293;43360;67;10w;2,23;Mau;done;;67d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+38TL;2;38;TD_MgBone_Run02_Rat_38;Mg-10Gd;Mg10Gd-462;43293;43360;67;10w;2,23;MOIN CC;not cut, still with muscles;;;;;;;
+38TR;2;38;TD_MgBone_Run02_Rat_38;Ti;Ti-34;43293;43360;67;10w;2,23;MOIN CC;not cut, still with muscles;;;;;;;
+41TL;3;41;TD_MgBone_Run03_Rat_41;PEEK;PEEK-48;43277;43285;8;1w;0,27;MOIN CC;premature death;;;;;;;
+41TR;3;41;TD_MgBone_Run03_Rat_41;Mg-5Gd;Mg5Gd-485;43277;43285;8;1w;0,27;MOIN CC;premature death;;;;;;;
+42TL;3;42;TD_MgBone_Run03_Rat_42;Mg-10Gd;Mg10Gd-267;43277;43416;139;20w;4,63;MOIN CC;not cut, still with muscles;;;;;;;
+42TR;3;42;TD_MgBone_Run03_Rat_42;PEEK;PEEK-43;43277;43416;139;20w;4,63;MOIN CC;not cut, still with muscles;;;;;;;
+43TL;3;43;TD_MgBone_Run03_Rat_43;Ti;Ti-48;43277;43416;139;20w;4,63;MOIN CC;not cut, still with muscles;;;;;;;
+43TR;3;43;TD_MgBone_Run03_Rat_43;Mg-5Gd;Mg5Gd-325;43277;43416;139;20w;4,63;MOIN CC;not cut, still with muscles;;;;;;;
+44TL;3;44;TD_MgBone_Run03_Rat_44;Mg-5Gd;Mg5Gd-482;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU;ok;SAXS Kamila / Berit
+44TR;3;44;TD_MgBone_Run03_Rat_44;Ti;Ti-45;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+45TL;3;45;TD_MgBone_Run03_Rat_45;PEEK;PEEK-47;43277;43416;139;20w;4,63;Mau;done;;139d;cortical broken;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+45TR;3;45;TD_MgBone_Run03_Rat_45;Mg-10Gd;Mg10Gd-312;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+46TL;3;46;TD_MgBone_Run03_Rat_46;Mg-10Gd;Mg10Gd-453;43277;43416;139;20w;4,63;Neutron Source (Niccoló);1 cm cubic, CPD;;;;;;;
+46TR;3;46;TD_MgBone_Run03_Rat_46;Ti;Ti-41;43277;43416;139;20w;4,63;Neutron Source (Niccoló);1 cm cubic, CPD;;;;;;;
+47TL;3;47;TD_MgBone_Run03_Rat_47;PEEK;PEEK-45;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+47TR;3;47;TD_MgBone_Run03_Rat_47;Mg-5Gd;Mg5Gd-484;43277;43416;139;20w;4,63;Neutron Source (Niccoló);1 cm cubic, CPD;;;;;;;
+48TL;3;48;TD_MgBone_Run03_Rat_48;Ti;Ti-47;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+48TR;3;48;TD_MgBone_Run03_Rat_48;Mg-5Gd;Mg5Gd-486;43277;43416;139;20w;4,63;Mau;done;;139d;3 pieces: 1 almost nothing, 1 slice for Berit, 1 for histo;cut in half ;3 MAU;;1 histo/1Berit/1 extra
+49TL;3;49;TD_MgBone_Run03_Rat_49;Mg-10Gd;Mg10Gd-443;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+49TR;3;49;TD_MgBone_Run03_Rat_49;PEEK;PEEK-44;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+50TL;3;50;TD_MgBone_Run03_Rat_50;Ti;Ti-46;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+50TR;3;50;TD_MgBone_Run03_Rat_50;Mg-10Gd;Mg10Gd-429;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+51TL;3;51;TD_MgBone_Run03_Rat_51;Mg-5Gd;Mg5Gd-426;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+51TR;3;51;TD_MgBone_Run03_Rat_51;Ti;Ti-43;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+52TL;3;52;TD_MgBone_Run03_Rat_52;PEEK;PEEK-42;43277;43416;139;20w;4,63;Mau;done;;139d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+52TR;3;52;TD_MgBone_Run03_Rat_52;Mg-10Gd;Mg10Gd-452;43277;43416;139;20w;4,63;Mau;done;;139d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+53TL;3;53;TD_MgBone_Run03_Rat_53;Mg-10Gd;Mg10Gd-438;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+53TR;3;53;TD_MgBone_Run03_Rat_53;Ti;Ti-44;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+54TL;3;54;TD_MgBone_Run03_Rat_54;PEEK;PEEK-46;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+54TR;3;54;TD_MgBone_Run03_Rat_54;Mg-10Gd;Mg10Gd-432;43277;43416;139;20w;4,63;Mau;done;;139d;one half scarce;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+55TL;3;55;TD_MgBone_Run03_Rat_55;Mg-5Gd;Mg5Gd-489;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+55TR;3;55;TD_MgBone_Run03_Rat_55;PEEK;PEEK-49;43277;43416;139;20w;4,63;Mau;done;;;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+56TL;3;56;TD_MgBone_Run03_Rat_56;Ti;Ti-42;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+56TR;3;56;TD_MgBone_Run03_Rat_56;Mg-5Gd;Mg5Gd-301;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 GTB;;1 histo/1Berit
+57TL;3;57;TD_MgBone_Run03_Rat_57;Mg-5Gd;Mg5Gd-404;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+57TR;3;57;TD_MgBone_Run03_Rat_57;PEEK;PEEK-41;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+58TL;3;58;TD_MgBone_Run03_Rat_58;Mg-10Gd;Mg10Gd-430;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+58TR;3;58;TD_MgBone_Run03_Rat_58;Ti;Ti-49;43277;43416;139;20w;4,63;Mau;done;;139d;;cut in half ;2 MAU;implant detached;SAXS Kamila / Berit
+59TL;3;59;TD_MgBone_Run03_Rat_59;PEEK;PEEK-40;43293;43441;148;21w;4,93;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+59TR;3;59;TD_MgBone_Run03_Rat_59;Mg-5Gd;Mg5Gd-331;43293;43441;148;21w;4,93;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+60TL;3;60;TD_MgBone_Run03_Rat_60;Ti;Ti-40;43293;43441;148;21w;4,93;Mau;done;;139d;;cut in half ;1 MAU/1 Rowiak;ok;SAXS Kamila / Berit
+71TL;4;71;TD_MgBone_Run04_Rat_71;Mg-10Gd;Mg10Gd-500;43488;;;;;Mau;done;;;;;;;
+71TR;4;71;TD_MgBone_Run04_Rat_71;PEEK;PEEK-53;43488;;;;;Mau;done;;;;;;;
+72TL;4;72;TD_MgBone_Run04_Rat_72;Ti;Ti-59;43488;;;;;Mau;done;;;;;;;
+72TR;4;72;TD_MgBone_Run04_Rat_72;Mg-5Gd;Mg5Gd-445;43488;;;;;Mau;done;;;;;;;
+73TL;4;73;TD_MgBone_Run04_Rat_73;Mg-5Gd;Mg5Gd-424;43488;;;;;Mau;done;;;;;;;
+73TR;4;73;TD_MgBone_Run04_Rat_73;PEEK;PEEK-54;43488;;;;;Mau;done;;;;;;;
+74TL;4;74;TD_MgBone_Run04_Rat_74;Ti;Ti-54;43488;;;;;Mau;done;;;;;;;
+74TR;4;74;TD_MgBone_Run04_Rat_74;Mg-10Gd;Mg10Gd-479;43488;;;;;Mau;done;;;;;;;
+75TL;4;75;TD_MgBone_Run04_Rat_75;Mg-5Gd;Mg5Gd-232;43488;;;;;Mau;done;;;;;;;
+75TR;4;75;TD_MgBone_Run04_Rat_75;PEEK;PEEK-51;43488;;;;;Mau;done;;;;;;;
+76TL;4;76;TD_MgBone_Run04_Rat_76;Mg-5Gd;Mg5Gd-272;43488;;;;;Mau;done;;;;;;;
+76TR;4;76;TD_MgBone_Run04_Rat_76;Ti;Ti-55;43488;;;;;Mau;done;;;;;;;
+77TL;4;77;TD_MgBone_Run04_Rat_77;PEEK;PEEK-57;43488;;;;;Mau;done;;;;;;;
+77TR;4;77;TD_MgBone_Run04_Rat_77;Mg-10Gd;Mg10Gd-422;43488;;;;;Mau;done;;;;;;;
+78TL;4;78;TD_MgBone_Run04_Rat_78;Mg-10Gd;Mg10Gd-440;43488;43522;34;5w;1,13;Moin CC;premature death;;;;;;;
+78TR;4;78;TD_MgBone_Run04_Rat_78;Ti;Ti-53;43488;43522;34;5w;1,13;Moin CC;premature death;;;;;;;
+79TL;4;79;TD_MgBone_Run04_Rat_79;Ti;Ti-58;43488;;;;;Mau;done;;;;;;;
+79TR;4;79;TD_MgBone_Run04_Rat_79;Mg-5Gd;Mg5Gd-255;43488;;;;;Mau;done;;;;;;;
+80TL;4;80;TD_MgBone_Run04_Rat_80;Ti;Ti-52;43488;;;;;Mau;done;;;;;;;
+80TR;4;80;TD_MgBone_Run04_Rat_80;Mg-5Gd;Mg5Gd-323;43488;;;;;Mau;done;;;;;;;
+81TL;4;81;TD_MgBone_Run04_Rat_81;PEEK;PEEK-58;43488;;;;;Mau;done;;;;;;;
+81TR;4;81;TD_MgBone_Run04_Rat_81;Mg-10Gd;Mg10Gd-290;43488;;;;;Mau;done;;;;;;;
+82TL;4;82;TD_MgBone_Run04_Rat_82;Mg-5Gd;Mg5Gd-233;43488;;;;;Mau;done;;;;;;;
+82TR;4;82;TD_MgBone_Run04_Rat_82;PEEK;PEEK-55;43488;;;;;Mau;done;;;;;;;
+83TL;4;83;TD_MgBone_Run04_Rat_83;Mg-10Gd;Mg10Gd-470;43488;;;;;Mau;done;;;;;;;
+83TR;4;83;TD_MgBone_Run04_Rat_83;Ti;Ti-56;43488;;;;;Mau;done;;;;;;;
+84TL;4;84;TD_MgBone_Run04_Rat_84;Mg-10Gd;Mg10Gd-467;43488;;;;;Mau;done;;;;;;;
+84TR;4;84;TD_MgBone_Run04_Rat_84;PEEK;PEEK-59;43488;;;;;Mau;done;;;;;;;
+85TL;4;85;TD_MgBone_Run04_Rat_85;PEEK;PEEK-56;43488;;;;;Mau;done;;;;;;;
+85TR;4;85;TD_MgBone_Run04_Rat_85;Mg-5Gd;Mg5Gd-322;43488;;;;;Mau;done;;;;;;;
+86TL;4;86;TD_MgBone_Run04_Rat_86;Ti;Ti-51;43488;;;;;Mau;done;;;;;;;
+86TR;4;86;TD_MgBone_Run04_Rat_86;Mg-10Gd;Mg10Gd-445;43488;;;;;Mau;done;;;;;;;
+87TL;4;87;TD_MgBone_Run04_Rat_87;Mg-5Gd;Mg5Gd-302;43488;;;;;MOIN CC;;;;;;;;
+87TR;4;87;TD_MgBone_Run04_Rat_87;Ti;Ti-57;43488;;;;;MOIN CC;;;;;;;;
+88TL;4;88;TD_MgBone_Run04_Rat_88;PEEK;PEEK-52;43488;;;;;MOIN CC;;;;;;;;
+88TR;4;88;TD_MgBone_Run04_Rat_88;Mg-10Gd;Mg10Gd-306;43488;;;;;MOIN CC;;;;;;;;

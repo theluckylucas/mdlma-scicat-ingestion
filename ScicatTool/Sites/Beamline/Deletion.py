@@ -1,7 +1,7 @@
 from abc import ABC
 
 from ...REST import API
-from .Keys import *
+from .ConfigKeys import *
 from ...Datasets.APIKeys import SOURCE_FOLDER, DATASET_NAME, PID, PROPOSAL_ID, ATTACHMENT_ID
 from ...Datablocks.APIKeys import ID as ODB_ID
 

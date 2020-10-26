@@ -12,7 +12,7 @@ from ...Filesystem.ImInfo import get_dict_from_numpy, get_uri_from_numpy, load_n
 from ...REST.Consts import NA
 from ...REST import API
 from .Consts import *
-from .Keys import *
+from .ConfigKeys import *
 
 from pprint import pprint
 from abc import ABC
@@ -62,13 +62,22 @@ class AbstractIngestor(ABC):
 
         return dsb.build(), images_in_folder
 
+    
+    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir):
+        return pattern.format(prefix, experiment_id, dataset, post_processing + '-' + subdir)
 
-    def _create_derived(self, dataset, directory, subdir, postprocessing, input_datasets, binning):
+
+    def _create_derived(self, dataset, directory, subdir, postprocessing, input_datasets, binning, site_prefix, experiment_id):
         source_folder = "{}/{}".format(directory, subdir)
         images_in_folder = list_files(source_folder, self.args.extensions)
         total_size = folder_total_size(source_folder)
         investigator = get_ownername(source_folder)
-        dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, postprocessing + '-' + subdir)
+        dataset_name = self.dataset_derived_name(self.config[CONFIG_DATASET_NAME],\
+                                                 site_prefix,\
+                                                 experiment_id,\
+                                                 dataset,\
+                                                 postprocessing,\
+                                                 subdir)
         creation_time = NA
         smb = ScientificMetadataBuilder().add(BINNING, binning)
 
@@ -184,7 +193,7 @@ class AbstractIngestor(ABC):
                 binning = NA
         else:
             binning = int(subdir[pos:pos+1])
-        dataset_dict, filename_list = self._create_derived(dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning)
+        dataset_dict, filename_list = self._create_derived(dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning, self.config[CONFIG_PREFIX], self.args.experiment)
         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
         failed = self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts)

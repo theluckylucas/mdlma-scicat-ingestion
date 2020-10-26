@@ -1,7 +1,7 @@
 from .Consts import *
 from .ScanLogParser import P05LogParser
 from ..Beamline.Ingestion import AbstractIngestor
-from ..Beamline.Keys import *
+from ..Beamline.ConfigKeys import *
 from ...Datasets.DatasetP05 import P05RawDatasetBuilder, P05ProcessedDatasetBuilder
 
 

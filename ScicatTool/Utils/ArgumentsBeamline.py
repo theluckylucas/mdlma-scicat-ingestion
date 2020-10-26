@@ -11,7 +11,6 @@ class BeamlineExperimentIngestionParser(ScicatIngestDatasetParser):
         self.add_argument("experiment", type=int, help="an integer for the beamline experiment ID")
         self.add_argument("year", type=int, help="an integer for the year when the experiment was conducted")
         self.add_argument("-e", "--extensions", type=str, nargs="+", default=FILE_EXTS, help="Accepted file extensions of data files (default: {})".format(FILE_EXTS))
-        self.add_argument("-r", "--rawonly", action="store_true", help="Add only raw datasets")
 
 
 class BeamlineExperimentDeletionParser(ScicatParser):
@@ -25,7 +24,9 @@ class BeamlineExperimentDeletionParser(ScicatParser):
 
 
 class P05ExperimentIngestionParser(BeamlineExperimentIngestionParser):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.add_argument("-r", "--rawonly", action="store_true", help="Add only raw datasets")
 
 
 class P05ExperimentDeletionParser(BeamlineExperimentDeletionParser):
@@ -33,8 +34,17 @@ class P05ExperimentDeletionParser(BeamlineExperimentDeletionParser):
 
 
 class P07ExperimentIngestionParser(BeamlineExperimentIngestionParser):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.add_argument("-r", "--rawonly", action="store_true", help="Add only raw datasets")
 
 
 class P07ExperimentDeletionParser(BeamlineExperimentDeletionParser):
     pass
+
+
+class ResampledExperimentIngestionParser(BeamlineExperimentIngestionParser):
+    def __init__(self):
+        super().__init__()
+        self.add_argument("beamline", type=str, default="p05", help="GPFS directory names, like p03, p05, p07, ...")
+        self.add_argument("-m", "--matchraw", action="store_true", help="Resampled dataset has to match with exactly one existing raw dataset as input in Scicat")

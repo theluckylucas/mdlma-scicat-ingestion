@@ -5,6 +5,9 @@ from pwd import getpwuid
 from datetime import datetime
 
 
+FOLLOW_SYMLINKS = False
+
+
 def get_ext(filename):
     pos = filename.rfind('.')
     ext = filename[pos+1:]
@@ -28,19 +31,22 @@ def path_exists(directory):
 
 
 def file_size(directory, filename_relative):
-    return path.getsize(path.join(directory, filename_relative))
+    full_path = path.join(directory, filename_relative)
+    if not FOLLOW_SYMLINKS and path.islink(full_path):
+        return 0
+    return path.getsize(full_path)
 
 
 def folder_total_size(directory):
-    return sum(file_size(dirpath,filename) for dirpath, dirnames, filenames in walk(directory) for filename in filenames)
+    return sum(file_size(dirpath,filename) for dirpath, dirnames, filenames in walk(directory, followlinks=FOLLOW_SYMLINKS) for filename in filenames)
 
 
 def list_files(directory, exts=[]):
-    return [f.name for f in scandir(directory) if f.is_file() and path.splitext(f.name)[1] in exts]
+    return [f.name for f in scandir(directory) if f.is_file(follow_symlinks=FOLLOW_SYMLINKS) and path.splitext(f.name)[1] in exts]
 
 
 def list_dirs(directory):
-    return [f.name for f in scandir(directory) if f.is_dir()]
+    return [f.name for f in scandir(directory) if f.is_dir(follow_symlinks=FOLLOW_SYMLINKS)]
 
 
 def get_creation_date(filename):

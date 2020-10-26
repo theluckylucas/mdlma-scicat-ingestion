@@ -100,17 +100,17 @@ SAMPLE ID;Location as of 20190705;Original ID at surgery;Date of operation;Date 
 99L;resin block in Malmö;39;13.02.2017;16.03.2017;4;4w;Mg-5Gd;Mg-5Gd 245;;sx, probably bicortical, but not bad;cylindrical 5 mm;CPD;syn22, syn50, syn001-syn004;;99
 97L;resin block in Malmö;37;21.02.2017;21.03.2017;#BEZUG!;4w;Mg-5Gd;Mg-5Gd 236;;sx, probably monocortical;;CPD;syn015;;
 73R;resin block in Malmö;13;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 258;;dx, bicortical;cylindrical 5 mm;CPD;syn38;;73
-77R;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 259;;dx, bicortical;cylindrical 5 mm;CPD;"syn35 syn019";;77
+77R;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 259;;dx, bicortical;cylindrical 5 mm;CPD;syn35 syn019;;77
 78R;resin block in Malmö;18;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 252;;dx, monocortical;;CPD;syn010;;78
 79R;resin block in Malmö;19;07.02.2017;07.04.2017;8;8w;Mg-10Gd;Mg-10Gd 280;;dx, bicortical;cylindrical 5 mm;CPD;syn34;;79
 93L;resin block in Malmö;33;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 242;;sx, monocortical but tilted;;CPD;syn012;;93
 95L;resin block in Malmö;35;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 245;;sx, bicortical;cylindrical 5 mm;CPD;syn136;;95
 96L;resin block in Malmö;36;13.02.2017;11.04.2017;8;8w;Mg-10Gd;Mg-10Gd 296;;sx, bicortical;cylindrical 5 mm;CPD;syn137;;96
-74L;resin block in Malmö;14;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 258;;sx, bicortical;cylindrical 5 mm;CPD;"syn97 syn034";;74
+74L;resin block in Malmö;14;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 258;;sx, bicortical;cylindrical 5 mm;CPD;syn97 syn034;;74
 76L;resin block in Malmö;16;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 224 ;label was mixed with 90L during CPD - there is a chance the 2 samples are swopped - check if it looks Mg-10Gd or Mg-5Gd;sx, bicortical;cylindrical 5 mm;CPD;syn007;;76
-77L;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 316;;sx, bicortical;cylindrical 5 mm;CPD;"syn22 syn98 syn035";;77
+77L;resin block in Malmö;17;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 316;;sx, bicortical;cylindrical 5 mm;CPD;syn22 syn98 syn035;;77
 82L;resin block in Malmö;22;07.02.2017;07.04.2017;8;8w;Mg-5Gd;Mg-5Gd 305;;sx, laterally engage cortical, lower cortical damaged?;cylindrical 5 mm;CPD;syn96;;82
 93R;resin block in Malmö;33;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 263;;dx, bicortical;cylindrical 5 mm;CPD;syn008 /syn 92;;93
-94R;resin block in Malmö;34;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 213;;dx, bicortical;cylindrical 5 mm;CPD;"syn65 syn005";;94
+94R;resin block in Malmö;34;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 213;;dx, bicortical;cylindrical 5 mm;CPD;syn65 syn005;;94
 95R;resin block in Malmö;35;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 262;;dx, bicortical, lower cortical damaged;cylindrical 5 mm;CPD;syn52;;95
 96R;resin block in Malmö;36;13.02.2017;11.04.2017;8;8w;Mg-5Gd;Mg-5Gd 246;;dx, bicortical and covered head;cylindrical 5 mm;CPD;syn004;;96

@@ -1,6 +1,6 @@
 from .Consts import *
 from ..Beamline.Deletion import AbstractDeleter
-from ..Beamline.Keys import *
+from ..Beamline.ConfigKeys import *
 
 
 class P05Deleter(AbstractDeleter):
