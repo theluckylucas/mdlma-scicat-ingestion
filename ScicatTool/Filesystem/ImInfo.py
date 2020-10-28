@@ -9,6 +9,7 @@ import cv2
 TYPE_TIFF = "tiff"
 TYPE_IMG = "img"
 TYPE_HDF = "hdf"
+TYPE_PNG = "png"
 TYPES = {
     "tif": TYPE_TIFF,
     "tiff": TYPE_TIFF,
@@ -16,6 +17,7 @@ TYPES = {
     "h5": TYPE_HDF,
     "h4": TYPE_HDF,
     "hdf": TYPE_HDF,
+    "png": TYPE_PNG
 }
 SUPPORTED_IMAGE_TYPES = [TYPE_TIFF]
 URI_PNG_PREFIX = "data:image/png;base64,"
@@ -27,7 +29,9 @@ def load_numpy_from_image(filename):
     img_format = TYPES[get_ext(filename)]
     if img_format == TYPE_TIFF:
         img = io.imread(filename)
-        if len(img.shape) == 2:  # only work with 2D image slices
+        if len(img.shape) == 2:  # only work with 2D grayscale image slices
+            img_array = img
+        elif len(img.shape) == 3 and img.shape[2] == 3:  # RGB images
             img_array = img
     return img_array, img_format
 
