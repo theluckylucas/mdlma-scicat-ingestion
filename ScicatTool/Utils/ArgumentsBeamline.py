@@ -47,10 +47,13 @@ class ResampledExperimentIngestionParser(BeamlineExperimentIngestionParser):
     def __init__(self):
         super().__init__()
         self.add_argument("beamline", type=str, default="p05", help="GPFS directory name of virtual experiment folder, like p03, p05, p07, ...")
-        self.add_argument("-m", "--matchraw", action="store_true", help="Resampled dataset has to match with exactly one existing raw dataset as input in Scicat")
+        self.add_argument("-m", "--matchexisting", action="store_true", help="Resampled dataset has to match with exactly one existing reco dataset as input in Scicat")
 
 
 class RegisteredHistoExperimentIngestionParser(BeamlineExperimentIngestionParser):
     def __init__(self):
         super().__init__()
         self.add_argument("beamline", type=str, default="p05", help="GPFS directory name or virtual experiment folder, like p03, p05, p07, ...")
+        self.add_argument("csvfile", type=str, help="CSV filename including the mapping of sample id, histo id, and SRCT experiment")
+        self.add_argument("-m", "--matchexisting", action="store_true", help="Registered dataset has to match with exactly one existing SRCT reco dataset as input in Scicat")
+

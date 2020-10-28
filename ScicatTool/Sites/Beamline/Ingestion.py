@@ -38,8 +38,13 @@ class AbstractIngestor(ABC):
                 return sample_id
         return None
 
-    def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict, sample_id):
-        dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, RAW)
+
+    def dataset_raw_name(self, pattern, prefix, experiment_id, dataset, post_processing, histo_id):
+        return pattern.format(prefix, experiment_id, dataset, post_processing)
+
+
+    def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict, sample_id, prefix, histo_id):
+        dataset_name = self.dataset_raw_name(self.config[CONFIG_DATASET_NAME], prefix, self.args.experiment, dataset, RAW, histo_id)
 
         images_in_folder = list_files(directory, self.args.extensions)
         for subdir in list_dirs(directory):
@@ -251,7 +256,7 @@ class AbstractIngestor(ABC):
 
                     # Add raw dataset
                     sample_id = self._sample_id_from_dataset_name(dataset)
-                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict, sample_id)
+                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict, sample_id, self.config[CONFIG_PREFIX], None)
                     datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                     attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
                     failed.update(failed_attachments)

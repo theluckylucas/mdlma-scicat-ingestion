@@ -6,3 +6,4 @@ TYPE_DERIVED = "derived"
 TYPE_BASE = "base"
 
 VIRTUAL_KEYWORD = "virtual"
+HISTO_KEYWORD = "histology"
