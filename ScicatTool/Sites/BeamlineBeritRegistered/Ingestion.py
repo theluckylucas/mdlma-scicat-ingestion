@@ -14,13 +14,13 @@ from ...REST.Consts import NA
 from ...Filesystem.FSInfo import list_files, list_dirs, path_exists
 
 
-class BeamlineResampledIngestor(AbstractIngestor):
+class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
     def __init__(self, args):
         config = {
             CONFIG_LOG_SUFFIX: "",
             CONFIG_LOG_FILENAMES: [],
             CONFIG_LOCATION: LOCATION,
-            CONFIG_KEYWORDS: KEYWORDS,
+            CONFIG_KEYWORDS: ["registered", "stiched"],
             CONFIG_SOURCE_PATH: PATH_GPFS,
             CONFIG_PREFIX: SITE_PREFIX,
             CONFIG_FILENAME_IGNORE: FILENAME_IGNORE_PATTERN,

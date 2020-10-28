@@ -30,7 +30,15 @@ class AbstractIngestor(ABC):
         self.log_parser = log_parser
         self.config = config
 
-    def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict):
+    def _sample_id_from_dataset_name(self, dataset_name):
+        sample_id_pattern_match = re.findall("_\d+[a-zA-Z]+_", dataset_name)
+        if len(sample_id_pattern_match) == 1:
+            sample_id = sample_id_pattern_match[0][1:-1]
+            if len(sample_id) < 6:
+                return sample_id
+        return None
+
+    def _create_raw(self, dataset, directory, creation_time, scientific_metadata, proposal_dict, sample_id):
         dataset_name = self.config[CONFIG_DATASET_NAME].format(self.config[CONFIG_PREFIX], self.args.experiment, dataset, RAW)
 
         images_in_folder = list_files(directory, self.args.extensions)
@@ -54,11 +62,8 @@ class AbstractIngestor(ABC):
             scientific_metadata(scientific_metadata).\
             number_of_files(len(images_in_folder))
 
-        sample_id_pattern_match = re.findall("_\d+[a-zA-Z]+_", dataset)
-        if len(sample_id_pattern_match) == 1:
-            sample_id = sample_id_pattern_match[0][1:-1]
-            if len(sample_id) < 6:
-                dsb.sample_id(sample_id)
+        if sample_id is not None:
+            dsb.sample_id(sample_id)                
 
         return dsb.build(), images_in_folder
 
@@ -245,7 +250,8 @@ class AbstractIngestor(ABC):
                     print("=>", dataset)
 
                     # Add raw dataset
-                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict)
+                    sample_id = self._sample_id_from_dataset_name(dataset)
+                    dataset_dict, filename_list = self._create_raw(dataset, dataset_raw_directory, creation_time, smb.build(), proposal_dict, sample_id)
                     datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                     attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
                     failed.update(failed_attachments)
