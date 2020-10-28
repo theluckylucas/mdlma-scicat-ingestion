@@ -44,6 +44,6 @@ $cmd $p05 $1 $argsp 11006991 2019 $argso
 $cmd $p05 $1 $argsp 11005842 2019 $argso 
 $cmd $p07 $1 $argsp 11006991 2019 $argso -k tomography
 
-pvr="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py "
+pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py "
 
-$cmd $pvr $1 $argsp 11001978 2016 p05 $argso -m -k resampled
+$cmd $pvj $1 $argsp 11001978 2016 p05 $argso -m -k resampled

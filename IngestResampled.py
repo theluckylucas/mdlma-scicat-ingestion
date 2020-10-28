@@ -4,7 +4,7 @@ Run python IngestResampled.py -h for details about how to call.
 """
 
 
-from ScicatTool.Sites.BeamlineVirtual.Ingestion import BeamlineResampledIngestor
+from ScicatTool.Sites.BeamlineJulianResampled.Ingestion import BeamlineResampledIngestor
 from ScicatTool.Utils.ArgumentsBeamline import ResampledExperimentIngestionParser
 import datetime
 
