@@ -29,6 +29,13 @@ def ingest(token, data_model, data_dict, simulate, verbose):
     if verbose > 0:
         print(url)
         pprint(data)
+    
+    if data_model is ORIGDATABLOCKS:
+        print("\n\n\n")
+        print("CALL POST OF", data_model)
+        print(data)
+        print("\n\n\n")
+
     if not simulate:
         resp = requests.post(url, headers=HEADERS, data=data)
         print(data_model.upper(), "JSON INGEST:", resp)

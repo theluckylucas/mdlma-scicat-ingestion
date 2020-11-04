@@ -70,6 +70,8 @@ class AbstractIngestor(ABC):
         if sample_id is not None:
             dsb.sample_id(sample_id)                
 
+        print("builder size:", dsb.dataset[SIZE])
+
         return dsb.build(), images_in_folder
 
     
