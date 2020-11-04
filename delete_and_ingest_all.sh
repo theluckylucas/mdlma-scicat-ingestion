@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $# -ne 1 ]]; then
+    echo "Illegal number of parameters. Scicat token expected as first argument."
+    exit 2
+fi
+
 NUMBEROFTHUMBNAILS="4"
 VERBOSELEVEL="0"  # 0,1,2
 
