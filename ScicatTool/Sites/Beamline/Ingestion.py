@@ -68,18 +68,18 @@ class AbstractIngestor(ABC):
             number_of_files(len(images_in_folder))
 
         if sample_id is not None:
-            dsb.sample_id(sample_id)                
-
-        print("builder size:", dsb.dataset[SIZE])
+            dsb.sample_id(sample_id)
 
         return dsb.build(), images_in_folder
 
     
-    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir):
-        return pattern.format(prefix, experiment_id, dataset, post_processing + '-' + subdir)
+    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset_name, post_processing, subdir, suffix=None):
+        if suffix is None:
+            suffix = ""
+        return pattern.format(prefix, experiment_id, dataset_name, post_processing + '-' + subdir + suffix)
 
 
-    def _create_derived(self, dataset, directory, subdir, postprocessing, input_datasets, binning, site_prefix, experiment_id):
+    def _create_derived(self, dataset, directory, subdir, postprocessing, input_datasets, binning, site_prefix, experiment_id, suffix):
         source_folder = "{}/{}".format(directory, subdir)
         images_in_folder = list_files(source_folder, self.args.extensions)
         total_size = folder_total_size(source_folder)
@@ -89,7 +89,8 @@ class AbstractIngestor(ABC):
                                                  experiment_id,\
                                                  dataset,\
                                                  postprocessing,\
-                                                 subdir)
+                                                 subdir,\
+                                                 suffix)
         creation_time = NA
         smb = ScientificMetadataBuilder().add(BINNING, binning)
 
@@ -205,7 +206,7 @@ class AbstractIngestor(ABC):
                 binning = NA
         else:
             binning = int(subdir[pos:pos+1])
-        dataset_dict, filename_list = self._create_derived(dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning, self.config[CONFIG_PREFIX], self.args.experiment)
+        dataset_dict, filename_list = self._create_derived(dataset, dataset_processed_directory, subdir, postprocessing, input_datasets, binning, self.config[CONFIG_PREFIX], self.args.experiment, suffix=None)
         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
         failed = self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts)

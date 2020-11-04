@@ -1,6 +1,7 @@
 from .Consts import *
 from .XMLMetaParser import HistoMetaParser
 from ...REST import API
+from ...Datasets.Consts import PID_PREFIX
 from ...Datasets.Dataset import ScientificMetadataBuilder
 from ...Datasets.APIKeys import KEYWORDS as API_KEYWORDS
 from ..P05.Consts import LOCATION as P05_LOCATION
@@ -9,9 +10,10 @@ from ..P07.Consts import LOCATION as P07_LOCATION
 from ..P07.Consts import SITE_PREFIX as P07_SITE_PREFIX
 from ..Beamline.Ingestion import AbstractIngestor
 from ..Beamline.ConfigKeys import *
+from ..Beamline.Consts import PROCESSED
 from ...Datasets.DatasetVirtual import HistoRawDatasetBuilder, VirtualDatasetBuilder
 from ...Datasets.APIKeys import SOURCE_FOLDER, TYPE, DATASET_NAME, PID, PROPOSAL_ID
-from ...Datasets.Consts import TYPE_DERIVED
+from ...Datasets.Consts import TYPE_DERIVED, TYPE_RAW
 from ...REST.Consts import NA
 from ...Filesystem.FSInfo import list_files, list_dirs, path_exists, get_creation_date
 import csv
@@ -43,8 +45,8 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
         return result
 
 
-    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir):
-        return pattern.format(prefix, experiment_id, dataset, post_processing)
+    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir, suffix):
+        return pattern.format(prefix, experiment_id, dataset, post_processing + '-' + suffix)
 
 
     def dataset_raw_name(self, pattern, prefix, experiment_id, dataset, post_processing, histo_id):
@@ -101,7 +103,10 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
                                 creation_time = get_creation_date(path_xml_filename)
                                 break
 
-                        proposal_dict = {"proposalId": NA, "lastname": NA}  # To be fetched from Scicat
+                        proposal_dict = {PROPOSAL_ID: NA, "lastname": NA}  # To be fetched from Scicat
+                        if len(existing) == 1:
+                            if existing[0][TYPE] == TYPE_RAW:
+                                proposal_dict[PROPOSAL_ID] = existing[0][PROPOSAL_ID]
 
                         # Add raw
                         dataset_dict, filename_list = self._create_raw(dataset, raw_root, creation_time, smb.build(), proposal_dict, sample_id, SITE_PREFIX_HISTO, histo_id)
@@ -109,24 +114,21 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
                         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
                         failed.update(failed_attachments)
                         failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
-                        
-                        continue
-                        
-                        site_prefix = self.config[CONFIG_PREFIX]
-                        if len(existing) == 1:
-                            input_datasets = [existing[0][PID]]  # raw dataset as input for derived dataset
-                    
-                        location = existing[0][CREATION_LOCATION]
-                        if location == P05_LOCATION:
-                            site_prefix = P05_SITE_PREFIX
-                        elif location == P07_LOCATION:
-                            site_prefix = P07_SITE_PREFIX
-                        else:
-                            input_datasets = [NA]
 
-                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id)
+                        # Prepare data for derived
+                        experiment_id = srct_path[srct_path.find("data/")+len("data/"):srct_path.find(PROCESSED)-1]
+                        dataset_name = srct_path[srct_path.find(PROCESSED+"/")+len(PROCESSED+"/"):srct_path.find(POSTPROCESSING)-1]
+                        site_prefix = self.config[CONFIG_PREFIX]
+                        input_datasets = [PID_PREFIX + dataset_dict[PID]]  # raw histo as input dataset for registered dataset
+                        if len(existing) == 1:
+                            input_datasets += [existing[0][PID]]  # existing as input for registered dataset
+                            site_prefix = existing[0][DATASET_NAME][:existing[0][DATASET_NAME].find('/')]
+
+                        # Add registered data
+                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, "histo-registered")
+                        dataset_dict[API_KEYWORDS] += ["registered", "stitched histology"]
                         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
-                        attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, existing_raw[0][PROPOSAL_ID])
+                        attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
                         failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
                         failed.update(failed_attachments)
 

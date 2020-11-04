@@ -1,4 +1,4 @@
-LOCATION = "DESY/PETRA3/P??"
+LOCATION = "HZG"
 SITE_PREFIX = "P??"
 PATH_GPFS = "/asap3/petra3/gpfs/{}/{}/data/{}/processed/Histology_Comparison_Registration/MgBone"
 DATASET_NAME_PATTERN = "{}/{}/{}/{}"

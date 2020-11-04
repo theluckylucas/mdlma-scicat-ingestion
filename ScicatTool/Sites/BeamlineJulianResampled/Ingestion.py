@@ -40,7 +40,7 @@ class BeamlineResampledIngestor(AbstractIngestor):
         return result
 
 
-    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir):
+    def dataset_derived_name(self, pattern, prefix, experiment_id, dataset, post_processing, subdir, suffix):
         return pattern.format(prefix, experiment_id, dataset, post_processing)
 
 
