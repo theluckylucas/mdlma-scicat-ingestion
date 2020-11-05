@@ -11,7 +11,7 @@ from ..P07.Consts import SITE_PREFIX as P07_SITE_PREFIX
 from ..Beamline.Ingestion import AbstractIngestor
 from ..Beamline.ConfigKeys import *
 from ..Beamline.Consts import PROCESSED
-from ...Datasets.DatasetVirtual import HistoRawDatasetBuilder, VirtualDatasetBuilder
+from ...Datasets.DatasetVirtual import HistoRawDatasetBuilder, HistoRegistedDatasetBuilder
 from ...Datasets.APIKeys import SOURCE_FOLDER, TYPE, DATASET_NAME, PID, PROPOSAL_ID
 from ...Datasets.Consts import TYPE_DERIVED, TYPE_RAW
 from ...REST.Consts import NA
@@ -25,13 +25,13 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
             CONFIG_LOG_SUFFIX: LOG_SUFFIX,
             CONFIG_LOG_FILENAMES: [],
             CONFIG_LOCATION: LOCATION,
-            CONFIG_KEYWORDS: ["registered", "stiched"],
+            CONFIG_KEYWORDS: KEYWORDS,
             CONFIG_SOURCE_PATH: PATH_GPFS,
             CONFIG_PREFIX: SITE_PREFIX,
             CONFIG_FILENAME_IGNORE: FILENAME_IGNORE_PATTERN,
             CONFIG_DATASET_NAME: DATASET_NAME_PATTERN
         }
-        super().__init__(args, config, HistoRawDatasetBuilder, VirtualDatasetBuilder, None)
+        super().__init__(args, config, HistoRawDatasetBuilder, HistoRegistedDatasetBuilder, None)
 
 
     def find_existing_datasets(self, source_folder):
@@ -125,8 +125,8 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
                             site_prefix = existing[0][DATASET_NAME][:existing[0][DATASET_NAME].find('/')]
 
                         # Add registered data
-                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, "histo-registered")
-                        dataset_dict[API_KEYWORDS] += ["registered", "stitched histology"]
+                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, DATASET_NAME_DERIVED_SUFFIX)
+                        dataset_dict[API_KEYWORDS] += KEYWORDS_DERIVED
                         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
                         failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))

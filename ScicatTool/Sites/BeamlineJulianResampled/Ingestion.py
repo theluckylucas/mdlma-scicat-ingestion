@@ -7,7 +7,7 @@ from ..P07.Consts import LOCATION as P07_LOCATION
 from ..P07.Consts import SITE_PREFIX as P07_SITE_PREFIX
 from ..Beamline.Ingestion import AbstractIngestor
 from ..Beamline.ConfigKeys import *
-from ...Datasets.DatasetVirtual import VirtualDatasetBuilder
+from ...Datasets.DatasetVirtual import ResampledDatasetBuilder
 from ...Datasets.APIKeys import SOURCE_FOLDER, TYPE, DATASET_NAME, PID, PROPOSAL_ID
 from ...Datasets.Consts import TYPE_DERIVED
 from ...REST.Consts import NA
@@ -20,13 +20,13 @@ class BeamlineResampledIngestor(AbstractIngestor):
             CONFIG_LOG_SUFFIX: "",
             CONFIG_LOG_FILENAMES: [],
             CONFIG_LOCATION: LOCATION,
-            CONFIG_KEYWORDS: ["resampled"],
+            CONFIG_KEYWORDS: KEYWORDS,
             CONFIG_SOURCE_PATH: PATH_GPFS,
             CONFIG_PREFIX: SITE_PREFIX,
             CONFIG_FILENAME_IGNORE: FILENAME_IGNORE_PATTERN,
             CONFIG_DATASET_NAME: DATASET_NAME_PATTERN
         }
-        super().__init__(args, config, None, VirtualDatasetBuilder, None)
+        super().__init__(args, config, None, ResampledDatasetBuilder, None)
 
 
     def find_existing_datasets(self, source_folder):

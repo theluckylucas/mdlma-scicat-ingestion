@@ -116,11 +116,14 @@ class AbstractDatasetBuilder(ABC):
         def __str__(self):
             return self.MESSAGE.format(', '.join(self.args))
     
-    def __init__(self):
+    def __init__(self, base_keywords):
         super().__init__()
-        self.dataset = {PID: "D{:09.0f}".format(time.time() * PID_FACTOR),
-                        TYPE: TYPE_BASE,
-                        KEYWORDS: []}
+        self.dataset = {
+            PID: "D{:09.0f}".format(time.time() * PID_FACTOR),
+            TYPE: TYPE_BASE,
+            KEYWORDS: set()
+        }
+        self.keywords(base_keywords)
     
     def args(self, args):
         return self.owner_group(args.ownergroup).\
@@ -185,7 +188,7 @@ class AbstractDatasetBuilder(ABC):
         return self
 
     def keywords(self, keywords):
-        self.dataset[KEYWORDS] += keywords
+        self.dataset[KEYWORDS].update(keywords)
         return self
 
     def description(self, description : str):
@@ -240,12 +243,15 @@ class AbstractDatasetBuilder(ABC):
         invalids = self._invalid()
         if invalids:
             raise self.ValidationError(invalids)
+
+        self.dataset[KEYWORDS] = sorted(list(self.dataset[KEYWORDS]))  # sets are not JSON serializable!
+
         return self.dataset
     
     
 class DerivedDatasetBuilder(AbstractDatasetBuilder):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, base_keywords=[]):
+        super().__init__(base_keywords=base_keywords)
         self.dataset[TYPE] = TYPE_DERIVED
         
     def investigator(self, investigator : str):
@@ -265,8 +271,8 @@ class DerivedDatasetBuilder(AbstractDatasetBuilder):
     
     
 class RawDatasetBuilder(AbstractDatasetBuilder):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, base_keywords=[]):
+        super().__init__(base_keywords=base_keywords)
         self.dataset[TYPE] = TYPE_RAW
         
     def principal_investigator(self, principal_investigator : str):

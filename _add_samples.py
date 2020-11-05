@@ -40,9 +40,12 @@ def add_samples(args):
                         description(" ".join(["{}"]*len(args.desc_indices)).format(*[row[i] for i in args.desc_indices]))
                     data = sb.build()
 
-                    uri = URL.format("samples", args.token)
-                    resp = requests.post(uri, headers=HEADERS, data=json.dumps(data))
-                    print("Add Sample", row[0], resp)
+                    if args.simulation:
+                        print(row[0], "Simulation only!")
+                    else:
+                        uri = URL.format("samples", args.token)
+                        resp = requests.post(uri, headers=HEADERS, data=json.dumps(data))
+                        print("Add Sample", row[0], resp)
 
 
 if __name__ == '__main__':
@@ -51,6 +54,7 @@ if __name__ == '__main__':
     parser.add_argument("token", type=str, help="A valid SciCat token of a logged in user (see Settings)")
     parser.add_argument("filename", type=str, help="CSV file with sample data")
     parser.add_argument("desc_indices", type=int, nargs="+", default=[0], help="CSV column indices of information concatenated for description")
+    parser.add_argument("-s", "--simulation", action='store_true', help="Simulates full run, but does NOT(!) call API")
     args = parser.parse_args()
     add_samples(args)
     print('END', datetime.datetime.now())

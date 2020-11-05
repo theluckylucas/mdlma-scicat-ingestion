@@ -7,3 +7,6 @@ POSTPROCESSING = "reco"
 SITE_PREFIX_HISTO = "HZG"
 HISTO_RAW_DIRECTORY = "Histology_Microscopy"
 LOG_SUFFIX = ".tif_meta.xml"
+DATASET_NAME_DERIVED_SUFFIX = "histo-registered"
+KEYWORDS = ["histology"]
+KEYWORDS_DERIVED = ["registered", "stitched"]

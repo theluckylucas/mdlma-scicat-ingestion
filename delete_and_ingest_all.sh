@@ -5,10 +5,9 @@ if [[ $# -ne 1 ]]; then
     exit 2
 fi
 
+SIMULATION="-s"
 NUMBEROFTHUMBNAILS="4"
 VERBOSELEVEL="0"  # 0,1,2
-
-echo "Scicat token expected as first argument"
 
 cmd="/home/lucaschr/.conda/envs/py35/bin/python"
 
@@ -16,39 +15,60 @@ cmd="/home/lucaschr/.conda/envs/py35/bin/python"
 
 script="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/_delete_all_models.py"
 
-$cmd $script $1 "samples sampleId"
-$cmd $script $1 "proposals proposalId"
-$cmd $script $1 "datasets pid"
-$cmd $script $1 "origdatablocks id"
-$cmd $script $1 "attachment id"
+read -p "Press Enter to continue with deletion of samples"
+args="samples sampleId"
+$cmd $script $1 $args $SIMULATION
+
+read -p "Press Enter to continue with deletion of proposals"
+args="proposals proposalId"
+$cmd $script $1 $args $SIMULATION
+
+read -p "Press Enter to continue with deletion of datasets"
+args="datasets pid"
+$cmd $script $1 $args $SIMULATION
+
+read -p "Press Enter to continue with deletion of datablocks"
+args="origdatablocks id"
+$cmd $script $1 $args $SIMULATION
+
+read -p "Press Enter to continue with deletion of attachments"
+args="attachment id"
+$cmd $script $1 $args $SIMULATION
 
 # Add samples
 
 script="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/_add_samples.py"
 
-$cmd $script $1 _samples_synchroload.csv 0 7 6
-$cmd $script $1 _samples_mgbone.csv 0 7 6
+read -p "Press Enter to add samples from csv"
+$cmd $script $1 _samples_synchroload.csv 0 7 6 $SIMULATION
+$cmd $script $1 _samples_mgbone.csv 0 7 6 $SIMULATION
 
 # Ingestion
 
-p05="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP05.py"
-p07="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP07.py"
 argsp="hasylab julian.moosmann@desy.de"
 argso="-n ${NUMBEROFTHUMBNAILS} -b -v ${VERBOSELEVEL}"
 
-$cmd $p05 $1 $argsp 11004936 2018 $argso 
-$cmd $p05 $1 $argsp 11004263 2018 $argso 
-$cmd $p05 $1 $argsp 11004016 2017 $argso 
-$cmd $p05 $1 $argsp 11003288 2017 $argso 
-$cmd $p05 $1 $argsp 11003440 2017 $argso 
-$cmd $p05 $1 $argsp 11005553 2018 $argso 
-$cmd $p05 $1 $argsp 11003950 2017 $argso 
-$cmd $p05 $1 $argsp 11003773 2017 $argso 
-$cmd $p05 $1 $argsp 11001978 2016 $argso 
-$cmd $p05 $1 $argsp 11006991 2019 $argso 
-$cmd $p05 $1 $argsp 11005842 2019 $argso 
-$cmd $p07 $1 $argsp 11006991 2019 $argso -k tomography
+p05="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP05.py"
+p07="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP07.py"
+pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py"
+pvb="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestRegistered.py"
 
-pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py "
+read -p "Press Enter to add beamtimes from GPFS"
+$cmd $p05 $1 $argsp 11004936 2018 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11004263 2018 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11004016 2017 $argso $SIMULATION 
+$cmd $p05 $1 $argsp 11003288 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11003440 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11005553 2018 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11003950 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11003773 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11006991 2019 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11005842 2019 $argso $SIMULATION
+$cmd $p07 $1 $argsp 11006991 2019 $argso $SIMULATION -k tomography
 
-$cmd $pvj $1 $argsp 11001978 2016 p05 $argso -m -k resampled
+read -p "Press Enter to add Julian's resampled data from GPFS"
+$cmd $pvj $1 $argsp 11001978 2016 p05 $argso $SIMULATION -m -k resampled
+
+read -p "Press Enter to add Berit's registered data from GPFS"
+$cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULATION -m -e .tif .tiff .img .ndpi .vgl .svg .png
