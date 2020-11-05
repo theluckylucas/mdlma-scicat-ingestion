@@ -53,7 +53,7 @@ class AbstractIngestor(ABC):
 
         total_size = folder_total_size(directory)
 
-        dsb = self.raw_dataset_builder().\
+        dsb = self.raw_dataset_builder(base_keywords=self.config[CONFIG_KEYWORDS]).\
             args(self.args).\
             proposal_id(proposal_dict[PROPOSAL_ID_API]).\
             owner(get_ownername(directory)).\
@@ -103,7 +103,7 @@ class AbstractIngestor(ABC):
                 for key, value in img_metadata.items():
                     smb.add(key, value)
 
-        dsb = self.derived_dataset_builder().\
+        dsb = self.derived_dataset_builder(base_keywords=self.config[CONFIG_KEYWORDS]).\
             args(self.args).\
             size(total_size).\
             owner(get_ownername(source_folder)).\
