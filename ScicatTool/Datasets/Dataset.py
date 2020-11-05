@@ -5,12 +5,15 @@ from .APIKeys import *
 from .Consts import *
 
 
+SEPARATOR = ", "
+
+
 class ScientificMetadataBuilder():    
     def __init__(self):
         super().__init__()
         self.metadata = {}
 
-    def add(self, key : str, value):
+    def set_value(self, key : str, value):
         value_type = "number"
         try:
             int(value)
@@ -31,7 +34,18 @@ class ScientificMetadataBuilder():
         self.metadata[key] = add_dict
         return self
 
+    def add_value(self, key : str, value : str):
+        if key in self.metadata.keys():
+            self.metadata[key]["value"].add(value)
+        else:
+            self.set_value(key, value)
+            self.metadata[key]["value"] = {self.metadata[key]["value"]}
+        return self
+
     def build(self):
+        for value in self.metadata.values():
+            if isinstance(value["value"], set):
+                value["value"] = SEPARATOR.join(sorted(list(value["value"])))
         return self.metadata
 
 
