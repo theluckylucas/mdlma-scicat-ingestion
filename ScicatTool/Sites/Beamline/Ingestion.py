@@ -8,7 +8,7 @@ from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
 from ...Datasets.Consts import PID_PREFIX
 from ...Datasets.Dataset import AttachmentBuilder, ScientificMetadataBuilder
 from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size, get_ext
-from ...Filesystem.ImInfo import get_dict_from_numpy, get_uri_from_numpy, load_numpy_from_image, TYPES, SUPPORTED_IMAGE_TYPES
+from ...Filesystem.ImInfo import get_uri_from_numpy, load_numpy_from_image, TYPES, SUPPORTED_IMAGE_TYPES
 from ...REST.Consts import NA
 from ...REST import API
 from .Consts import *
@@ -16,6 +16,7 @@ from .ConfigKeys import *
 
 from pprint import pprint
 from abc import ABC
+import numpy as np
 import datetime
 import json
 import re
@@ -92,16 +93,33 @@ class AbstractIngestor(ABC):
                                                  subdir,\
                                                  suffix)
         creation_time = NA
-        smb = ScientificMetadataBuilder().add(BINNING, binning)
+        smb = ScientificMetadataBuilder()
+        
+        if binning is not None:
+            smb.add(BINNING, binning)
 
         if images_in_folder:
-            first_image_in_folder = "{}/{}".format(source_folder, images_in_folder[0])
-            creation_time = get_creation_date(source_folder)
-            img_array, img_format = load_numpy_from_image(first_image_in_folder)
-            if img_array is not None:
-                img_metadata = get_dict_from_numpy(img_array, img_format)
-                for key, value in img_metadata.items():
-                    smb.add(key, value)
+            mins = {}
+            maxs = {}
+            for img in images_in_folder:
+                first_image_in_folder = "{}/{}".format(source_folder, img)
+                creation_time = get_creation_date(source_folder)
+                img_array, img_format = load_numpy_from_image(first_image_in_folder)
+                if img_array is not None:
+                    smb.add_value(img_format + " datatypes", img_array.dtype.name) 
+                    for i in range(len(img_array.shape)):
+                        key = img_format + " shape[" + str(i) + "]"
+                        if key not in mins.keys():
+                            vmin = np.inf
+                            vmax = -np.inf
+                        else:
+                            vmin = mins[key]
+                            vmax = maxs[key]
+                        mins[key] = min(vmin, img_array.shape[i])
+                        maxs[key] = max(vmax, img_array.shape[i])
+            for key in mins.keys():
+                smb.set_value(key + " min", mins[key])
+                smb.set_value(key + " max", maxs[key])
 
         dsb = self.derived_dataset_builder(base_keywords=self.config[CONFIG_KEYWORDS]).\
             args(self.args).\

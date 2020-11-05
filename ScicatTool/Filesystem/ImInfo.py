@@ -44,13 +44,6 @@ def load_numpy_from_image(filename):
     return img_array, img_format
 
 
-def get_dict_from_numpy(img_array, img_format):
-    result = { "{} datatype".format(img_format): img_array.dtype.name }
-    for dim, ext in enumerate(img_array.shape):
-        result["{} shape[{}]".format(img_format, dim)] = ext
-    return result
-
-
 def get_uri_from_numpy(img_array, target_size=(150, 150)):
     img = img_array.astype(numpy.float32)
     img = cv2.resize(img, target_size, cv2.INTER_LINEAR)

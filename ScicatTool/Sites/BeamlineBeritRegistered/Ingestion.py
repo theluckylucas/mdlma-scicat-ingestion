@@ -99,7 +99,7 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
                                 xml_metadata = HistoMetaParser(path_xml_filename).get_dict()
                                 smb = ScientificMetadataBuilder()
                                 for key, value in xml_metadata.items():
-                                    smb.add(key, value)
+                                    smb.set_value(key, value)
                                 creation_time = get_creation_date(path_xml_filename)
                                 break
 
@@ -125,7 +125,7 @@ class BeamlineRegisteredStichedHistoIngestor(AbstractIngestor):
                             site_prefix = existing[0][DATASET_NAME][:existing[0][DATASET_NAME].find('/')]
 
                         # Add registered data
-                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, DATASET_NAME_DERIVED_SUFFIX)
+                        dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, None, site_prefix, experiment_id, DATASET_NAME_DERIVED_SUFFIX)
                         dataset_dict[API_KEYWORDS] += KEYWORDS_DERIVED
                         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
