@@ -13,5 +13,6 @@ if __name__ == '__main__':
     print('START', datetime.datetime.now())
     parser = RegisteredHistoExperimentIngestionParser()
     args = parser.parse_args()
+    print(args)
     BeamlineRegisteredStichedHistoIngestor(args).ingest_experiment()
     print('END', datetime.datetime.now())

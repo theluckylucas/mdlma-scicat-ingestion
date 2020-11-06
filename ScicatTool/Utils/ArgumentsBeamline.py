@@ -2,7 +2,7 @@ from .Arguments import ScicatIngestDatasetParser, ScicatParser
 from ..Datasets.APIKeys import *
 
 
-FILE_EXTS = [".tif", ".tiff", ".img"]
+DEFAULT_FILE_EXTS = [".tif", ".tiff", ".img"]
 
 
 class BeamlineExperimentIngestionParser(ScicatIngestDatasetParser):
@@ -10,7 +10,7 @@ class BeamlineExperimentIngestionParser(ScicatIngestDatasetParser):
         super().__init__()
         self.add_argument("experiment", type=int, help="an integer for the beamline experiment ID")
         self.add_argument("year", type=int, help="an integer for the year when the experiment was conducted")
-        self.add_argument("-e", "--extensions", type=str, nargs="+", default=FILE_EXTS, help="Accepted file extensions of data files (default: {})".format(FILE_EXTS))
+        self.add_argument("-e", "--extensions", type=str, nargs="+", default=DEFAULT_FILE_EXTS, help="Accepted file extensions of data files (default: {})".format(DEFAULT_FILE_EXTS))
 
 
 class BeamlineExperimentDeletionParser(ScicatParser):
@@ -43,17 +43,19 @@ class P07ExperimentDeletionParser(BeamlineExperimentDeletionParser):
     pass
 
 
-class ResampledExperimentIngestionParser(BeamlineExperimentIngestionParser):
+class PostprocessedExperimentIngestionParser(BeamlineExperimentIngestionParser):
     def __init__(self):
         super().__init__()
         self.add_argument("beamline", type=str, default="p05", help="GPFS directory name of virtual experiment folder, like p03, p05, p07, ...")
-        self.add_argument("-m", "--matchexisting", action="store_true", help="Resampled dataset has to match with exactly one existing reco dataset as input in Scicat")
+        self.add_argument("-m", "--matchexisting", action="store_true", help="Postprocessed dataset has to match with exactly one existing SRCT reco dataset as input in Scicat")
+    
+
+class ResampledExperimentIngestionParser(PostprocessedExperimentIngestionParser):
+    pass
 
 
-class RegisteredHistoExperimentIngestionParser(BeamlineExperimentIngestionParser):
+class RegisteredHistoExperimentIngestionParser(PostprocessedExperimentIngestionParser):
     def __init__(self):
         super().__init__()
-        self.add_argument("beamline", type=str, default="p05", help="GPFS directory name or virtual experiment folder, like p03, p05, p07, ...")
         self.add_argument("csvfile", type=str, help="CSV filename including the mapping of sample id, histo id, and SRCT experiment")
-        self.add_argument("-m", "--matchexisting", action="store_true", help="Registered dataset has to match with exactly one existing SRCT reco dataset as input in Scicat")
 

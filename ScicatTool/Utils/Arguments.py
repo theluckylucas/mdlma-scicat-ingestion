@@ -1,5 +1,6 @@
 import argparse
 from ..Datasets.APIKeys import *
+from ..REST.Consts import NA
 
 
 class ScicatParser(argparse.ArgumentParser):
@@ -20,3 +21,4 @@ class ScicatIngestDatasetParser(ScicatParser):
         self.add_argument("-t", "--thumbnailsize", type=int, default=150, help="Thumbnail size (default: 150px)")
         self.add_argument("-b", "--blankdatablock", action='store_true', help="Also adds datasets without datafiles")
         self.add_argument("-k", "--keywords", type=str, nargs='+', default=[], help="Additional keywords to be added for this experiments")
+        self.add_argument("-u", "--used_software", type=str, nargs='+', default=[], help="Software used for postprocessing")
