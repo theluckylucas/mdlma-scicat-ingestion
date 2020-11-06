@@ -13,5 +13,6 @@ if __name__ == '__main__':
     print('START', datetime.datetime.now())
     parser = P05ExperimentDeletionParser()
     args = parser.parse_args()
+    print(args)
     P05Deleter(args).delete_experiment()
     print('END', datetime.datetime.now())

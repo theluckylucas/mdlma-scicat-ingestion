@@ -32,7 +32,7 @@ args="origdatablocks id"
 $cmd $script $1 $args $SIMULATION
 
 read -p "Press Enter to continue with deletion of attachments"
-args="attachment id"
+args="attachments id"
 $cmd $script $1 $args $SIMULATION
 
 # Add samples
@@ -54,16 +54,15 @@ pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py"
 pvb="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestRegistered.py"
 
 read -p "Press Enter to add beamtimes from GPFS"
-$cmd $p05 $1 $argsp 11004936 2018 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11004263 2018 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11004016 2017 $argso $SIMULATION 
+$cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION 
 $cmd $p05 $1 $argsp 11003288 2017 $argso $SIMULATION
 $cmd $p05 $1 $argsp 11003440 2017 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11005553 2018 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11003950 2017 $argso $SIMULATION
 $cmd $p05 $1 $argsp 11003773 2017 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION
-$cmd $p05 $1 $argsp 11006991 2019 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11003950 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11004016 2017 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11004263 2018 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11004936 2018 $argso $SIMULATION
+$cmd $p05 $1 $argsp 11005553 2018 $argso $SIMULATION
 $cmd $p05 $1 $argsp 11005842 2019 $argso $SIMULATION
 $cmd $p07 $1 $argsp 11006991 2019 $argso $SIMULATION -k tomography
 

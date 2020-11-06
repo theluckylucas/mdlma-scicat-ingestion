@@ -96,7 +96,7 @@ class AbstractIngestor(ABC):
         smb = ScientificMetadataBuilder()
         
         if binning is not None:
-            smb.add(BINNING, binning)
+            smb.set_value(BINNING, binning)
 
         if images_in_folder:
             mins = {}
@@ -129,9 +129,9 @@ class AbstractIngestor(ABC):
             input_datasets(input_datasets).\
             is_published(self.args.publish).\
             creation_time(creation_time).\
-            used_software(NA).\
             keywords([postprocessing.lower()]).\
             investigator(investigator).\
+            used_software(self.args.used_software).\
             dataset_name(dataset_name).\
             number_of_files(len(images_in_folder)).\
             scientific_metadata(smb.build())
@@ -270,7 +270,7 @@ class AbstractIngestor(ABC):
                     log_metadata = self.log_parser(path_log_filename).get_dict()
                     smb = ScientificMetadataBuilder()
                     for key, value in log_metadata.items():
-                        smb.add(key, value)
+                        smb.set_value(key, value)
                     creation_time = get_creation_date(path_log_filename)
 
                     print("=>", dataset)

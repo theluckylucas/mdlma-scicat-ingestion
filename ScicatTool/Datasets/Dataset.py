@@ -276,7 +276,7 @@ class DerivedDatasetBuilder(AbstractDatasetBuilder):
         self.dataset[INPUT_DATASETS] = input_datasets
         return self
     
-    def used_software(self, used_software):
+    def used_software(self, used_software : list):
         self.dataset[USED_SOFTWARE] = used_software
         return self
     
