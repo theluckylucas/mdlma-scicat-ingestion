@@ -13,19 +13,21 @@ HEADERS = {
     'Content-Type': 'application/json',
     'Accept':       'application/json'
 }
-URL = "https://scicat-mdlma.desy.de/api/v3/{}/{}?access_token={}"
+URL = "https://scicat-mdlma.desy.de/api/v3/{}?access_token={}"
 
 
 def delete_models(args):
-    resp = requests.get(URL.format(args.model, "findOne", args.token), headers=HEADERS, data={})
+    resp = requests.get(URL.format(args.model, args.token), headers=HEADERS, data={})
+    data = json.loads(resp.text)
+    if resp.status_code == 200:
+        print("Found", len(data), "models.")
     if args.simulation:
-        print("Simulation only! Does any of", args.model, "exist ? -->", resp)
+        print("Simulation only!")
     else:
-        while resp.status_code == 200:
-            dic = json.loads(resp.text)
-            aid = dic[args.idkey]
-            print(aid, requests.delete(URL.format(args.model, aid, args.token), headers=HEADERS, data={}))
-            resp = requests.get(URL.format(args.model, "findOne", args.token), headers=HEADERS, data={})
+        for dic in data:
+            aid = dic[args.idkey].replace("/", "%2F")
+            deleted = requests.delete(URL.format(args.model + "/" + aid, args.token), headers=HEADERS)
+            print(aid, deleted)
 
 
 if __name__ == '__main__':
