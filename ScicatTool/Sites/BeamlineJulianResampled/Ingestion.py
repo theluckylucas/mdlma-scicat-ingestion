@@ -44,15 +44,19 @@ class BeamlineResampledIngestor(AbstractIngestor):
         return pattern.format(prefix, experiment_id, dataset, post_processing)
 
 
+    def _extract_1100_experiment_id(self, string):
+        pos_id = string.find("1100")
+        return string[pos_id : pos_id + 8], pos_id
+
+
     def ingest_experiment(self):
         failed = {}
         self.datasets = API.get_datasets(self.args.token, self.args.simulation, self.args.verbose)
         directory = PATH_GPFS.format(self.args.beamline, self.args.year, self.args.experiment)
         if path_exists(directory):
             for dataset in list_dirs(directory):
-                pos_id = dataset.find("_1100")
-                experiment_id = dataset[pos_id + 1: pos_id + 9]
-                dataset_name = dataset[pos_id + 10:]
+                experiment_id, pos_id = self._extract_1100_experiment_id(dataset)
+                dataset_name = dataset[pos_id + 9:]
                 existing = self.find_existing_datasets(experiment_id, dataset_name, TYPE_RAW)
                 
                 print(dataset_name, "--> Matching {:d} raw dataset(s) in Scicat".format(len(existing)))
@@ -81,6 +85,18 @@ class BeamlineResampledIngestor(AbstractIngestor):
                 attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
                 failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
                 failed.update(failed_attachments)
+
+                sf = dataset_dict[SOURCE_FOLDER]
+                for year in range(2015, 2020):  # 
+                    segmentation_path = PATH_SEGM.format(year, experiment_id, dataset_name, "Final_x_pred.tif")
+                    print(segmentation_path, end=' ')
+                    if path_exists(segmentation_path):
+                        img_array, _ = load_numpy_from_image(segmentation_path)
+                        print("exists:", img_array.shape)
+                        break
+                    else:
+                        print("does not exist.")
+
 
         if failed:    
             print("\n---!--- FAILURES ---!---")
