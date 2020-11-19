@@ -35,7 +35,7 @@ $cmd $script $1 $args $SIMULATION
 script="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/_add_samples.py"
 
 $cmd $script $1 _samples_synchroload.csv 0 7 6 $SIMULATION
-$cmd $script $1 _samples_mgbone.csv 0 7 6 $SIMULATION
+$cmd $script $1 _samples_mgbone.csv 0 4 9 $SIMULATION
 
 # Ingestion
 
