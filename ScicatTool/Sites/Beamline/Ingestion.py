@@ -7,7 +7,8 @@ from ...Datasets.APIKeys import PID, SOURCE_FOLDER, SIZE, ATTACHMENT_CAPTION
 from ...Datasets.APIKeys import PROPOSAL_ID as PROPOSAL_ID_API_Datasets
 from ...Datasets.Consts import PID_PREFIX
 from ...Datasets.Dataset import AttachmentBuilder, ScientificMetadataBuilder
-from ...Filesystem.FSInfo import get_username, get_ownername, list_files, list_dirs, path_exists, get_creation_date, folder_total_size, get_ext
+from ...Filesystem.FSInfo import get_username, list_files, list_dirs, path_exists, get_creation_date, folder_total_size, get_ext
+from ...Filesystem.FSInfoUnix import get_ownername
 from ...Filesystem.ImInfo import get_uri_from_numpy, load_numpy_from_image, TYPES, SUPPORTED_IMAGE_TYPES
 from ...REST.Consts import NA
 from ...REST import API

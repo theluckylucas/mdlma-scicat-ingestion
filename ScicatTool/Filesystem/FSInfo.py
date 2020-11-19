@@ -1,7 +1,6 @@
 import getpass
 import platform
 from os import stat, listdir, path, scandir, walk
-from pwd import getpwuid
 from datetime import datetime
 
 
@@ -16,14 +15,6 @@ def get_ext(filename):
 
 def get_username():
     return getpass.getuser()
-
-
-def get_ownername(filename):
-    uid = stat(filename).st_uid
-    try:
-        return getpwuid(uid).pw_name
-    except:
-        return str(uid)
 
 
 def path_exists(directory):

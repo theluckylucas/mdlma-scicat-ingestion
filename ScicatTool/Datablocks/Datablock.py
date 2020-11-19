@@ -3,7 +3,8 @@ import time
 from .APIKeys import *
 from ..Datasets.Consts import TYPE_RAW, TYPE_DERIVED, PID_PREFIX
 from ..Datasets.APIKeys import TYPE, PID
-from ..Filesystem.FSInfo import get_creation_date, get_ownername, file_size
+from ..Filesystem.FSInfo import get_creation_date, file_size
+from ..Filesystem.FSInfoUnix import get_ownername
 
 
 class OrigDatablockBuilder():
