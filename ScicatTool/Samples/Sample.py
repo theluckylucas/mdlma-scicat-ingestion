@@ -3,19 +3,10 @@ import time
 from .APIKeys import *
 from ..Datasets.Consts import PID_PREFIX, TYPE_DERIVED, TYPE_RAW
 from ..Datasets.APIKeys import PID, TYPE
+from ..Utils.Errors import ValidationError
 
 
-class SampleBuilder():
-    class ValidationError(Exception):
-        MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
-                  "Please check scicatproject.github.io/api-documentation/ for valid keys."
-        
-        def __init__(self, args):
-            self.args = args
-            
-        def __str__(self):
-            return self.MESSAGE.format(', '.join(self.args))
-    
+class SampleBuilder():    
     def __init__(self, sample_id):
         super().__init__()
         self.sample = {SAMPLE_ID: sample_id}
@@ -67,7 +58,7 @@ class SampleBuilder():
     def build(self):
         invalids = self._invalid()
         if invalids:
-            raise self.ValidationError(invalids)
+            raise ValidationError(invalids)
         return self.sample
 
 

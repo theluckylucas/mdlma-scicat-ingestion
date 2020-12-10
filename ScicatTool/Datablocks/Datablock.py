@@ -5,19 +5,10 @@ from ..Datasets.Consts import TYPE_RAW, TYPE_DERIVED, PID_PREFIX
 from ..Datasets.APIKeys import TYPE, PID
 from ..Filesystem.FSInfo import get_creation_date, file_size
 from ..Filesystem.FSInfoUnix import get_ownername
+from ..Utils.Errors import ValidationError
 
 
-class OrigDatablockBuilder():
-    class ValidationError(Exception):
-        MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
-                  "Please check scicatproject.github.io/api-documentation/ for valid keys."
-        
-        def __init__(self, args):
-            self.args = args
-            
-        def __str__(self):
-            return self.MESSAGE.format(', '.join(self.args))
-    
+class OrigDatablockBuilder():    
     def __init__(self, source_folder):
         super().__init__()
         self.datablock = {}
@@ -98,5 +89,5 @@ class OrigDatablockBuilder():
     def build(self):
         invalids = self._invalid()
         if invalids:
-            raise self.ValidationError(invalids)
+            raise ValidationError(invalids)
         return self.datablock

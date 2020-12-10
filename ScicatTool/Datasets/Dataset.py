@@ -3,6 +3,7 @@ import time
 
 from .APIKeys import *
 from .Consts import *
+from ..Utils.Errors import ValidationError
 
 
 SEPARATOR = ", "
@@ -49,17 +50,7 @@ class ScientificMetadataBuilder():
         return self.metadata
 
 
-class AttachmentBuilder():
-    class ValidationError(Exception):
-        MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
-                  "Please check scicatproject.github.io/api-documentation/ for valid keys."
-        
-        def __init__(self, args):
-            self.args = args
-            
-        def __str__(self):
-            return self.MESSAGE.format(', '.join(self.args))
-    
+class AttachmentBuilder():    
     def __init__(self):
         super().__init__()
         self.attachment = {}
@@ -115,21 +106,11 @@ class AttachmentBuilder():
     def build(self):
         invalids = self._invalid()
         if invalids:
-            raise self.ValidationError(invalids)
+            raise ValidationError(invalids)
         return self.attachment
 
 
-class AbstractDatasetBuilder(ABC):
-    class ValidationError(Exception):
-        MESSAGE = "Validation failed for the following properties, either missing or unknown: {}. "+\
-                  "Please check scicatproject.github.io/api-documentation/ for valid keys."
-        
-        def __init__(self, args):
-            self.args = args
-            
-        def __str__(self):
-            return self.MESSAGE.format(', '.join(self.args))
-    
+class AbstractDatasetBuilder(ABC):    
     def __init__(self, base_keywords):
         super().__init__()
         self.dataset = {
@@ -256,7 +237,7 @@ class AbstractDatasetBuilder(ABC):
     def build(self):
         invalids = self._invalid()
         if invalids:
-            raise self.ValidationError(invalids)
+            raise ValidationError(invalids)
 
         self.dataset[KEYWORDS] = sorted(list(self.dataset[KEYWORDS]))  # sets are not JSON serializable!
 
