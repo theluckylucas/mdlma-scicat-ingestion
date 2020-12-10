@@ -16,7 +16,7 @@ class ScicatIngestDatasetParser(ScicatParser):
         self.add_argument("ownergroup", type=str, help=PROPERTIES[OWNER_GROUP])
         self.add_argument("contactemail", type=str, help=PROPERTIES[CONTACT_EMAIL])
         self.add_argument("-p", "--publish", action='store_true', help=PROPERTIES[IS_PUBLISHED])
-        self.add_argument("-a", "--accessgroups", type=str, nargs='+', default=["public"], help=PROPERTIES[ACCESS_GROUPS])
+        self.add_argument("-a", "--accessgroups", type=str, nargs='+', default=["public", "wb", "it", "external", "hasylab"], help=PROPERTIES[ACCESS_GROUPS])
         self.add_argument("-n", "--nattachments", type=int, default=1, help="Number of image attachments to a dataset (default: 1)")
         self.add_argument("-t", "--thumbnailsize", type=int, default=150, help="Thumbnail size (default: 150px)")
         self.add_argument("-b", "--blankdatablock", action='store_true', help="Also adds datasets without datafiles")
