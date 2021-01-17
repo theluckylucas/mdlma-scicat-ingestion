@@ -11,3 +11,7 @@ class HistoRegistedDatasetBuilder(DerivedDatasetBuilder):
 
 class ResampledDatasetBuilder(DerivedDatasetBuilder):
     pass
+
+
+class SegmentedDatasetBuilder(DerivedDatasetBuilder):
+    pass

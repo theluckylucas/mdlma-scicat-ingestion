@@ -59,3 +59,8 @@ class RegisteredHistoExperimentIngestionParser(PostprocessedExperimentIngestionP
         super().__init__()
         self.add_argument("csvfile", type=str, help="CSV filename including the mapping of sample id, histo id, and SRCT experiment")
 
+
+class SegmentedExperimentIngestionParser(PostprocessedExperimentIngestionParser):
+    def __init__(self):
+        super().__init__()
+        self.add_argument("csvfile", type=str, help="CSV filename including the list of segmentation folders")

@@ -61,7 +61,7 @@ class BeamlineResampledIngestor(AbstractIngestor):
                 
                 print(dataset_name, "--> Matching {:d} raw dataset(s) in Scicat".format(len(existing)))
                 if self.args.matchexisting and len(existing) != 1:
-                    failed[dataset_name] = "Not matching with a single existing dataset - omitting!"
+                    failed[dataset_name] = "Not matching with a single existing dataset - skipping!"
                     continue
                 
                 site_prefix = self.config[CONFIG_PREFIX]
