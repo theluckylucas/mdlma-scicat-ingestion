@@ -78,7 +78,7 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
         else:
             START = '/asap3/petra3/gpfs/'
             end_pos = source_folder[len(START):].find('/')
-            site = source_folder[len(START):end_pos]
+            site = source_folder[len(START):len(START)+end_pos]
             pos_id = source_folder.find("1100")
             experiment = source_folder[pos_id : pos_id + 8]
         return site.upper(), experiment
@@ -102,13 +102,20 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
 
                 existing_directory = self.find_existing_datasets_by_directory(csv_directory, TYPE_DERIVED)
                 print(csv_name, "--> Matching {:d} existing dataset(s) in Scicat by source folder".format(len(existing_directory)))
+
+                dataset_dict = None
+                proposal_id = NA
+                input_datasets = [NA]
+
+                # 1. add original data, if not yet in scicat
                 if len(existing_directory) > 1:
                     failed[csv_name] = "More than one dataset exists with identical source folder - skipping!"
                     continue
                 elif len(existing_directory) == 1:
                     dataset_dict = existing_directory[0]
-
+                    
                     print("existing dataset:", dataset_dict[PID])
+                    input_datasets = [dataset_dict[PID]]
                 else:
                     site_prefix, experiment_id = self.get_site_and_experiment(csv_directory)
                     print("SITE", site_prefix, " | EXPERIMENT", experiment_id)
@@ -119,13 +126,10 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                         failed[dataset_name] = "Not matching with a single existing dataset - skipping!"
                         continue
                     
-                    proposal_id = NA
                     if len(existing_raw_dataset) == 1:
                         input_datasets = [existing_raw_dataset[0][PID]]
                         if PROPOSAL_ID in existing_raw_dataset[0].keys():
-                            proposal_id = existing_raw_dataset[0][PROPOSAL_ID]
-                    else:
-                        input_datasets = [NA]
+                            proposal_id = existing_raw_dataset[0][PROPOSAL_ID]                    
 
                     dataset_dict, filename_list = self._create_derived(dataset_from_csv, csv_directory, "", POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, IMAGES_FULL)
                     datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
@@ -134,7 +138,74 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                     failed.update(failed_attachments)
 
                     print("new dataset:", dataset_dict[PID])
+                    input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]
 
+                dataset_dict = None
+                if not len(input_datasets) == 1 or not NA in input_datasets:
+
+                    # 2. add processed image data, if not yet in scicat
+                    csv_name_processed = csv_name[:-len(IMAGES_FULL)] + IMAGES
+                    csv_directory_processed = segmented[csv_name_processed]
+                    dataset_from_csv_processed = self.get_dataset_name_from_source_folder(csv_directory_processed, csv_name_processed)
+
+                    existing_directory = self.find_existing_datasets_by_directory(csv_directory_processed, TYPE_DERIVED)
+                    print(csv_name_processed, "--> Matching {:d} existing processed dataset(s) in Scicat by source folder".format(len(existing_directory)))
+
+                    if len(existing_directory) > 1:
+                        failed[csv_name] = "More than one dataset exists with identical source folder - skipping!"
+                        continue
+                    elif len(existing_directory) == 1:
+                        dataset_dict = existing_directory[0]
+                        
+                        print("existing dataset:", dataset_dict[PID])
+                        input_datasets = [dataset_dict[PID]]
+                    else:
+                        dataset_dict, filename_list = self._create_derived(dataset_from_csv_processed,
+                                                                            csv_directory_processed,
+                                                                            "",
+                                                                            POSTPROCESSING,
+                                                                            input_datasets,
+                                                                            NA,
+                                                                            site_prefix,
+                                                                            experiment_id,
+                                                                            IMAGES)
+                        datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
+                        attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
+                        failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
+                        failed.update(failed_attachments)
+
+                        print("new dataset:", dataset_dict[PID])
+                        input_datasets = ["{}{}".format(PID_PREFIX, dataset_dict[PID])]
+
+                    dataset_dict = None
+                    if not len(input_datasets) == 1 or not NA in input_datasets:
+
+                        # 3. add label data, if not yet in scicat
+                        csv_name_label = csv_name[:-len(IMAGES_FULL)] + LABELS
+                        csv_directory_label = segmented[csv_name_label]
+                        dataset_from_csv_label = self.get_dataset_name_from_source_folder(csv_directory_label, csv_name_label)
+
+                        existing_directory = self.find_existing_datasets_by_directory(csv_directory_label, TYPE_DERIVED)
+                        print(csv_name_label, "--> Matching {:d} existing label dataset(s) in Scicat by source folder".format(len(existing_directory)))
+
+                        if not existing_directory:
+                            dataset_dict, filename_list = self._create_derived(dataset_from_csv_label,
+                                                                                csv_directory_label,
+                                                                                "",
+                                                                                POSTPROCESSING,
+                                                                                input_datasets,
+                                                                                NA,
+                                                                                site_prefix,
+                                                                                experiment_id,
+                                                                                LABELS)
+                            datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
+                            attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
+                            failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
+                            failed.update(failed_attachments)
+
+                            print("new dataset:", dataset_dict[PID])
+
+                                # TODO kezwords!!!!
             
 
             """
