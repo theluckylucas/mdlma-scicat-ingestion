@@ -64,3 +64,6 @@ class SegmentedExperimentIngestionParser(PostprocessedExperimentIngestionParser)
     def __init__(self):
         super().__init__()
         self.add_argument("csvfile", type=str, help="CSV filename including the list of segmentation folders")
+        self.add_argument("--keywordsf", type=str, nargs='+', default=['resampled'], help="Additional keywords to be added for the full original images")
+        self.add_argument("--keywordsi", type=str, nargs='+', default=['resampled'], help="Additional keywords to be added for the processed images")
+        self.add_argument("--keywordsl", type=str, nargs='+', default=['segmented'], help="Additional keywords to be added for the labels")

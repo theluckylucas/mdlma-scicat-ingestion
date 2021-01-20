@@ -106,6 +106,8 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                 dataset_dict = None
                 proposal_id = NA
                 input_datasets = [NA]
+                site_prefix, experiment_id = self.get_site_and_experiment(csv_directory)
+                print("SITE", site_prefix, " | EXPERIMENT", experiment_id)
 
                 # 1. add original data, if not yet in scicat
                 if len(existing_directory) > 1:
@@ -117,9 +119,6 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                     print("existing dataset:", dataset_dict[PID])
                     input_datasets = [dataset_dict[PID]]
                 else:
-                    site_prefix, experiment_id = self.get_site_and_experiment(csv_directory)
-                    print("SITE", site_prefix, " | EXPERIMENT", experiment_id)
-
                     existing_raw_dataset = self.find_existing_datasets_by_experiment(experiment_id, dataset_from_csv, TYPE_RAW)
                     print(dataset_from_csv, "--> {:d} possible raw dataset(s) in Scicat found".format(len(existing_raw_dataset)))
                     if self.args.matchexisting and len(existing) != 1:
@@ -132,6 +131,7 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                             proposal_id = existing_raw_dataset[0][PROPOSAL_ID]                    
 
                     dataset_dict, filename_list = self._create_derived(dataset_from_csv, csv_directory, "", POSTPROCESSING, input_datasets, NA, site_prefix, experiment_id, IMAGES_FULL)
+                    dataset_dict[API_KEYWORDS] += self.args.keywordsf
                     datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                     attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
                     failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
@@ -169,6 +169,7 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                                                                             site_prefix,
                                                                             experiment_id,
                                                                             IMAGES)
+                        dataset_dict[API_KEYWORDS] += self.args.keywordsi
                         datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                         attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
                         failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
@@ -198,65 +199,13 @@ class BeamlineSegmentedIngestor(AbstractIngestor):
                                                                                 site_prefix,
                                                                                 experiment_id,
                                                                                 LABELS)
+                            dataset_dict[API_KEYWORDS] += self.args.keywordsl
                             datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
                             attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_id)
                             failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
                             failed.update(failed_attachments)
 
                             print("new dataset:", dataset_dict[PID])
-
-                                # TODO kezwords!!!!
-            
-
-            """
-            existing = self.find_existing_datasets(srct_path)
-                    print(srct_path, "--> Matching {:d} dataset(s) in Scicat".format(len(existing)))
-                    if self.args.matchexisting and len(existing) != 1:
-                        failed[srct_path] = "Not matching with a single dataset - omitting!"
-                        continue
-
-                    raw_root = "{}/{}/{}".format(directory, HISTO_RAW_DIRECTORY, histo_id)
-                    xml_filenames = list_files(raw_root, '.xml')
-                    
-                    for xml_filename in xml_filenames:
-                        if xml_filename.endswith(self.config[CONFIG_LOG_SUFFIX]):
-                            path_xml_filename = "{}/{}".format(raw_root, xml_filename)
-                            xml_metadata = HistoMetaParser(path_xml_filename).get_dict()
-                            smb = ScientificMetadataBuilder()
-                            for key, value in xml_metadata.items():
-                                smb.set_value(key, value)
-                            creation_time = get_creation_date(path_xml_filename)
-                            break
-
-                    proposal_dict = {PROPOSAL_ID: NA, "lastname": NA}  # To be fetched from Scicat
-                    if len(existing) == 1:
-                        if existing[0][TYPE] == TYPE_RAW:
-                            proposal_dict[PROPOSAL_ID] = existing[0][PROPOSAL_ID]
-
-                    # Add raw
-                    dataset_dict, filename_list = self._create_raw(dataset, raw_root, creation_time, smb.build(), proposal_dict, sample_id, SITE_PREFIX_HISTO, histo_id)
-                    datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
-                    attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
-                    failed.update(failed_attachments)
-                    failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
-
-                    # Prepare data for derived
-                    experiment_id = srct_path[srct_path.find("data/")+len("data/"):srct_path.find(PROCESSED)-1]
-                    dataset_name = srct_path[srct_path.find(PROCESSED+"/")+len(PROCESSED+"/"):srct_path.find(POSTPROCESSING)-1]
-                    site_prefix = self.config[CONFIG_PREFIX]
-                    input_datasets = [PID_PREFIX + dataset_dict[PID]]  # raw histo as input dataset for registered dataset
-                    if len(existing) == 1:
-                        input_datasets += [existing[0][PID]]  # existing as input for registered dataset
-                        site_prefix = existing[0][DATASET_NAME][:existing[0][DATASET_NAME].find('/')]
-
-                    # Add registered data
-                    dataset_dict, filename_list = self._create_derived(dataset_name, directory, dataset, POSTPROCESSING, input_datasets, None, site_prefix, experiment_id, DATASET_NAME_DERIVED_SUFFIX)
-                    dataset_dict[API_KEYWORDS] += KEYWORDS_DERIVED
-                    datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
-                    attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID])
-                    failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
-                    failed.update(failed_attachments)
-            """
         if failed:    
             print("\n---!--- FAILURES ---!---")
             for key in sorted(failed.keys()):
