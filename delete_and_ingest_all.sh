@@ -8,6 +8,7 @@ fi
 SIMULATION=""
 NUMBEROFTHUMBNAILS="4"
 VERBOSELEVEL="0"  # 0,1,2
+ACCESSGROUPS="public it wb hasylab external"
 
 cmd="/home/lucaschr/.conda/envs/py35/bin/python"
 
@@ -40,12 +41,13 @@ $cmd $script $1 _samples_mgbone.csv 0 4 9 $SIMULATION
 # Ingestion
 
 argsp="hasylab julian.moosmann@desy.de"
-argso="-n ${NUMBEROFTHUMBNAILS} -b -v ${VERBOSELEVEL}"
+argso="-n ${NUMBEROFTHUMBNAILS} -b -v ${VERBOSELEVEL} -a ${ACCESSGROUPS}"
 
 p05="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP05.py"
 p07="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP07.py"
 pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py"
 pvb="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestRegistered.py"
+pvs="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestSegmented.py"
 
 $cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION 
 $cmd $p05 $1 $argsp 11003288 2017 $argso $SIMULATION
@@ -62,3 +64,5 @@ $cmd $p07 $1 $argsp 11006991 2019 $argso $SIMULATION -k tomography
 $cmd $pvj $1 $argsp 11001978 2016 p05 $argso $SIMULATION -m -k resampled
 
 $cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULATION -m -e .tif .tiff .img .ndpi .vgl .svg .png -u Inkscape VGStudio
+
+$cmd $pvs $1 $argsp 00000000 0000 p00 _segmented_list.csv $argso $SIMULATION
