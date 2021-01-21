@@ -105,7 +105,7 @@ class AbstractIngestor(ABC):
             for img in images_in_folder:
                 first_image_in_folder = "{}/{}".format(source_folder, img)
                 creation_time = get_creation_date(source_folder)
-                img_array, img_format = load_numpy_from_image(first_image_in_folder)
+                img_array, img_format, _ = load_numpy_from_image(first_image_in_folder)
                 if img_array is not None:
                     smb.add_value(img_format + " datatypes", img_array.dtype.name) 
                     for i in range(len(img_array.shape)):
@@ -176,7 +176,7 @@ class AbstractIngestor(ABC):
                 step = 1
             for i in range(0, len_list, step):
                 full_path = "{}/{}".format(dataset_dict[SOURCE_FOLDER], sorted_filename_list[i])
-                img_array, _ = load_numpy_from_image(full_path)
+                img_array, _, _ = load_numpy_from_image(full_path)
                 if img_array is None:
                     failed[full_path] = "Failed to add attachment due to file format, or shape, or ..."
                 else:

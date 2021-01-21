@@ -60,10 +60,12 @@ class RegisteredHistoExperimentIngestionParser(PostprocessedExperimentIngestionP
         self.add_argument("csvfile", type=str, help="CSV filename including the mapping of sample id, histo id, and SRCT experiment")
 
 
-class SegmentedExperimentIngestionParser(PostprocessedExperimentIngestionParser):
+class SegmentedExperimentIngestionParser(ScicatIngestDatasetParser):
     def __init__(self):
         super().__init__()
         self.add_argument("csvfile", type=str, help="CSV filename including the list of segmentation folders")
+        self.add_argument("-m", "--matchexisting", action="store_true", help="Postprocessed dataset has to match with exactly one existing SRCT reco dataset as input in Scicat")
+        self.add_argument("-e", "--extensions", type=str, nargs="+", default=DEFAULT_FILE_EXTS, help="Accepted file extensions of data files (default: {})".format(DEFAULT_FILE_EXTS))
         self.add_argument("--keywordsf", type=str, nargs='+', default=['resampled'], help="Additional keywords to be added for the full original images")
         self.add_argument("--keywordsi", type=str, nargs='+', default=['resampled'], help="Additional keywords to be added for the processed images")
         self.add_argument("--keywordsl", type=str, nargs='+', default=['segmented'], help="Additional keywords to be added for the labels")

@@ -37,6 +37,7 @@ script="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/_add_samples.py"
 
 $cmd $script $1 _samples_synchroload.csv 0 7 6 $SIMULATION
 $cmd $script $1 _samples_mgbone.csv 0 4 9 $SIMULATION
+$cmd $script $1 _samples_ztl.csv 0 $SIMULATION
 
 # Ingestion
 
@@ -48,6 +49,7 @@ p07="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestP07.py"
 pvj="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestResampled.py"
 pvb="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestRegistered.py"
 pvs="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestSegmented.py"
+pvz="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestZTL.py"
 
 $cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION 
 $cmd $p05 $1 $argsp 11003288 2017 $argso $SIMULATION
@@ -65,4 +67,6 @@ $cmd $pvj $1 $argsp 11001978 2016 p05 $argso $SIMULATION -m -k resampled
 
 $cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULATION -m -e .tif .tiff .img .ndpi .vgl .svg .png -u Inkscape VGStudio
 
-$cmd $pvs $1 $argsp 00000000 0000 p00 _segmented_list.csv $argso $SIMULATION
+$cmd $pvs $1 $argsp _segmented_list.csv $argso $SIMULATION
+
+$cmd $pvz $1 $argsp  $argso $SIMULATION -k labMR MRI invivo

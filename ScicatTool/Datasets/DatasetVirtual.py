@@ -15,3 +15,11 @@ class ResampledDatasetBuilder(DerivedDatasetBuilder):
 
 class SegmentedDatasetBuilder(DerivedDatasetBuilder):
     pass
+
+
+class ZTLMRDatasetBuilder(RawDatasetBuilder):
+    pass
+
+
+class ZTLCTDatasetBuilder(RawDatasetBuilder):
+    pass

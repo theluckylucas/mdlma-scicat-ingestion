@@ -1,6 +1,7 @@
 from .FSInfo import get_ext
 
 from skimage import io, color
+from pydicom import dcmread
 import base64
 import numpy
 import cv2
@@ -8,24 +9,28 @@ import cv2
 
 TYPE_TIFF = "tiff"
 TYPE_IMG = "img"
+TYPE_HDR = "hdr"
 TYPE_HDF = "hdf"
 TYPE_PNG = "png"
 TYPE_NDPI = "ndpi"
 TYPE_VGL = "vgl"
 TYPE_SVG = "svg"
+TYPE_DCM = "dcm"
 TYPES = {
     "tif": TYPE_TIFF,
     "tiff": TYPE_TIFF,
     "img": TYPE_IMG,
+    "hdr": TYPE_HDR,
     "h5": TYPE_HDF,
     "h4": TYPE_HDF,
     "hdf": TYPE_HDF,
     "png": TYPE_PNG,
     "vgl": TYPE_VGL,
     "ndpi": TYPE_NDPI,
-    "svg": TYPE_SVG
+    "svg": TYPE_SVG,
+    "dcm": TYPE_DCM
 }
-SUPPORTED_IMAGE_TYPES = [TYPE_TIFF, TYPE_PNG]
+SUPPORTED_IMAGE_TYPES = [TYPE_TIFF, TYPE_PNG, TYPE_DCM]
 URI_PNG_PREFIX = "data:image/png;base64,"
 TMP_PATH = "/tmp/mdlmaattachuri.png"
 
@@ -33,6 +38,7 @@ TMP_PATH = "/tmp/mdlmaattachuri.png"
 def load_numpy_from_image(filename):
     img_array = None
     img_format = TYPES[get_ext(filename)]
+    img_meta = None
     if img_format == TYPE_TIFF or img_format == TYPE_PNG:
         img = io.imread(filename)
         if len(img.shape) == 2:  # only work with 2D grayscale image slices
@@ -41,7 +47,12 @@ def load_numpy_from_image(filename):
             img_array = img
         elif len(img.shape) == 3 and img.shape[2] == 4:  # remove alpha
             img_array = color.rgba2rgb(img)
-    return img_array, img_format
+    elif img_format == TYPE_DCM:
+        img_meta = dcmread(filename)
+        img = img_meta.pixel_array
+        if len(img.shape) == 2:  # only work with 2D grayscale image slices
+            img_array = img
+    return img_array, img_format, img_meta
 
 
 def get_uri_from_numpy(img_array, target_size=(150, 150)):

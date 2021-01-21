@@ -91,7 +91,7 @@ class BeamlineResampledIngestor(AbstractIngestor):
                     segmentation_path = PATH_SEGM.format(year, experiment_id, dataset_name, "Final_x_pred.tif")
                     print(segmentation_path, end=' ')
                     if path_exists(segmentation_path):
-                        img_array, _ = load_numpy_from_image(segmentation_path)
+                        img_array, _, _ = load_numpy_from_image(segmentation_path)
                         print("exists:", img_array.shape)
                         break
                     else:
