@@ -6,6 +6,7 @@ from ..Beamline.Ingestion import AbstractIngestor
 from ..Beamline.ConfigKeys import *
 from ..Beamline.Consts import RAW
 from ...Datasets.DatasetVirtual import ZTLMRDatasetBuilder
+from ...Datasets.APIKeys import SOURCE_FOLDER
 from ...Filesystem.FSInfo import list_dirs, list_files, get_creation_date, folder_total_size
 from ...Filesystem.FSInfoUnix import get_ownername
 from ...Filesystem.ImInfo import load_numpy_from_image
@@ -28,22 +29,28 @@ class ZTLMRIngestor(AbstractIngestor):
         }
         super().__init__(args, config, ZTLMRDatasetBuilder, None, None)
     
-
-    def _create_raw(self, dataset, directory, creation_time, smb, proposal_dict, sample_id, prefix, histo_id):
+    def _parse_dataset(self, dataset):
         date = dataset[17:25]
         pos_day = dataset[26:].find("__") 
         day = dataset[26:26+pos_day]
+        if day == 'FINAL':
+            day = 'd72'
         pos_seq = dataset[26+pos_day:].find("E") 
         seq = dataset[26+pos_day+pos_seq:26+pos_day+pos_seq+2]  # TurboRare T2 or DWI
-        
+        if seq == "E2":
+            seq = "turboRare_T2"
+        elif seq == "E7":
+            seq = "diffusion_DWI"
+        return date, day, seq
+
+    def _create_raw(self, dataset, directory, creation_time, smb, proposal_dict, sample_id, prefix, histo_id):
+        date, day, seq = self._parse_dataset(dataset)
+
+        dataset_name = self.config[CONFIG_DATASET_NAME].format(prefix, sample_id, day, seq, RAW)
+
         smb.set_value("Date of Image", date)
         smb.set_value("Day after implant", day)
-        if seq == "E2":
-            smb.set_value("MR Sequence", "turboRare_T2")
-        elif seq == "E7":
-            smb.set_value("MR Sequence", "diffusion_DWI")
-
-        dataset_name = self.dataset_raw_name(self.config[CONFIG_DATASET_NAME], prefix, "MR", dataset, RAW, histo_id)
+        smb.set_value("MR Sequence", seq)
 
         images_in_folder = list_files(directory, self.args.extensions)
 
@@ -91,7 +98,8 @@ class ZTLMRIngestor(AbstractIngestor):
             pi_email(NA).\
             pi_lastname(NA).\
             email(NA).\
-            title("MHH-ZTL").\
+            abstract("From: Medizinische Hochschule Hannover (MHH), Institut für Versuchstierkunde und Zentrales Tierlaboratorium (ZTL), AG Kleintierbildgebung (Martin Meier); In-vivo experiments monitoring the functional changes of tissue parameters during degradation process; Intercondylar in the knee (femur of rat); Implantation of biodegradable material: 8 animals Mg, 8 animals Mg5Gd, 8 animals PEEK, 8 animals control sham; 7 in-vivo observations: Before implant (BL), 0d after implant, 3d after, 7d after, 14d after, 28d after, 56d after, and 72d after (before sacrifice); MR experiments: Bruker Pharmascan 7T and volume coil in S1 specified Lab conditions").\
+            title("MHH-ZTL Rat Femur").\
             start_time("2017-01-01").\
             end_time("2017-12-31").\
             build()
@@ -112,6 +120,7 @@ class ZTLMRIngestor(AbstractIngestor):
             datablock_dict = self._create_origdatablock(filename_list, dataset_dict)
             attachment_dicts, failed_attachments = self._create_attachments(filename_list, dataset_dict, proposal_dict[PROPOSAL_ID_API])
             failed.update(failed_attachments)
+            dataset_dict[SOURCE_FOLDER] = dataset_dict[SOURCE_FOLDER].replace('/home/lucaschr', '~')
             failed.update(self._api_dataset_ingest(dataset_dict, datablock_dict, attachment_dicts))
 
         if failed:    

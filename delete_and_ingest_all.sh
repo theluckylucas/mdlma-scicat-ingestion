@@ -65,8 +65,10 @@ $cmd $p07 $1 $argsp 11006991 2019 $argso $SIMULATION -k tomography
 
 $cmd $pvj $1 $argsp 11001978 2016 p05 $argso $SIMULATION -m -k resampled
 
-$cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULATION -m -e .tif .tiff .img .ndpi .vgl .svg .png -u Inkscape VGStudio
-
 $cmd $pvs $1 $argsp _segmented_list.csv $argso $SIMULATION
 
-$cmd $pvz $1 $argsp  $argso $SIMULATION -k labMR MRI invivo
+argsp="hasylab berit.zeller-plumhoff@hzg.de"
+$cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULATION -m -e .tif .tiff .img .ndpi .vgl .svg .png -u Inkscape VGStudio
+
+argsp="hasylab christian.lucas@desy.de"
+$cmd $pvz $1 $argsp $argso $SIMULATION -k labMR MRI
