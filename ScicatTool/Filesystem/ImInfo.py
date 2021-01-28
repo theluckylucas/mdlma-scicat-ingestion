@@ -16,6 +16,7 @@ TYPE_NDPI = "ndpi"
 TYPE_VGL = "vgl"
 TYPE_SVG = "svg"
 TYPE_DCM = "dcm"
+TYPE_JPEG = "jpeg"
 TYPES = {
     "tif": TYPE_TIFF,
     "tiff": TYPE_TIFF,
@@ -28,9 +29,11 @@ TYPES = {
     "vgl": TYPE_VGL,
     "ndpi": TYPE_NDPI,
     "svg": TYPE_SVG,
-    "dcm": TYPE_DCM
+    "dcm": TYPE_DCM,
+    "jpg": TYPE_JPEG,
+    "jpeg": TYPE_JPEG
 }
-SUPPORTED_IMAGE_TYPES = [TYPE_TIFF, TYPE_PNG, TYPE_DCM]
+SUPPORTED_IMAGE_TYPES = [TYPE_TIFF, TYPE_PNG, TYPE_DCM, TYPE_JPEG]
 URI_PNG_PREFIX = "data:image/png;base64,"
 TMP_PATH = "/tmp/mdlmaattachuri.png"
 
@@ -39,7 +42,7 @@ def load_numpy_from_image(filename):
     img_array = None
     img_format = TYPES[get_ext(filename)]
     img_meta = None
-    if img_format == TYPE_TIFF or img_format == TYPE_PNG:
+    if img_format == TYPE_TIFF or img_format == TYPE_PNG or img_format == TYPE_JPEG:
         img = io.imread(filename)
         if len(img.shape) == 2:  # only work with 2D grayscale image slices
             img_array = img
