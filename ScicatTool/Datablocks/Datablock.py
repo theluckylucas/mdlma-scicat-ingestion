@@ -4,15 +4,15 @@ from .APIKeys import *
 from ..Datasets.Consts import TYPE_RAW, TYPE_DERIVED, PID_PREFIX
 from ..Datasets.APIKeys import TYPE, PID
 from ..Filesystem.FSInfo import get_creation_date, file_size
-from ..Filesystem.FSInfoUnix import get_ownername
 from ..Utils.Errors import ValidationError
 
 
 class OrigDatablockBuilder():    
-    def __init__(self, source_folder):
+    def __init__(self, source_folder, win_fs=False):
         super().__init__()
         self.datablock = {}
         self.source_folder = source_folder
+        self.win_fs = win_fs
     
     def args(self, args):
         return self.owner_group(args.ownergroup).\
@@ -40,6 +40,10 @@ class OrigDatablockBuilder():
         return self
 
     def data_file_list(self, filename_list : list):
+        if self.win_fs:
+            from ..Filesystem.FSInfoWin import get_ownername
+        else:
+            from ..Filesystem.FSInfoUnix import get_ownername
         result = []
         for filename_relative in filename_list:
             full_path = "{}/{}".format(self.source_folder, filename_relative)

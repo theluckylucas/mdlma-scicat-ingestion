@@ -2,6 +2,7 @@ from .FSInfo import get_ext
 
 from skimage import io, color
 from pydicom import dcmread
+import tempfile
 import base64
 import numpy
 import cv2
@@ -35,7 +36,8 @@ TYPES = {
 }
 SUPPORTED_IMAGE_TYPES = [TYPE_TIFF, TYPE_PNG, TYPE_DCM, TYPE_JPEG]
 URI_PNG_PREFIX = "data:image/png;base64,"
-TMP_PATH = "/tmp/mdlmaattachuri.png"
+
+TMP_PATH = str(tempfile.gettempdir()) + "/mdlmaattachuri.png"
 
  
 def load_numpy_from_image(filename):

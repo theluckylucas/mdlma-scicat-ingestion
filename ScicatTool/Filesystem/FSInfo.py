@@ -3,8 +3,8 @@ import platform
 from os import stat, listdir, path, scandir, walk
 from datetime import datetime
 
-
 FOLLOW_SYMLINKS = False
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 def get_ext(filename):
@@ -42,7 +42,7 @@ def list_dirs(directory):
 
 def get_creation_date(filename):
     if platform.system() == 'Windows':
-        return path.getctime(filename)
+        return datetime.fromtimestamp(path.getctime(filename)).strftime(DATETIME_FORMAT)
     else:
         file_stat = stat(filename)
         try:
@@ -50,4 +50,4 @@ def get_creation_date(filename):
         except AttributeError:
             # We're probably on Linux. No easy way to get creation dates here,
             # so we'll settle for when its content was last modified.
-            return str(datetime.fromtimestamp(file_stat.st_mtime))
+            return datetime.fromtimestamp(file_stat.st_mtime).strftime(DATETIME_FORMAT)
