@@ -8,6 +8,11 @@ The Scicat tool is used through scripts `Ingest<SITE>.py`, `Delete<SITE>.py`, et
 Run a script by calling e.g. `python Ingest<SITE>.py -h` to get a description of the required and optional arguments.
 
 
+## Run a simulation
+
+Add `python Ingest<SITE>.py -s` to run a simulation, which means data is NOT being posted into the database. If you want to simulate a full clean run, set `SIMULATION="-s"` in `delete_and_ingest_all.sh` before running this script.
+
+
 ## Add data about other sites
 
 If you want to add scripts that ingest data from another site, first inherit a class from [RawDatasetBuilder](ScicatTool/Datasets/Dataset.py) or [DerivedDatasetBuilder](ScicatTool/Datasets/Dataset.py) that builds the data for the API request body by generating a `data_dict`. Similarily, add a subfolder to the [Sites](ScicatTool/Sites) folder that consists of a `Ingestion.py` file, which uses the new `DatasetBuilder`, [ProposalBuilder](ScicatTool/Proposals/Proposal.py), [AttachmentBuilder](ScicatTool/Datasets/Dataset.py), or [OrigDatablockBuilder](ScicatTool/Datablocks/Datablock.py) to create each `data_dict` that the [API functions](ScicatTool/REST/API.py) will be called with. Make sure a `Const.py` file contains the site-specific constant values. Helper functions in [Filesystem](ScicatTool/Filesystem) can support `Ingestion.py` in discovering the actual data on the filesystem. At the end, inherit from [Arguments](ScicatTool/Utils/Arguments.py) for site-specific command line arguments, which the top-level script in the root folder uses when being called by the user.
