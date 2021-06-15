@@ -25,7 +25,7 @@ class ZTLMRIngestor(AbstractIngestor):
             CONFIG_SOURCE_PATH: SOURCE_PATH,
             CONFIG_PREFIX: SITE_PREFIX,
             CONFIG_FILENAME_IGNORE: FILENAME_IGNORE_PATTERN,
-            CONFIG_DATASET_NAME: DATASET_NAME_PATTERN
+            CONFIG_DATASET_NAME: DATASET_MR_NAME_PATTERN
         }
         super().__init__(args, config, ZTLMRDatasetBuilder, None, None)
     
@@ -57,11 +57,11 @@ class ZTLMRIngestor(AbstractIngestor):
         for subdir in list_dirs(directory):
             images_in_folder += ["{}/{}".format(subdir, f) for f in list_files("{}/{}".format(directory, subdir), self.args.extensions)]
         images_in_folder = sorted(images_in_folder)
-
+        
         meta_info_file = "{}/{}".format(directory, images_in_folder[0])
         creation_time = get_creation_date(meta_info_file)
         _, _, dicom_meta = load_numpy_from_image(meta_info_file)
-        for tag in DICOM_TAGS:
+        for tag in DICOM_TAGS_MR:
             value = dicom_meta.get(tag, NA)
             if isinstance(value, list):
                 value = ",".join([str(v) for v in value])
@@ -94,14 +94,14 @@ class ZTLMRIngestor(AbstractIngestor):
 
         proposal_dict = ProposalBuilder().\
             args(self.args).\
-            proposal_id("2017-ZTL").\
+            proposal_id(PROPOSAL_ID).\
             pi_email(NA).\
             pi_lastname(NA).\
             email(NA).\
-            abstract("From: Medizinische Hochschule Hannover (MHH), Institut für Versuchstierkunde und Zentrales Tierlaboratorium (ZTL), AG Kleintierbildgebung (Martin Meier); In-vivo experiments monitoring the functional changes of tissue parameters during degradation process; Intercondylar in the knee (femur of rat); Implantation of biodegradable material: 8 animals Mg, 8 animals Mg5Gd, 8 animals PEEK, 8 animals control sham; 7 in-vivo observations: Before implant (BL), 0d after implant, 3d after, 7d after, 14d after, 28d after, 56d after, and 72d after (before sacrifice); MR experiments: Bruker Pharmascan 7T and volume coil in S1 specified Lab conditions").\
-            title("MHH-ZTL Rat Femur").\
-            start_time("2017-01-01").\
-            end_time("2017-12-31").\
+            abstract(PROPOSAL_ABSTRACT).\
+            title(PROPOSAL_TITLE).\
+            start_time(PROPOSAL_START).\
+            end_time(PROPOSAL_END).\
             build()
         resp = API.proposal_ingest(self.args.token, proposal_dict, self.args.simulation, self.args.verbose)
         if resp.status_code != 200:

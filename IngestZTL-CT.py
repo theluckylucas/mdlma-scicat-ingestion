@@ -4,7 +4,7 @@ Run python IngestZTL.py -h for details about how to call.
 """
 
 
-from ScicatTool.Sites.ZTL.Ingestion import ZTLMRIngestor
+from ScicatTool.Sites.ZTL.Ingestion_CT import ZTLCTIngestor
 from ScicatTool.Utils.ArgumentsFilesystem import ZTLIngestionParser
 import datetime
 
@@ -14,5 +14,5 @@ if __name__ == '__main__':
     parser =ZTLIngestionParser()
     args = parser.parse_args()
     print(args)
-    ZTLMRIngestor(args).ingest_experiment()
+    ZTLCTIngestor(args).ingest_experiment()
     print('END', datetime.datetime.now())
