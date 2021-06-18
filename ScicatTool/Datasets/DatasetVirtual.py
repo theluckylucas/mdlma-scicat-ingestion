@@ -23,3 +23,7 @@ class ZTLMRDatasetBuilder(RawDatasetBuilder):
 
 class ZTLCTDatasetBuilder(RawDatasetBuilder):
     pass
+
+
+class SCAMAGDatasetBuilder(RawDatasetBuilder):
+    pass

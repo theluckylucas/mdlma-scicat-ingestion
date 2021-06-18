@@ -51,6 +51,7 @@ pvp="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestSegmented.py"  
 pvb="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestRegistered.py" # Julian/Berit
 pvcmr="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestZTL-MR.py"   # Christian
 pvcct="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestZTL-CT.py"   # Christian
+pvs="/home/lucaschr/TemporalStorage/mdlma-scicat-ingestion/IngestSCAMAG.py"     # Christian
 
 $cmd $p05 $1 $argsp 11001978 2016 $argso $SIMULATION 
 $cmd $p05 $1 $argsp 11003288 2017 $argso $SIMULATION
@@ -74,3 +75,4 @@ $cmd $pvb $1 $argsp 11005218 2018 p03 _histo_srct_registered.csv $argso $SIMULAT
 argsp="hasylab christian.lucas@desy.de"
 $cmd $pvcmr $1 $argsp $argso $SIMULATION -k labMR MRI
 $cmd $pvcct $1 $argsp $argso $SIMULATION -k reco xray
+$cmd $pvs $1 $argsp $argso $SIMULATION

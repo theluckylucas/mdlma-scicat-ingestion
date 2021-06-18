@@ -54,9 +54,13 @@ def load_numpy_from_image(filename):
             img_array = color.rgba2rgb(img)
     elif img_format == TYPE_DCM:
         img_meta = dcmread(filename)
-        img = img_meta.pixel_array
-        if len(img.shape) == 2:  # only work with 2D grayscale image slices
-            img_array = img
+        try:
+            img = img_meta.pixel_array
+            if len(img.shape) == 2:  # only work with 2D grayscale image slices
+                img_array = img
+        except:
+            img_array = None
+
     return img_array, img_format, img_meta
 
 
